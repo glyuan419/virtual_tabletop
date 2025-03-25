@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 13px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+

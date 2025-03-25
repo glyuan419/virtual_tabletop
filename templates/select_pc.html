@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>角色卡</title>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='ui.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='sizes.css') }}">
+</head>
+<body>
+    <menu class="nav"></menu>
+    
+    <div class="container">
+        <table id="pc_selector" class="table w-p30" style="margin: 12px auto auto;">
+            <tbody>
+                <tr>
+                    <td style="font-size: 16px;
+                        text-align: left;
+                        padding: 8px;
+                        font-weight: 700;">
+                        选择角色:
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var data = '{{ data }}';
+        const textArea = document.createElement('textarea');
+        textArea.innerHTML = data;
+        data = eval(textArea.value);
+
+        for (let i=0; i<data.length; i++) {
+            let label = data[i][1]+': '+data[i][2]
+            if (data[i][0] == 'template') label = '创建新角色';
+            const option = new Option(label, data[i][0]);
+            
+            const row = pc_selector.insertRow();
+            const cell = row.insertCell();
+            cell.innerHTML = '<button class="btn">' + label + '</button>';
+            cell.children[0].addEventListener("click", () => {
+                window.location.href = window.location.origin + '/' + data[i][0] + '/main';
+            });
+        }
+    </script>
+</body>
+</html>
