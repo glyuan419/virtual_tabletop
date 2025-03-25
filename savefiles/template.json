@@ -1,0 +1,59 @@
+{
+    "main": {
+        "character_name": "",
+        "race": "",
+        "class": "",
+        "subclass": "",
+        "class_level": "1",
+        "experience_points": "0"
+    },
+    "abilities": {
+        "strength": "10",
+        "dexterity": "10",
+        "constitution": "10",
+        "intelligence": "10",
+        "wisdom": "10",
+        "charisma": "10"
+    },
+    "skill_proficiency": [],
+    "double_skill_proficiency": [],
+    "half_skill_proficiency": [],
+    "skill_bonus": {
+        "athletics": "0",
+        "acrobatics": "0",
+        "sleight_of_hand": "0",
+        "stealth": "0",
+        "investigation": "0",
+        "arcana": "0",
+        "history": "0",
+        "nature": "0",
+        "religion": "0",
+        "perception": "0",
+        "insight": "0",
+        "animal_handling": "0",
+        "medicine": "0",
+        "survival": "0",
+        "persuasion": "0",
+        "deception": "0",
+        "intimidation": "0",
+        "performance": "0"
+    },
+    "abstract": {
+        "initiative_bonus": "0",
+        "armor_class_bonus": "0",
+        "hit_point": ["8", "8", "0"],
+        "hit_dice": "0",
+        "special_value": ["", "", ""],
+        "inspiration": "",
+        "conditions": "",
+        "immunizations": "",
+        "vulnerabilities": "",
+        "resistances": ""
+    },
+    "gears": {},
+    "backpack": {
+        "gold_pieces": "0",
+        "silver_pieces": "0",
+        "copper_pieces": "0"
+    }
+}
