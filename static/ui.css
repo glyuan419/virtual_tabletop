@@ -178,6 +178,7 @@
     color: #3b82f6;
     text-decoration-line: underline;
     text-underline-offset: 2px;
+    cursor: pointer;
 }
 
 .form-control {
