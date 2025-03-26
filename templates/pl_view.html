@@ -20,6 +20,8 @@
         <li class="nav-item"><button type="button" id="btn_spellcasting" class="btn">施法</button></li>
         <li class="nav-item"><button type="button" id="btn_maps" class="btn">地图</button></li>
         <li class="nav-divider"></li>
+        <li class="nav-item"><button type="button" id="btn_items" class="btn">物品</button></li>
+        <li class="nav-item"><button type="button" id="btn_spells" class="btn">法术</button></li>
         <li class="nav-space"></li>
         <li class="nav-item"><input type="file" class="hidden"/></li>
         <li class="nav-item"><button type="button" class="btn">导入</button></li>
@@ -1064,6 +1066,41 @@
 
     <div id="scroll_maps" class="container" style="display: none;"></div>
 
+    <div id="scroll_items" class="container" style="display: none;">
+        <div class="w-p60 col scroll">
+            <table id="items_table" class="table">
+                <tbody>
+                    <tr class="table-heading">
+                        <td class="w-p25">名称</td>
+                        <td class="w-p30">类型</td>
+                        <td class="w-p15">价值</td>
+                        <td class="w-p15">重量</td>
+                        <td class="w-p15">资源</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="w-p40 col space-y-lg">
+            <div id="item_board" class="board scroll w-p100 h-86">
+                <div class="board-heading"></div>
+                <div class="board-abstract">
+                    <!-- 军用武器 、近战武器、强效、非常见<br>
+                    6磅<br>
+                    1d8 挥砍 - 可双手 (1d10) -->
+                </div>
+                <div class="board-details">
+                    <!-- <p>你在使用这把武器进行的攻击检定和伤害骰上具有+1加值。</p>
+                    <p>
+                        <span class="board-item">可双手. </span>
+                        此武器可以被单手或双手使用。这个属性后方所显示括号内的伤害数值，代表着以双手使用此武器进行一次近战攻击时的伤害。
+                    </p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="scroll_spells" class="container" style="display: none;"></div>
+
     <div id="roll_box"> <!-- 骰盘 -->
         投骰
         <div id="roll_board" contenteditable="true"></div>
@@ -1074,8 +1111,10 @@
         var pc_id = "{{ pc_id }}";
         var actived_scroll = "{{ actived_scroll }}";
         var saved_data = Object();
-        var info = Object();
+        var saved_items = Object();
+        var computed_data = Object();
     </script>
+    <script src="{{ url_for('static', filename='data.js') }}"></script>
     <script src="{{ url_for('static', filename='functions.js') }}"></script>
     <script src="{{ url_for('static', filename='pl_view.js') }}"></script>
 </body>

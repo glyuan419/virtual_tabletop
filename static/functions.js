@@ -1,4 +1,284 @@
+/**
+ * 加载角色选择器
+ * 
+ * 根据传入的角色列表 data 设定角色选择器
+ */
+function load_character_selector(data) {
+    let character_selector = document.getElementById('character_selector');
+    for (let i in data) {
+        let label = data[i][1]+': '+data[i][2]
+        if (data[i][0] == 'template') label = '创建新角色';
+        if (data[i][1]=='' && data[i][2]==0) label = '正在创建';
 
+        const option = new Option(label, data[i][0]);
+        character_selector.add(option);
+
+        if (data[i][0] == pc_id) {
+            character_selector.selectedIndex = i;
+            document.title = label;
+        }
+    }
+
+    character_selector.addEventListener('change', () => {
+        window.location.href = (
+            [window.location.origin, character_selector.selectedOptions[0].value, 'main'].join('/')
+        );
+    });
+}
+
+/**
+ * 加载主要情况栏
+ * 
+ * 依次加载主要信息、装备、属性、技能、摘要
+ * 并计算需要的数值
+ */
+function load_main() {
+    if (saved_data.main.character_name!='' && saved_data.main.class!='' && saved_data.main.race!='') {
+        load_info();
+        load_gear();
+        load_abilities();
+        load_skills();
+        load_abstract();
+    }
+}
+
+/**
+ * 加载物品栏
+ * 
+ * 将 saved_items 内的条目依次插入表格 items_table
+ */
+function load_items() {
+    for (let i=0; i<saved_items.length; i++) {
+        const row = items_table.insertRow();
+        row.classList.add('table-item');
+        row.insertCell().innerText = saved_items[i].name.split('  ')[0];
+        row.insertCell().innerText = saved_items[i].type.join('、');
+        row.insertCell().innerText = saved_items[i].value + ' gp';
+        row.insertCell().innerText = saved_items[i].weight + ' 磅';
+        row.insertCell().innerText = saved_items[i].source;
+
+        row.addEventListener("click", () => {
+            item_board.children[0].innerHTML = saved_items[i].name;
+            item_board.children[1].innerHTML = saved_items[i].type.join('、') + '<br/>';
+            item_board.children[1].innerHTML += saved_items[i].value + ' gp、' + saved_items[i].weight + ' 磅';
+            item_board.children[1].innerHTML += (
+                (saved_items[i].type.includes('武器'))
+                ?('<br/><span id="item_dice" class="dice">' + saved_items[i].dmg[1] + '</span> ' + saved_items[i].dmg[0])
+                :('')
+            );
+            item_board.children[1].innerHTML += (
+                (saved_items[i].properties.includes('可双手'))
+                ?(' - 可双手 (<span id="item_dice" class="dice">' + saved_items[i].dmg[2] + '</span>)')
+                :('')
+            );
+            item_board.children[2].innerHTML = '';
+            for (let j=0; j<saved_items[i].entries.length; j++) {
+                item_board.children[2].innerHTML += '<p>' + saved_items[i].entries[j] + '</p>';
+            }
+            for (let j=0; j<saved_items[i].properties.length; j++) {
+                let element = '<p>'
+                    + '<span class="board-item">' + saved_items[i].properties[j] + '. </span>'
+                    + data_properties[saved_items[i].properties[j]].entries.join('<br/><br/>')
+                    + '</p>';
+                item_board.children[2].innerHTML += element;
+            }
+
+            item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+                dice.addEventListener("click", () => {
+                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                    roll_board.innerHTML += get_label(dice);
+                    roll_board.innerHTML += roll_dice(dice.innerText);
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                });
+            });
+        });
+    }
+}
+
+
+
+/**
+ * 加载主要信息
+ */
+function load_info() {
+    assign(character_name, saved_data.main.character_name);
+    assign(race, saved_data.main.race);
+    assign(class_name, saved_data.main.class);
+    assign(class_level, saved_data.main.class_level);
+    assign(experience_points, saved_data.main.experience_points);
+
+    computed_data.proficiency_bonus = parseInt((saved_data.main.class_level-1)/4)+2;
+    assign(proficiency_bonus, computed_data.proficiency_bonus);
+}
+
+/**
+ * 载入装备
+ */
+function load_gear() {
+    // for (all gear) {
+    //     equip this gear
+    // }
+}
+
+/**
+ * 载入属性
+ */
+function load_abilities() {
+    for (let x in saved_data.abilities) {
+        computed_data[x] = saved_data.abilities[x];
+    }
+
+    
+    // 根据装备修改属性
+    // for (all gear) {
+    //     modify info
+    // }
+
+    let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+    let prof_ref = {
+        '野蛮人': ['strength', 'constitution'],
+        '吟游诗人': ['dexterity', 'charisma'],
+        '牧师': ['wisdom', 'charisma'],
+        '德鲁伊': ['intelligence', 'wisdom'],
+        '战士': ['strength', 'constitution'],
+        '武僧': ['strength', 'dexterity'],
+        '圣武士': ['wisdom', 'charisma'],
+        '游侠': ['strength', 'dexterity'],
+        '游荡者': ['dexterity', 'intelligence'],
+        '术士': ['constitution', 'charisma'],
+        '契术师': ['wisdom', 'charisma'],
+        '法师': ['intelligence', 'wisdom']
+    }
+    let rows = abilities.tBodies[0].children;
+    for (i=1; i<rows.length; i++) {
+        let value = sum(computed_data[abs_ref[i]]);
+        let proficiency = prof_ref[saved_data.main.class].includes(abs_ref[i]);
+
+        assign(rows[i].children[0], proficiency?'O':'X') // 熟练
+        assign(rows[i].children[2].children[0], value); // 属性值
+        assign(rows[i].children[3].children[0], parseInt(value/2)-5); // 调整值
+        assign(rows[i].children[4].children[0],
+            parseInt(value/2)-5 + (proficiency?computed_data.proficiency_bonus:0)
+        ); // 豁免
+    }
+}
+
+/**
+ * 载入技能
+ */
+function load_skills() {
+    let skls_ref = ['', 
+        'athletics',
+        'acrobatics', 'sleight_of_hand', 'stealth',
+        'investigation', 'arcana', 'history', 'nature', 'religion',
+        'perception', 'insight', 'animal_handling', 'medicine', 'survival',
+        'persuasion', 'deception', 'intimidation', 'performance'
+    ];
+    let abs_ref = ['', 
+        'strength', 
+        'dexterity', 'dexterity', 'dexterity', 
+        'intelligence', 'intelligence', 'intelligence', 'intelligence', 'intelligence', 
+        'wisdom', 'wisdom', 'wisdom', 'wisdom', 'wisdom', 
+        'charisma', 'charisma', 'charisma', 'charisma'
+    ];
+    let rows = skills.tBodies[0].children;
+    for (i=1; i<rows.length; i++) {
+        let proficiency = 0;
+        if (saved_data.skill_proficiency.includes(skls_ref[i])) proficiency = 1;
+        if (saved_data.double_skill_proficiency.includes(skls_ref[i])) proficiency = 2;
+        if (saved_data.half_skill_proficiency.includes(skls_ref[i])) proficiency = 3;
+
+        assign(rows[i].children[0].children[0], ['X', 'O', 'D', 'H'][proficiency]) // 熟练
+        assign(rows[i].children[2].children[0], saved_data.skill_bonus[skls_ref[i]]); // 修正
+        assign(rows[i].children[3].children[0],
+            parseInt(sum(computed_data[abs_ref[i]])/2)-5
+            + Number(saved_data.skill_bonus[skls_ref[i]])
+            + parseInt([0, 1, 2, 0.5][proficiency] * Number(computed_data.proficiency_bonus))
+        ); // 总值
+    }
+}
+
+/**
+ * 载入摘要
+ */
+function load_abstract() {
+    assign(initiative.children[1].children[0], saved_data.abstract['initiative_bonus']);
+    assign(initiative.children[2].children[0],
+        parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.abstract['initiative_bonus'])
+    ); // 先攻
+
+    assign(armor_class.children[1].children[0], saved_data.abstract['armor_class_bonus']);
+    assign(armor_class.children[2],
+        10 + parseInt(sum(computed_data['dexterity'])/2)-5
+        + Number(saved_data.abstract['armor_class_bonus'])
+    ); // 护甲等级
+
+    let abs_ref = {
+        '野蛮人': '体质',
+        '吟游诗人': '魅力',
+        '牧师': '感知',
+        '德鲁伊': '感知',
+        '战士': '智力',
+        '武僧': '感知',
+        '圣武士': '魅力',
+        '游侠': '感知',
+        '游荡者': '智力',
+        '术士': '魅力',
+        '契术师': '魅力',
+        '法师': '智力'
+    };
+    assign(spellcasting_ability.children[1], abs_ref[saved_data.main['class']]); // 施法关键属性
+    
+    assign(difficulty_class.children[1],
+        8 + parseInt(sum(computed_data['intelligence'])/2)-5 + Number(computed_data.proficiency_bonus)
+    ); // 法术豁免难度等级
+
+    assign(passive_perception.children[1],
+        10 + Number(skills.tBodies[0].children[10].children[3].innerText)
+    ); // 被动察觉
+
+    assign(hit_point.children[1].children[0], saved_data.abstract['hit_point'][0]); // 当前生命值
+    assign(hit_point.children[2].children[0], saved_data.abstract['hit_point'][1]); // 最大生命值
+    assign(temporary_hit_point.children[1].children[0], saved_data.abstract['hit_point'][2]); // 临时生命值
+
+    let hd_ref = {
+        '野蛮人': '1d12',
+        '吟游诗人': '1d8',
+        '牧师': '1d8',
+        '德鲁伊': '1d8',
+        '战士': '1d10',
+        '武僧': '1d8',
+        '圣武士': '1d10',
+        '游侠': '1d10',
+        '游荡者': '1d8',
+        '术士': '1d6',
+        '契术师': '1d8',
+        '法师': '1d6'
+    };
+    assign(hit_dice.children[1].children[0], saved_data.abstract['hit_dice']); // 剩余生命骰数量
+    assign(hit_dice.children[2], saved_data.main['class_level']); // 最大生命骰数量
+    assign(hit_dice_value.children[1].children[0], hd_ref[saved_data.main['class']]); // 生命骰数值
+
+    assign(special_value.children[0].children[0], saved_data.abstract['special_value'][0]); // 特殊能力名称
+    assign(special_value.children[1].children[0], saved_data.abstract['special_value'][1]); // 特殊能力剩余数量
+    assign(special_value.children[2].children[0], saved_data.abstract['special_value'][2]); // 特殊能力最大数量
+    
+    assign(inspiration.children[1].children[0], saved_data.abstract['inspiration']); // 激励
+
+    assign(conditions.children[0].children[0].children[1].children[0],
+        saved_data.abstract['conditions']); // 状态
+    assign(conditions.children[0].children[0].children[3].children[0],
+        saved_data.abstract['immunizations']); // 免疫
+    assign(conditions.children[0].children[1].children[1].children[0],
+        saved_data.abstract['vulnerabilities']); // 易伤
+    assign(conditions.children[0].children[1].children[3].children[0],
+        saved_data.abstract['resistances']); // 抗性
+}
+
+
+/**
+ * 为元素 element 设置值 value
+ */
 function assign(element, value) {
     switch (element.tagName) {
         case 'INPUT': element.value = value; break;
@@ -21,16 +301,29 @@ function assign(element, value) {
     }
 }
 
+/**
+ * 给数值列表求和
+ * 
+ * sum([[d1,s1], [d2,s3]]) == d1+d2
+ */
 function sum(list) {
     let res = 0;
     if (!isNaN(Number(list))) return Number(list);
-    for (let i=0; i<list.length; i++) {
+
+    for (let i in list) {
         res += Number(list[i][0]);
     }
     return res;
 }
 
+/**
+ * 当某个可输入元素变动时调用
+ * 修改 saved_data 
+ * 并重新载入数据
+ */
 function change_data(element) {
+    let character_selector = document.getElementById('character_selector');
+
     if (element.tagName == 'SELECT') {
         if (element.id != '') {
             saved_data.main.class = element.selectedOptions[0].innerText;
@@ -99,9 +392,12 @@ function change_data(element) {
         }
     }
 
-    load_data(saved_data);
+    load_main();
 }
 
+/**
+ * 生成骰子元素 element 的显示标签
+ */
 function get_label(element) {
     let label = '';
     if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
@@ -110,13 +406,16 @@ function get_label(element) {
         label += element.parentElement.parentElement.children[1].innerText;
         if (element.parentElement.cellIndex == 4) label += '豁免';
     } else if (element.parentElement.parentElement.id != '') {
-        label += element.parentElement.parentElement.children[0].innerText;
+        label += element.parentElement.parentElement.children[0].innerText.split(' ')[0];
     } else {
         return '';
     }
     return label + ': ';
 }
 
+/**
+ * 投骰
+ */
 function roll_dice(dice_value) {
     let dice_result = 0;
     let dice_info = ' = ';
@@ -196,216 +495,4 @@ function roll_dice(dice_value) {
     }
     
     return '<span style=\'color: #3b82f6;\'>' + dice_result + '</span>' + dice_info;
-}
-
-function load_character_selector(data) {
-    for (let i=0; i<data.length; i++) {
-        let label = data[i][1]+': '+data[i][2]
-        if (data[i][0] == 'template') label = '创建新角色';
-        const option = new Option(label, data[i][0]);
-        character_selector.add(option);
-        if (data[i][0] == pc_id) {
-            character_selector.selectedIndex = i;
-            document.title = data[i][1]+': '+data[i][2];
-        }
-    }
-    character_selector.addEventListener('change', () => {
-        window.location.href = window.location.origin + '/'
-                               + character_selector.selectedOptions[0].value + '/main';
-    });
-
-    if (saved_data.main.character_name=='' || saved_data.main.class=='' || saved_data.main.race=='') {
-        character_selector.selectedOptions[0].innerText = '正在创建';
-        document.title = '创建新角色';
-    }
-}
-
-function load_main(data) {
-    assign(character_name, data.character_name);
-    assign(race, data.race);
-    assign(class_name, data.class);
-    assign(class_level, data.class_level);
-    assign(experience_points, data.experience_points);
-
-    info.proficiency_bonus = parseInt((data.class_level-1)/4)+2;
-    assign(proficiency_bonus, info.proficiency_bonus);
-}
-
-
-
-// 载入技能
-function load_skills(data) {
-    let skls_ref = ['', 
-        'athletics',
-        'acrobatics', 'sleight_of_hand', 'stealth',
-        'investigation', 'arcana', 'history', 'nature', 'religion',
-        'perception', 'insight', 'animal_handling', 'medicine', 'survival',
-        'persuasion', 'deception', 'intimidation', 'performance'
-    ];
-    let abs_ref = ['', 
-        'strength', 
-        'dexterity', 'dexterity', 'dexterity', 
-        'intelligence', 'intelligence', 'intelligence', 'intelligence', 'intelligence', 
-        'wisdom', 'wisdom', 'wisdom', 'wisdom', 'wisdom', 
-        'charisma', 'charisma', 'charisma', 'charisma'
-    ];
-    let trs = skills.tBodies[0].children;
-    for (i=1; i<trs.length; i++) {
-        let proficiency = 0;
-        if (data.skill_proficiency.includes(skls_ref[i])) proficiency = 1;
-        if (data.double_skill_proficiency.includes(skls_ref[i])) proficiency = 2;
-        if (data.half_skill_proficiency.includes(skls_ref[i])) proficiency = 3;
-        assign(trs[i].children[0].children[0], ['X', 'O', 'D', 'H'][proficiency]) // 熟练
-        assign(trs[i].children[2].children[0], data.skill_bonus[skls_ref[i]]); // 修正
-        assign(trs[i].children[3].children[0], 
-            parseInt(sum(info[abs_ref[i]])/2)-5
-            + Number(data.skill_bonus[skls_ref[i]])
-            + parseInt([0, 1, 2, 0.5][proficiency] * Number(info.proficiency_bonus))
-        ); // 总值
-    }
-}
-
-function load_abstract(data) {
-    // 先攻
-    assign(initiative.children[1].children[0], data.abstract['initiative_bonus']);
-    assign(initiative.children[2].children[0],
-        parseInt(sum(info['dexterity'])/2)-5 + Number(data.abstract['initiative_bonus'])
-    );
-    // 护甲等级
-    assign(armor_class.children[1].children[0], data.abstract['armor_class_bonus']);
-    assign(armor_class.children[2],
-        10 + parseInt(sum(info['dexterity'])/2)-5 + Number(data.abstract['armor_class_bonus'])
-    );
-    // 施法关键属性
-    let abs_ref = {
-        '野蛮人': '体质',
-        '吟游诗人': '魅力',
-        '牧师': '感知',
-        '德鲁伊': '感知',
-        '战士': '智力',
-        '武僧': '感知',
-        '圣武士': '魅力',
-        '游侠': '感知',
-        '游荡者': '智力',
-        '术士': '魅力',
-        '契术师': '魅力',
-        '法师': '智力'
-    };
-    assign(spellcasting_ability.children[1], abs_ref[data.main['class']]);
-    // 法术豁免难度等级
-    assign(difficulty_class.children[1],
-        8 + parseInt(sum(info['intelligence'])/2)-5 + Number(info.proficiency_bonus)
-    );
-    // 被动察觉
-    assign(passive_perception.children[1],
-        10 + Number(skills.tBodies[0].children[10].children[3].innerText)
-    );
-    // 生命值
-    assign(hit_point.children[1].children[0], data.abstract['hit_point'][0]); // 当前生命值
-    assign(hit_point.children[2].children[0], data.abstract['hit_point'][1]); // 最大生命值
-    assign(temporary_hit_point.children[1].children[0], data.abstract['hit_point'][2]); // 临时生命值
-    // 生命骰
-    let hd_ref = {
-        '野蛮人': '1d12',
-        '吟游诗人': '1d8',
-        '牧师': '1d8',
-        '德鲁伊': '1d8',
-        '战士': '1d10',
-        '武僧': '1d8',
-        '圣武士': '1d10',
-        '游侠': '1d10',
-        '游荡者': '1d8',
-        '术士': '1d6',
-        '契术师': '1d8',
-        '法师': '1d6'
-    };
-    assign(hit_dice.children[1].children[0], data.abstract['hit_dice']); // 剩余生命骰数量
-    assign(hit_dice.children[2], data.main['class_level']); // 最大生命骰数量
-    assign(hit_dice_value.children[1].children[0], hd_ref[data.main['class']]); // 生命骰数值
-    // 特殊能力
-    assign(special_value.children[0].children[0], data.abstract['special_value'][0]); // 名称
-    assign(special_value.children[1].children[0], data.abstract['special_value'][1]); // 剩余数量
-    assign(special_value.children[2].children[0], data.abstract['special_value'][2]); // 最大数量
-    // 激励
-    assign(inspiration.children[1].children[0], data.abstract['inspiration']);
-
-    // 状态	免疫 易伤 抗性
-    assign(conditions.children[0].children[0].children[1].children[0], data.abstract['conditions']);
-    assign(conditions.children[0].children[0].children[3].children[0], data.abstract['immunizations']);
-    assign(conditions.children[0].children[1].children[1].children[0], data.abstract['vulnerabilities']);
-    assign(conditions.children[0].children[1].children[3].children[0], data.abstract['resistances']);
-}
-
-
-// 载入属性
-function load_abilities(data) {
-    for (k in data.abilities) {
-        info[k] = data.abilities[k];
-    }
-    
-    // for (;'all items';) {
-    //     'modify info'
-    // }
-
-    let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-    let prof_ref = {
-        '野蛮人': ['strength', 'constitution'],
-        '吟游诗人': ['dexterity', 'charisma'],
-        '牧师': ['wisdom', 'charisma'],
-        '德鲁伊': ['intelligence', 'wisdom'],
-        '战士': ['strength', 'constitution'],
-        '武僧': ['strength', 'dexterity'],
-        '圣武士': ['wisdom', 'charisma'],
-        '游侠': ['strength', 'dexterity'],
-        '游荡者': ['dexterity', 'intelligence'],
-        '术士': ['constitution', 'charisma'],
-        '契术师': ['wisdom', 'charisma'],
-        '法师': ['intelligence', 'wisdom']
-    }
-    let trs = abilities.tBodies[0].children;
-    for (i=1; i<trs.length; i++) {
-        let value = sum(info[abs_ref[i]]);
-        let proficiency = prof_ref[saved_data.main.class].includes(abs_ref[i]);
-        assign(trs[i].children[0], proficiency?'O':'X') // 熟练
-        assign(trs[i].children[2].children[0], value); // 属性值
-        assign(trs[i].children[3].children[0], parseInt(value/2)-5); // 调整值
-        assign(trs[i].children[4].children[0],
-            parseInt(value/2)-5 + (proficiency?info.proficiency_bonus:0)
-        ); // 豁免
-    }
-
-    load_skills(data);
-    load_abstract(data);
-}
-
-// 装备服饰、护甲、武器
-function equip_items(data) {
-
-    // for (;'all items';) {
-    //     if ('equip success') {
-    //         'continue'
-    //     } else if ('equip failed') {
-    //         lunch_load_chains();
-    //         return;
-    //     }
-    // }
-
-    load_abilities(data);
-}
-
-// 启动加载链：测试性载入属性 -> 确认装备可穿戴 -> 穿戴装备 -> 载入属性 -> 载入技能 -> 载入摘要
-function lunch_loading_chain(data) {
-    // 测试性载入属性
-    for (k in data.abilities) {
-        info[k] = sum(data.abilities[k]);
-    }
-
-    equip_items(data);
-}
-
-function load_data(data) {
-    if (saved_data.main.character_name!='' && saved_data.main.class!='' && saved_data.main.race!='') {
-        load_main(data.main);
-        lunch_loading_chain(data);
-    }
 }

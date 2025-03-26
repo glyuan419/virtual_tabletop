@@ -5,16 +5,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     fetch(window.location.origin+'/api/query/pc_list')
         .then(response => response.json())
         .then(json => load_character_selector(json))
-        .catch(err => alert('fetch1 错误: ' + err)); 
+        .catch(err => alert('Fetch1 错误: ' + err)); 
 
     fetch(window.location.origin+'/api/query/'+pc_id)
         .then(response => response.json())
-        .then(json => {saved_data = json; load_data(saved_data);})
-        .catch(err => alert('fetch2 错误: ' + err)); 
+        .then(json => {saved_data = json; load_main();})
+        .catch(err => alert('Fetch2 错误: ' + err)); 
+    
+    fetch(window.location.origin+'/api/query/items')
+        .then(response => response.json())
+        .then(json => {saved_items = json; load_items();})
+        .catch(err => alert('Fetch4 错误: ' + err)); 
 });
 
-// 导航栏按钮
-['background', 'main', 'backpack', 'spellcasting', 'maps'].forEach(label => {
+/**
+ * 绑定导航栏菜单按钮
+ */
+let nav_item_list = ['background', 'main', 'backpack', 'spellcasting', 'maps', 'items', 'spells']
+nav_item_list.forEach(label => {
     eval('btn_'+label).addEventListener('click', () => {
         const url = window.location;
         const path = url.pathname.split('/');
@@ -22,17 +30,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         path.push(label);
         history.pushState('', '', url.origin+path.join('/')+url.search);
     
-        ['background', 'main', 'backpack', 'spellcasting', 'maps'].forEach(x => {
+        nav_item_list.forEach(x => {
             eval('scroll_'+x).style.display = 'none';
-            eval('btn_'+x).classList.remove('active')
+            eval('btn_'+x).classList.remove('active');
         });
 
         eval('scroll_'+label).style.display = '';
-        eval('btn_'+label).classList.add('active')
+        eval('btn_'+label).classList.add('active');
     });
 });
 
-// 投骰 + 骰盘显示
+/**
+ * 绑定投骰按钮和骰盘显示器
+ */
 scroll_main.querySelectorAll('.dice').forEach(dice => {
     Object.defineProperty(dice, 'innerText', {
         set(value) {
@@ -50,12 +60,14 @@ scroll_main.querySelectorAll('.dice').forEach(dice => {
     dice.addEventListener("click", () => {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
         roll_board.innerHTML += get_label(dice);
-        console.log(dice.innerText, dice)
         roll_board.innerHTML += roll_dice(dice.innerText);
         roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
     });
 });
-// 骰盘输入
+
+/**
+ * 绑定骰盘输入框
+ */
 roll_input.addEventListener("keypress", (e) => {
     if (e.keyCode == '13') {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
@@ -65,7 +77,9 @@ roll_input.addEventListener("keypress", (e) => {
     }
 });
 
-// Input, Select 内容改变后保存并上传
+/**
+ * Input, Select 内容改变后保存并上传
+ */
 scroll_main.querySelectorAll('input, select').forEach(element => {
     element.addEventListener("change", () => {
         change_data(element);
@@ -73,6 +87,6 @@ scroll_main.querySelectorAll('input, select').forEach(element => {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(saved_data)
-        }).catch(err => alert('fetch3 错误: ' + err)); 
+        }).catch(err => alert('Fetch3 错误: ' + err)); 
     });
 });

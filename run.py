@@ -58,7 +58,11 @@ def api_update(pc_id):
         f.write(request.data.decode())
     return "ok"
 
-
+@app.route('/api/query/items')
+def api_query_items():
+    with open(f'data/items.json', 'r') as f:
+        res = f.read()
+    return res
 
 
 

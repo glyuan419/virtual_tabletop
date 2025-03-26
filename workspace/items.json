@@ -1,0 +1,1086 @@
+[
+    {
+        "name": "箭  Arrow",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 0.05,
+        "value": 5,
+        "entries": []
+    },
+    {
+        "name": "箭(20)  Arrows (20)",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 1,
+        "value": 100,
+        "entries": []
+    },
+    {
+        "name": "战斧  Battleaxe",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "可双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d8",
+            "1d10"
+        ],
+        "weight": 4,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "吹箭筒  Blowgun",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "军用"
+        ],
+        "properties": [
+            "弹药",
+            "装填"
+        ],
+        "dmg": [
+            "穿刺",
+            "1"
+        ],
+        "range": "25/100",
+        "weight": 1,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "吹箭  Blowgun Needle",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 0.02,
+        "value": 2,
+        "entries": []
+    },
+    {
+        "name": "吹箭(50)  Blowgun Needles (50)",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 1,
+        "value": 100,
+        "entries": []
+    },
+    {
+        "name": "护胸甲  Breastplate",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "中甲"
+        ],
+        "properties": [],
+        "weight": 20,
+        "value": 40000,
+        "entries": [
+            "这套护甲是由一块垫着柔软皮革的合身铁制胸板所构成。虽然它相对来说保护不了手和脚，但这套护甲能在为穿载者的重要器官提供良好保护的同时，而不太会妨碍穿载者的行动。"
+        ]
+    },
+    {
+        "name": "锁子甲  Chain Mail",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "重甲"
+        ],
+        "properties": [],
+        "weight": 55,
+        "value": 7500,
+        "entries": [
+            "由交织的铁环制成，锁子甲还包括了一层衬垫在锁甲下方的布料以避免擦伤和分散冲击力。整套护甲还包含了一双铁手套。"
+        ]
+    },
+    {
+        "name": "链甲衫  Chain Shirt",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "中甲"
+        ],
+        "properties": [],
+        "weight": 20,
+        "value": 5000,
+        "entries": [
+            "由交织的铁环制成，链甲衫被穿在层层布料或皮革之间。这套护甲为穿戴者的上半身提供了适当的保护，且通过外层衣物蒙住铁环彼此摩擦所发出的声音。"
+        ]
+    },
+    {
+        "name": "棍棒  Club",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "轻型"
+        ],
+        "dmg": [
+            "钝击",
+            "1d4"
+        ],
+        "weight": 2,
+        "value": 10,
+        "entries": []
+    },
+    {
+        "name": "弩矢  Crossbow Bolt",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 0.075,
+        "value": 5,
+        "entries": []
+    },
+    {
+        "name": "弩矢(20)  Crossbow Bolts (20)",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 1.5,
+        "value": 100,
+        "entries": []
+    },
+    {
+        "name": "水晶  Crystal",
+        "source": "PHB",
+        "type": [
+            "法器"
+        ],
+        "properties": [],
+        "weight": 1,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "匕首  Dagger",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "灵巧",
+            "轻型",
+            "投掷"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d4"
+        ],
+        "weight": 1,
+        "value": 200,
+        "entries": []
+    },
+    {
+        "name": "飞镖  Dart",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "简易"
+        ],
+        "properties": [
+            "灵巧",
+            "投掷"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d4"
+        ],
+        "range": "20/60",
+        "weight": 0.25,
+        "value": 5,
+        "entries": []
+    },
+    {
+        "name": "连枷  Flail",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [],
+        "dmg": [
+            "钝击",
+            "1d8"
+        ],
+        "weight": 2,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "长柄刀  Glaive",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "触及",
+            "双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d10"
+        ],
+        "weight": 6,
+        "value": 2000,
+        "entries": []
+    },
+    {
+        "name": "巨斧  Greataxe",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d12"
+        ],
+        "weight": 7,
+        "value": 3000,
+        "entries": []
+    },
+    {
+        "name": "巨棍  Greatclub",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "双手"
+        ],
+        "dmg": [
+            "钝击",
+            "1d8"
+        ],
+        "weight": 10,
+        "value": 20,
+        "entries": []
+    },
+    {
+        "name": "巨剑  Greatsword",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "2d6"
+        ],
+        "weight": 6,
+        "value": 5000,
+        "entries": []
+    },
+    {
+        "name": "斧枪  Halberd",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "触及",
+            "双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d10"
+        ],
+        "weight": 6,
+        "value": 2000,
+        "entries": []
+    },
+    {
+        "name": "半身板甲  Half Plate Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "中甲"
+        ],
+        "properties": [],
+        "weight": 40,
+        "value": 75000,
+        "entries": [
+            "半身板甲由一片片特别形状的铁板所构成，覆盖穿载者大部分的上半身。它对腿部提供的保护仅止于以皮带固定的护胫。"
+        ]
+    },
+    {
+        "name": "手弩  Hand Crossbow",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "军用"
+        ],
+        "properties": [
+            "弹药",
+            "轻型",
+            "装填"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6"
+        ],
+        "range": "30/120",
+        "weight": 3,
+        "value": 7500,
+        "entries": []
+    },
+    {
+        "name": "手斧  Handaxe",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "轻型",
+            "投掷"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d6"
+        ],
+        "weight": 2,
+        "value": 500,
+        "entries": []
+    },
+    {
+        "name": "重弩  Heavy Crossbow",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "军用"
+        ],
+        "properties": [
+            "弹药",
+            "重型",
+            "装填",
+            "双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d10"
+        ],
+        "range": "100/400",
+        "weight": 18,
+        "value": 5000,
+        "entries": []
+    },
+    {
+        "name": "生皮甲  Hide Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "中甲"
+        ],
+        "properties": [],
+        "weight": 12,
+        "value": 1000,
+        "entries": [
+            "这套粗糙的护甲由厚毛和生皮制成。它常见于蛮人部族，邪恶类人，和其他因欠缺适当的工具和材料而无法制造较好防具的族群。"
+        ]
+    },
+    {
+        "name": "标枪  Javelin",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "投掷"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6"
+        ],
+        "weight": 2,
+        "value": 50,
+        "entries": []
+    },
+    {
+        "name": "骑枪  Lance",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "触及",
+            "特殊"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d12"
+        ],
+        "weight": 6,
+        "value": 1000,
+        "entries": [
+            {
+                "type": "entries",
+                "name": "特殊",
+                "entries": [
+                    "你在使用骑枪攻击距离你5尺内的目标时承受劣势。并且当你非骑乘时，你必须使用双手以持握骑枪。"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "皮甲  Leather Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "轻甲"
+        ],
+        "properties": [],
+        "weight": 10,
+        "value": 1000,
+        "entries": [
+            "这套护甲的护胸和肩甲是由浸泡过滚油而硬化的皮革制成。护甲的其他部分则是用较柔软且具弹性的材料制作。"
+        ]
+    },
+    {
+        "name": "轻弩  Light Crossbow",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "简易"
+        ],
+        "properties": [
+            "弹药",
+            "装填",
+            "双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d8"
+        ],
+        "range": "80/320",
+        "weight": 5,
+        "value": 2500,
+        "entries": []
+    },
+    {
+        "name": "轻锤  Light Hammer",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "轻型",
+            "投掷"
+        ],
+        "dmg": [
+            "钝击",
+            "1d4"
+        ],
+        "weight": 2,
+        "value": 200,
+        "entries": []
+    },
+    {
+        "name": "长弓  Longbow",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "军用"
+        ],
+        "properties": [
+            "弹药",
+            "重型",
+            "双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d8"
+        ],
+        "range": "150/600",
+        "weight": 2,
+        "value": 5000,
+        "entries": []
+    },
+    {
+        "name": "长剑  Longsword",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "可双手"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d8",
+            "1d10"
+        ],
+        "weight": 3,
+        "value": 1500,
+        "entries": []
+    },
+    {
+        "name": "硬头锤  Mace",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [],
+        "dmg": [
+            "钝击",
+            "1d6"
+        ],
+        "weight": 4,
+        "value": 500,
+        "entries": []
+    },
+    {
+        "name": "巨锤  Maul",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "双手"
+        ],
+        "dmg": [
+            "钝击",
+            "2d6"
+        ],
+        "weight": 10,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "钉头锤  Morningstar",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [],
+        "dmg": [
+            "穿刺",
+            "1d8"
+        ],
+        "weight": 4,
+        "value": 1500,
+        "entries": []
+    },
+    {
+        "name": "捕网  Net",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "军用"
+        ],
+        "properties": [
+            "特殊",
+            "投掷"
+        ],
+        "dmg": [
+            "",
+            ""
+        ],
+        "range": "5/15",
+        "weight": 3,
+        "value": 100,
+        "entries": [
+            {
+                "type": "entries",
+                "name": "特殊",
+                "entries": [
+                    "体型为大型或更小的生物在被捕网命中时将被{@condition 束缚}，直到他被释放。捕网对于不定型生物、或体型为巨型或以上的生物没有任何效果。生物可以使用他的动作以进行一次DC 10的力量检定，成功则释放他自己或位于他触及距离内的另一个生物。对捕网（AC10）造成5点挥砍伤害同样可以释放该生物而不会伤害到他。当你使用动作、附赠动作、或反应以捕网攻击时，无论你原本可以进行几次攻击，你都只能进行一次攻击。"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "法球  Orb",
+        "source": "PHB",
+        "type": [
+            "法器"
+        ],
+        "properties": [],
+        "weight": 3,
+        "value": 2000,
+        "entries": []
+    },
+    {
+        "name": "绵甲  Padded Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "轻甲"
+        ],
+        "properties": [],
+        "weight": 8,
+        "value": 500,
+        "entries": [
+            "绵甲是由一层层缝起的布料和棉絮所制成。"
+        ]
+    },
+    {
+        "name": "长柄枪  Pike",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "重型",
+            "触及",
+            "双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d10"
+        ],
+        "weight": 18,
+        "value": 500,
+        "entries": []
+    },
+    {
+        "name": "全身板甲  Plate Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "重甲"
+        ],
+        "properties": [],
+        "weight": 65,
+        "value": 150000,
+        "entries": [
+            "全身板甲由特定形状、互相扣锁的铁板所构成以覆盖全身。整套全身板甲还包括一双铁手套、重皮靴、附面甲的头盔、和护甲底下垫着的厚厚衬垫。皮带和索具将整套护甲的重量平均分布到全身。"
+        ]
+    },
+    {
+        "name": "长棍  Quarterstaff",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "可双手"
+        ],
+        "dmg": [
+            "钝击",
+            "1d6",
+            "1d8"
+        ],
+        "weight": 4,
+        "value": 20,
+        "entries": []
+    },
+    {
+        "name": "刺剑  Rapier",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "灵巧"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d8"
+        ],
+        "weight": 2,
+        "value": 2500,
+        "entries": []
+    },
+    {
+        "name": "环甲  Ring Mail",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "重甲"
+        ],
+        "properties": [],
+        "weight": 40,
+        "value": 3000,
+        "entries": [
+            "这套护甲是缝上了重铁环的皮甲。护甲上的铁环能有效帮助抵挡剑和斧的斩击。环甲略逊于锁子甲，且因此通常被无法负担更好护甲的人们穿戴。"
+        ]
+    },
+    {
+        "name": "权杖  Rod",
+        "source": "PHB",
+        "type": [
+            "法器"
+        ],
+        "properties": [],
+        "weight": 2,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "鳞甲  Scale Mail",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "中甲"
+        ],
+        "properties": [],
+        "weight": 45,
+        "value": 5000,
+        "entries": [
+            "这套护甲由皮革制的上衣及绑腿（或许还带有一件短裙）构成，皮革表面覆盖着彼此交叠的金属片，就像是鱼鳞一样。整套护甲还包含了一双铁手套。"
+        ]
+    },
+    {
+        "name": "弯刀  Scimitar",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "灵巧",
+            "轻型"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d6"
+        ],
+        "weight": 3,
+        "value": 2500,
+        "entries": []
+    },
+    {
+        "name": "盾牌  Shield",
+        "source": "PHB",
+        "type": [
+            "盾牌"
+        ],
+        "properties": [],
+        "weight": 6,
+        "value": 1000,
+        "entries": [
+            "盾牌由木头或金属打造，且可以用一只手携带。持握一面盾牌会增加你的护甲等级2点。你同时只能受益于一面盾牌的效果。"
+        ]
+    },
+    {
+        "name": "短弓  Shortbow",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "简易"
+        ],
+        "properties": [
+            "弹药",
+            "双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6"
+        ],
+        "range": "80/320",
+        "weight": 2,
+        "value": 2500,
+        "entries": []
+    },
+    {
+        "name": "短剑  Shortsword",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "灵巧",
+            "轻型"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6"
+        ],
+        "weight": 2,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "镰刀  Sickle",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "轻型"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d4"
+        ],
+        "weight": 2,
+        "value": 100,
+        "entries": []
+    },
+    {
+        "name": "投石索  Sling",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "远程",
+            "简易"
+        ],
+        "properties": [
+            "弹药"
+        ],
+        "dmg": [
+            "钝击",
+            "1d4"
+        ],
+        "range": "30/120",
+        "weight": 0,
+        "value": 10,
+        "entries": []
+    },
+    {
+        "name": "投石索弹丸  Sling Bullet",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 0.075,
+        "value": 0.2,
+        "entries": []
+    },
+    {
+        "name": "投石索弹丸(20)  Sling Bullets (20)",
+        "source": "PHB",
+        "type": [
+            "弹药"
+        ],
+        "properties": [],
+        "weight": 1.5,
+        "value": 4,
+        "entries": []
+    },
+    {
+        "name": "矛  Spear",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": [
+            "投掷",
+            "可双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6",
+            "1d8"
+        ],
+        "weight": 3,
+        "value": 100,
+        "entries": []
+    },
+    {
+        "name": "条板甲  Splint Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "重甲"
+        ],
+        "properties": [],
+        "weight": 60,
+        "value": 20000,
+        "entries": [
+            "这套护甲是由狭长的直铁条铆接于穿在垫衣外层的皮衬上所制成。并以灵活的锁子甲保护着关节。"
+        ]
+    },
+    {
+        "name": "法杖  Staff",
+        "source": "PHB",
+        "type": [
+            "法器"
+        ],
+        "properties": [],
+        "weight": 4,
+        "value": 500,
+        "entries": [
+            "{@note 法杖和木质法杖都可以被当作{@item 长棍|phb}使用。}"
+        ]
+    },
+    {
+        "name": "镶钉皮甲  Studded Leather Armor",
+        "source": "PHB",
+        "type": [
+            "护甲",
+            "轻甲"
+        ],
+        "properties": [],
+        "weight": 13,
+        "value": 4500,
+        "entries": [
+            "由强韧而柔软的皮革制成，镶钉皮甲被以紧密的铆钉或尖刺进一步强化。"
+        ]
+    },
+    {
+        "name": "三叉戟  Trident",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "投掷",
+            "可双手"
+        ],
+        "dmg": [
+            "穿刺",
+            "1d6",
+            "1d8"
+        ],
+        "weight": 4,
+        "value": 500,
+        "entries": []
+    },
+    {
+        "name": "魔杖  Wand",
+        "source": "PHB",
+        "type": [
+            "法器"
+        ],
+        "properties": [],
+        "weight": 1,
+        "value": 1000,
+        "entries": []
+    },
+    {
+        "name": "战镐  War Pick",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [],
+        "dmg": [
+            "穿刺",
+            "1d8"
+        ],
+        "weight": 2,
+        "value": 500,
+        "entries": []
+    },
+    {
+        "name": "战锤  Warhammer",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "可双手"
+        ],
+        "dmg": [
+            "钝击",
+            "1d8",
+            "1d10"
+        ],
+        "weight": 2,
+        "value": 1500,
+        "entries": []
+    },
+    {
+        "name": "鞭  Whip",
+        "source": "PHB",
+        "type": [
+            "武器",
+            "近战",
+            "军用"
+        ],
+        "properties": [
+            "灵巧",
+            "触及"
+        ],
+        "dmg": [
+            "挥砍",
+            "1d4"
+        ],
+        "weight": 3,
+        "value": 200,
+        "entries": []
+    }
+]
