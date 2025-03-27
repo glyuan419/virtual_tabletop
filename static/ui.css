@@ -153,7 +153,18 @@
     background: #f1f1f1;
 }
 
-
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    background: #333;
+    color: white;
+    cursor: pointer;
+}
 
 .btn {
     flex-direction: column;

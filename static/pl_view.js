@@ -9,12 +9,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     fetch(window.location.origin+'/api/query/'+pc_id)
         .then(response => response.json())
-        .then(json => {saved_data = json; load_main();})
+        .then(json => {
+            saved_data = json;
+            load_main();
+            load_coins();
+        })
         .catch(err => alert('Fetch2 错误: ' + err)); 
     
     fetch(window.location.origin+'/api/query/items')
         .then(response => response.json())
-        .then(json => {saved_items = json; load_items();})
+        .then(json => {
+            saved_items = json;
+            load_items();
+            load_backpack();
+            load_storage();
+        })
         .catch(err => alert('Fetch4 错误: ' + err)); 
 });
 
@@ -80,7 +89,8 @@ roll_input.addEventListener("keypress", (e) => {
 /**
  * Input, Select 内容改变后保存并上传
  */
-scroll_main.querySelectorAll('input, select').forEach(element => {
+document.body.querySelectorAll('input, select').forEach(element => {
+    if (element.id == 'roll_input') return;
     element.addEventListener("change", () => {
         change_data(element);
         fetch(window.location.origin+'/api/update/'+pc_id, {

@@ -43,6 +43,19 @@ function load_main() {
 }
 
 /**
+ * 加载钱币
+ */
+function load_coins() {
+    assign(coins_1.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
+    assign(coins_1.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
+    assign(coins_1.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
+    assign(coins_2.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
+    assign(coins_2.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
+    assign(coins_2.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
+}
+
+
+/**
  * 加载物品栏
  * 
  * 将 saved_items 内的条目依次插入表格 items_table
@@ -57,33 +70,33 @@ function load_items() {
         row.insertCell().innerText = saved_items[i].weight + ' 磅';
         row.insertCell().innerText = saved_items[i].source;
 
-        row.addEventListener("click", () => {
-            item_board.children[0].innerHTML = saved_items[i].name;
-            item_board.children[1].innerHTML = saved_items[i].type.join('、') + '<br/>';
-            item_board.children[1].innerHTML += saved_items[i].value + ' gp、' + saved_items[i].weight + ' 磅';
-            item_board.children[1].innerHTML += (
+        row.addEventListener("click", (event) => {
+            items_item_board.children[0].innerHTML = saved_items[i].name;
+            items_item_board.children[1].innerHTML = saved_items[i].type.join('、') + '<br/>';
+            items_item_board.children[1].innerHTML += saved_items[i].value + ' gp、' + saved_items[i].weight + ' 磅';
+            items_item_board.children[1].innerHTML += (
                 (saved_items[i].type.includes('武器'))
                 ?('<br/><span id="item_dice" class="dice">' + saved_items[i].dmg[1] + '</span> ' + saved_items[i].dmg[0])
                 :('')
             );
-            item_board.children[1].innerHTML += (
+            items_item_board.children[1].innerHTML += (
                 (saved_items[i].properties.includes('可双手'))
                 ?(' - 可双手 (<span id="item_dice" class="dice">' + saved_items[i].dmg[2] + '</span>)')
                 :('')
             );
-            item_board.children[2].innerHTML = '';
+            items_item_board.children[2].innerHTML = '';
             for (let j=0; j<saved_items[i].entries.length; j++) {
-                item_board.children[2].innerHTML += '<p>' + saved_items[i].entries[j] + '</p>';
+                items_item_board.children[2].innerHTML += '<p>' + saved_items[i].entries[j] + '</p>';
             }
             for (let j=0; j<saved_items[i].properties.length; j++) {
                 let element = '<p>'
                     + '<span class="board-item">' + saved_items[i].properties[j] + '. </span>'
                     + data_properties[saved_items[i].properties[j]].entries.join('<br/><br/>')
                     + '</p>';
-                item_board.children[2].innerHTML += element;
+                    items_item_board.children[2].innerHTML += element;
             }
 
-            item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+            items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
                 dice.addEventListener("click", () => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                     roll_board.innerHTML += get_label(dice);
@@ -91,11 +104,242 @@ function load_items() {
                     roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
                 });
             });
+
+            if (event.ctrlKey) {
+                saved_data.backpack.push({name: saved_items[i].name, label: '', amount: '1'});
+                load_backpack();
+                show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch3 错误: ' + err));
+            }
+
+            if (event.shiftKey) {
+                saved_data.storage.push({name: saved_items[i].name, label: '', amount: '1'});
+                load_storage();
+                show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至仓库', 3000);
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch3 错误: ' + err));
+            }
         });
     }
 }
 
+/**
+ * 加载背包
+ * 
+ */
+function load_backpack() {
+    while (backpack_table.rows.length > 1) {
+        backpack_table.deleteRow(1);
+    }
 
+    let current_weight = 0;
+    for (let i in saved_data.backpack) {
+        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
+        current_weight += Number(item.weight) * Number(saved_data.backpack[i].amount);
+
+        const row = backpack_table.insertRow();
+        row.classList.add('table-item');
+        row.value = item.name;
+        let label = row.insertCell()
+        label.innerHTML = '<input type="text" class="form-control"/>';
+        label.children[0].value = saved_data.backpack[i].label!='' ?
+            saved_data.backpack[i].label : item.name.split('  ')[0];
+        row.insertCell().innerText = item.type.join('、');
+        row.insertCell().innerText = item.properties.join('、');
+        row.insertCell().innerText = item.value + ' gp';
+        row.insertCell().innerText = item.weight + ' 磅';
+        let amount = row.insertCell()
+        amount.innerHTML = '<input type="text" class="form-control"/>';
+        amount.children[0].value = saved_data.backpack[i].amount;
+
+        row.addEventListener("click", (event) => {
+            backpack_item_board.children[0].innerHTML = item.name;
+            backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
+            backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
+            backpack_item_board.children[1].innerHTML += (
+                (item.type.includes('武器'))
+                ?('<br/><span id="item_dice" class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                :('')
+            );
+            backpack_item_board.children[1].innerHTML += (
+                (item.properties.includes('可双手'))
+                ?(' - 可双手 (<span id="item_dice" class="dice">' + item.dmg[2] + '</span>)')
+                :('')
+            );
+            backpack_item_board.children[2].innerHTML = '';
+            for (let j=0; j<item.entries.length; j++) {
+                backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
+            }
+            for (let j=0; j<item.properties.length; j++) {
+                let element = '<p>'
+                    + '<span class="board-item">' + item.properties[j] + '. </span>'
+                    + data_properties[item.properties[j]].entries.join('<br/><br/>')
+                    + '</p>';
+                backpack_item_board.children[2].innerHTML += element;
+            }
+
+            backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+                dice.addEventListener("click", () => {
+                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                    roll_board.innerHTML += get_label(dice);
+                    roll_board.innerHTML += roll_dice(dice.innerText);
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                });
+            });
+
+            if (event.ctrlKey) {
+                saved_data.storage.push(saved_data.backpack[i]);
+                saved_data.backpack.splice(i, 1);
+                load_backpack();
+                load_storage();
+                show_toast('已存放【' + label.children[0].value + '】至仓库', 3000);
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch3 错误: ' + err));
+            }
+        });
+
+        label.addEventListener("change", () => {
+            saved_data.backpack[i].label = label.children[0].value;
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch3 错误: ' + err));
+        });
+
+        amount.addEventListener("change", () => {
+            if (amount.children[0].value == '0') {
+                saved_data.backpack.splice(i, 1);
+                load_backpack();
+                show_toast('已丢弃【' + label.children[0].value + '】', 3000);
+            } else {
+                saved_data.backpack[i].amount = amount.children[0].value;
+                load_backpack();
+            }
+            
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch3 错误: ' + err));
+        });
+    }
+    assign(current_weight_1, current_weight + ' 磅');
+    assign(current_weight_2, current_weight + ' 磅');
+}
+
+/**
+ * 加载仓库
+ * 
+ */
+function load_storage() {
+    while (storage_table.rows.length > 1) {
+        storage_table.deleteRow(1);
+    }
+
+    for (let i in saved_data.storage) {
+        let item = saved_items.find(element => element.name == saved_data.storage[i].name);
+
+        const row = storage_table.insertRow();
+        row.classList.add('table-item');
+        row.value = item.name;
+        let label = row.insertCell()
+        label.innerHTML = '<input type="text" class="form-control"/>';
+        label.children[0].value = saved_data.storage[i].label!='' ?
+            saved_data.storage[i].label : item.name.split('  ')[0];
+        row.insertCell().innerText = item.type.join('、');
+        row.insertCell().innerText = item.properties.join('、');
+        row.insertCell().innerText = item.value + ' gp';
+        row.insertCell().innerText = item.weight + ' 磅';
+        let amount = row.insertCell()
+        amount.innerHTML = '<input type="text" class="form-control"/>';
+        amount.children[0].value = saved_data.storage[i].amount;
+
+        row.addEventListener("click", (event) => {
+            backpack_item_board.children[0].innerHTML = item.name;
+            backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
+            backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
+            backpack_item_board.children[1].innerHTML += (
+                (item.type.includes('武器'))
+                ?('<br/><span id="item_dice" class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                :('')
+            );
+            backpack_item_board.children[1].innerHTML += (
+                (item.properties.includes('可双手'))
+                ?(' - 可双手 (<span id="item_dice" class="dice">' + item.dmg[2] + '</span>)')
+                :('')
+            );
+            backpack_item_board.children[2].innerHTML = '';
+            for (let j=0; j<item.entries.length; j++) {
+                backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
+            }
+            for (let j=0; j<item.properties.length; j++) {
+                let element = '<p>'
+                    + '<span class="board-item">' + item.properties[j] + '. </span>'
+                    + data_properties[item.properties[j]].entries.join('<br/><br/>')
+                    + '</p>';
+                backpack_item_board.children[2].innerHTML += element;
+            }
+
+            backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+                dice.addEventListener("click", () => {
+                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                    roll_board.innerHTML += get_label(dice);
+                    roll_board.innerHTML += roll_dice(dice.innerText);
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                });
+            });
+
+            if (event.ctrlKey) {
+                saved_data.backpack.push(saved_data.storage[i]);
+                saved_data.storage.splice(i, 1);
+                load_backpack();
+                load_storage();
+                show_toast('已拿取【' + label.children[0].value + '】至背包', 3000);
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch3 错误: ' + err));
+            }
+        });
+
+        label.addEventListener("change", () => {
+            saved_data.storage[i].label = label.children[0].value;
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch3 错误: ' + err));
+        });
+
+        amount.addEventListener("change", () => {
+            if (amount.children[0].value == '0') {
+                saved_data.storage.splice(i, 1);
+                load_storage();
+                show_toast('已丢弃【' + label.children[0].value + '】', 3000);
+            } else {
+                saved_data.storage[i].amount = amount.children[0].value;
+            }
+            
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch3 错误: ' + err));
+        });
+    }
+}
 
 /**
  * 加载主要信息
@@ -388,6 +632,18 @@ function change_data(element) {
                     let label = cons_ref[element.parentElement.previousElementSibling.innerText];
                     saved_data.abstract[label] = element.value;
                     break;
+                case 'coins_1':
+                    let coins1_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
+                    let pieces1 = coins1_ref[element.parentElement.parentElement.rowIndex];
+                    saved_data.coins[pieces1] = element.value;
+                    load_coins();
+                    break;
+                case 'coins_2':
+                    let coins2_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
+                    let pieces2 = coins2_ref[element.parentElement.parentElement.rowIndex];
+                    saved_data.coins[pieces2] = element.value;
+                    load_coins();
+                    break;
             }
         }
     }
@@ -496,3 +752,15 @@ function roll_dice(dice_value) {
     
     return '<span style=\'color: #3b82f6;\'>' + dice_result + '</span>' + dice_info;
 }
+
+/**
+ * 展示浮动消息
+ */
+function show_toast(message, duration = 3000) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    toast.addEventListener('click', () => toast.remove());
+    setTimeout(() => toast.remove(), duration);
+  }
