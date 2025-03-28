@@ -37,7 +37,7 @@ def pl_view(pc_id, scroll):
 
 @app.route('/api/query/<pc_id>')
 def api_query(pc_id):
-    if not exists(f'savefiles/{pc_id}.json'): return ['?']
+    if not exists(f'savefiles/{pc_id}.json'): return ['不存在的角色']
     with open(f'savefiles/{pc_id}.json', 'r') as f:
         res = f.read()
     return res
@@ -61,6 +61,12 @@ def api_update(pc_id):
 @app.route('/api/query/items')
 def api_query_items():
     with open(f'data/items.json', 'r') as f:
+        res = f.read()
+    return res
+
+@app.route('/api/query/spells')
+def api_query_spells():
+    with open(f'data/spells.json', 'r') as f:
         res = f.read()
     return res
 

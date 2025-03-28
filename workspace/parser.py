@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from json import loads
+from json import loads, dumps
 
 def parser_type():
     with open('raw_items-base.json', 'r') as f:
@@ -90,5 +90,82 @@ def parser_items():
     # for x in res: print(x)
     print(res)
 
-parser_property()
+def paser_spells():
+    with open('raw_spells.json', 'r') as f:
+        raw = loads(f.read())['spell']
+    res = []
+    for x in raw:
+        tmp = {}
+        tmp['name'] = '%s  %s' % (x['name'], x['ENG_name'])
+        tmp['source'] = x['source']
+        tmp['level'] = '%d' % x['level']
+        tmp['school'] = x['school']
+        tmp['time'] = ['%d' % x['time'][0]['number'], x['time'][0]['unit']]
+        tmp['range'] = (
+            [x['range']['type'], '', '']
+            if x['range']['type']=='special'
+            else (
+                [x['range']['type'], x['range']['distance']['type'], '']
+                if (
+                    x['range']['distance']['type'] == 'self'
+                    or x['range']['distance']['type'] == 'touch'
+                    or x['range']['distance']['type'] == 'sight'
+                    or x['range']['distance']['type'] == 'unlimited'
+                )
+                else [x['range']['type'], '%s'%x['range']['distance']['amount'], x['range']['distance']['type']]
+            )
+        )
+        tmp['components'] = []
+        if 'v' in x['components'] and x['components']['v']: tmp['components'].append('声音')
+        if 's' in x['components'] and x['components']['s']: tmp['components'].append('姿势')
+        if 'm' in x['components']: tmp['components'].append('材料（%s）'%x['components']['m'])
+        tmp['duration'] = (
+            [x['duration'][0]['type'], '', '']
+            if x['duration'][0]['type']=='instant' or x['duration'][0]['type']=='special'
+            else (
+                [x['duration'][0]['type'], x['duration'][0]['ends'], '']
+                if x['duration'][0]['type']=='permanent'
+                else [
+                    x['duration'][0]['type'],
+                    '%s'%x['duration'][0]['duration']['amount'],
+                    x['duration'][0]['duration']['type']
+                ]
+            )
+        )
+        tmp['entries'] = x['entries']
+        tmp['higher_level'] = (
+            [] if 'entriesHigherLevel' not in x
+            else x['entriesHigherLevel'][0]['entries']
+        )
+        tmp['classes'] = []
+        for y in x['classes']['fromClassList']:
+            name = y['name']
+            if name=='Artificer (Revisited)': name='Artificer'
+            if name not in tmp['classes']: tmp['classes'].append(name)
+        if 'fromClassListVariant' in x['classes']:
+            for y in x['classes']['fromClassListVariant']:
+                name = y['name']
+                if name=='Artificer (Revisited)': name='Artificer'
+                if name not in tmp['classes']: tmp['classes'].append(name)
+        tmp['subclasses'] = {}
+        if 'fromSubclass' in x['classes']:
+            for y in x['classes']['fromSubclass']:
+                name1 = y['class']['name'].split(' ')[0]
+                tmp['subclasses'][name1] = []
+            for y in x['classes']['fromSubclass']:
+                name1 = y['class']['name'].split(' ')[0]
+                name2 = y['subclass']['name']
+                if name2[-5:] == ' (UA)': name2 = name2[:-5]
+                if name2[-6:] == ' (PSA)': name2 = name2[:-6]
+                if name2[-3:] == ' v2': name2 = name2[:-3]
+                if name2 not in tmp['subclasses'][name1]: tmp['subclasses'][name1].append(name2)
+
+
+        res.append(tmp)
+    # for x in res: print(x)
+    print(dumps(res))
+
+
+# parser_property()
 # parser_items()
+paser_spells()

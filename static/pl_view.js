@@ -2,29 +2,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     eval('btn_'+actived_scroll).classList.add('active');
     eval('scroll_'+actived_scroll).style.display = '';
 
-    fetch(window.location.origin+'/api/query/pc_list')
-        .then(response => response.json())
-        .then(json => load_character_selector(json))
-        .catch(err => alert('Fetch1 错误: ' + err)); 
+    Promise.all([
+        fetch(window.location.origin+'/api/query/pc_list')
+            .then(response => response.json())
+            .then(json => load_character_selector(json))
+            .catch(err => alert('Fetch 错误: ' + err)),
+        fetch(window.location.origin+'/api/query/'+pc_id)
+            .then(response => response.json())
+            .then(json => saved_data = json)
+            .catch(err => alert('Fetch 错误: ' + err)),
+        fetch(window.location.origin+'/api/query/items')
+            .then(response => response.json())
+            .then(json => saved_items = json)
+            .catch(err => alert('Fetch 错误: ' + err)),
+        fetch(window.location.origin+'/api/query/spells')
+            .then(response => response.json())
+            .then(json => saved_spells = json)
+            .catch(err => alert('Fetch 错误: ' + err))
+    ])
+    .then(() => {
+        load_items();
+        load_backpack();
+        load_storage();
+        load_coins();
 
-    fetch(window.location.origin+'/api/query/'+pc_id)
-        .then(response => response.json())
-        .then(json => {
-            saved_data = json;
-            load_main();
-            load_coins();
-        })
-        .catch(err => alert('Fetch2 错误: ' + err)); 
-    
-    fetch(window.location.origin+'/api/query/items')
-        .then(response => response.json())
-        .then(json => {
-            saved_items = json;
-            load_items();
-            load_backpack();
-            load_storage();
-        })
-        .catch(err => alert('Fetch4 错误: ' + err)); 
+        load_spells();
+
+        load_main();
+    })
+    .catch(err => alert('Fetch 错误: ' + err));
 });
 
 /**
@@ -49,6 +55,38 @@ nav_item_list.forEach(label => {
     });
 });
 
+document.addEventListener('keydown', (event) => {
+    let btn_ref = {
+        '': 'background', 'i':'main', 'b':'backpack', 's':'spellcasting', 'm':'maps',
+        '':'items', '':'spells'
+    }
+    if (Object.keys(btn_ref).includes(event.key.toLowerCase())) {
+        event.preventDefault();
+        eval('btn_' + btn_ref[event.key.toLowerCase()]).click();
+    }
+  });
+
+/**
+ * 绑定长休按钮
+ */
+long_rest.addEventListener('click', () => {
+    saved_data.abstract['hit_point'][0] = saved_data.abstract['hit_point'][1];
+    saved_data.abstract['hit_point'][2] = '0';
+    saved_data.abstract['hit_dice'] = saved_data.main.class_level;
+    saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
+    saved_data.abstract['inspiration'] = '';
+
+    death_saving.querySelectorAll('input').forEach(box => box.checked = false);
+
+    load_abstract();
+
+    fetch(window.location.origin+'/api/update/'+pc_id, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(saved_data)
+    }).catch(err => alert('Fetch 错误: ' + err));
+});
+
 /**
  * 绑定投骰按钮和骰盘显示器
  */
@@ -63,27 +101,123 @@ scroll_main.querySelectorAll('.dice').forEach(dice => {
             this.textContent = this._innerText;
         },
         get() {
-            return this._innerText;
+            if (this.textContent == '死亡豁免') return '1d20';
+            return this.textContent;
         }
     });
-    dice.addEventListener("click", () => {
+    dice.addEventListener('click', () => {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
         roll_board.innerHTML += get_label(dice);
         roll_board.innerHTML += roll_dice(dice.innerText);
-        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
     });
 });
 
 /**
  * 绑定骰盘输入框
  */
-roll_input.addEventListener("keypress", (e) => {
+roll_input.addEventListener('keypress', (e) => {
     if (e.keyCode == '13') {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
         roll_board.innerHTML += '输入: ' + roll_dice(roll_input.value);
         roll_input.value = '';
-        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
     }
+});
+
+/**
+ * 绑定物品栏的排序按钮
+ */
+items_table.rows[0].addEventListener('click', (event) => {
+    let hding_ref = {
+        '名称': 'name',
+        '类型': 'type',
+        '价值': 'value',
+        '重量': 'weight',
+        '来源': 'source'
+    }
+    saved_items.sort((x1, x2) => {
+        let ret = 0;
+        if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
+            ret = 0;
+        if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
+            ret = -1;
+        else ret = 1;
+        
+        return event.ctrlKey ? -1*ret : ret;
+    });
+
+    load_items();
+});
+
+/**
+ * 绑定背包栏、仓库栏的排序按钮
+ */
+['backpack', 'storage'].forEach(name => {
+    eval(name + '_table').rows[0].addEventListener('click', (event) => {
+        let hding_ref = {
+            '类型': 'type',
+            '特性': 'properties',
+            '价值': 'value',
+            '重量': 'weight',
+            '名称': 'label',
+            '数量': 'amount',
+        }
+        saved_data[name].sort((x1, x2) => {
+            let ret = 0;
+            let hding = hding_ref[event.target.innerText];
+            if (['label', 'amount'].includes(hding)) {
+                if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
+                    ret = 0;
+                if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
+                    ret = -1;
+                else ret = 1;
+            } else {
+                let y1 = saved_items.find(element => element.name == x1.name);
+                let y2 = saved_items.find(element => element.name == x2.name);
+                
+                if (y1[hding_ref[event.target.innerText]] == y2[hding_ref[event.target.innerText]])
+                    ret = 0;
+                if (y1[hding_ref[event.target.innerText]] < y2[hding_ref[event.target.innerText]])
+                    ret = -1;
+                else ret = 1;
+            }
+            
+            return event.ctrlKey ? -1*ret : ret;
+        });
+        eval('load_' + name + '()');
+
+        fetch(window.location.origin+'/api/update/'+pc_id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(saved_data)
+        }).catch(err => alert('Fetch 错误: ' + err));
+    });
+});
+
+/**
+ * 绑定法术栏的排序按钮
+ */
+spells_table.rows[0].addEventListener('click', (event) => {
+    let hding_ref = {
+        '名称': 'name',
+        '环阶': 'level',
+        '学派': 'school',
+        '射程': 'range',
+        '来源': 'source'
+    }
+    saved_spells.sort((x1, x2) => {
+        let ret = 0;
+        if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
+            ret = 0;
+        if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
+            ret = -1;
+        else ret = 1;
+        
+        return event.ctrlKey ? -1*ret : ret;
+    });
+
+    load_spells();
 });
 
 /**
@@ -91,12 +225,102 @@ roll_input.addEventListener("keypress", (e) => {
  */
 document.body.querySelectorAll('input, select').forEach(element => {
     if (element.id == 'roll_input') return;
-    element.addEventListener("change", () => {
-        change_data(element);
+    element.addEventListener('change', () => {
+        let character_selector = document.getElementById('character_selector');
+        if (element.tagName == 'SELECT') {
+            if (element.id != '') {
+                saved_data.main.class = element.selectedOptions[0].innerText;
+                character_selector.selectedOptions[0].innerText = saved_data.main.race
+                    + saved_data.main.class + ': ' + saved_data.main.character_name;
+                document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
+            } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
+                let skls_ref = ['', 
+                    'athletics',
+                    'acrobatics', 'sleight_of_hand', 'stealth',
+                    'investigation', 'arcana', 'history', 'nature', 'religion',
+                    'perception', 'insight', 'animal_handling', 'medicine', 'survival',
+                    'persuasion', 'deception', 'intimidation', 'performance'
+                ];
+                let skill = skls_ref[element.parentElement.parentElement.rowIndex];
+                saved_data.skill_proficiency = saved_data.skill_proficiency.filter(x => x!=skill);
+                saved_data.double_skill_proficiency = saved_data.double_skill_proficiency.filter(x => x!=skill);
+                saved_data.half_skill_proficiency = saved_data.half_skill_proficiency.filter(x => x!=skill);
+                
+                switch (element.selectedOptions[0].innerText) {
+                    case 'O': saved_data.skill_proficiency.push(skill); break;
+                    case 'D': saved_data.double_skill_proficiency.push(skill); break;
+                    case 'H': saved_data.half_skill_proficiency.push(skill); break;
+                }
+            }
+        } else if (element.tagName == 'INPUT') {
+            if (element.id != '') {
+                // 主要信息栏
+                saved_data.main[element.id] = element.value;
+                character_selector.selectedOptions[0].innerText = saved_data.main.race
+                    + saved_data.main.class + ': ' + saved_data.main.character_name;
+                document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
+            } else if (element.parentElement.parentElement.id != '') {
+                // 摘要栏
+                switch (element.parentElement.parentElement.id) {
+                    case 'initiative': saved_data.abstract['initiative_bonus'] = element.value; break;
+                    case 'armor_class': saved_data.abstract['armor_class_bonus'] = element.value; break;
+                    case 'hit_point': saved_data.abstract['hit_point'][element.parentElement.cellIndex-1] = element.value; break;
+                    case 'hit_dice': saved_data.abstract['hit_dice'] = element.value; break;
+                    case 'special_value': saved_data.abstract['special_value'][element.parentElement.cellIndex] = element.value; break;
+                    case 'temporary_hit_point': saved_data.abstract['hit_point'][2] = element.value; break;
+                    case 'inspiration': saved_data.abstract['inspiration'] = element.value; break;
+                }
+            } else if (element.parentElement.parentElement.parentElement.parentElement.id != '') {
+                // 属性栏、技能栏、状态栏、钱币栏、装备栏
+                switch (element.parentElement.parentElement.parentElement.parentElement.id) {
+                    case 'skills':
+                        let skls_ref = ['', 
+                            'athletics',
+                            'acrobatics', 'sleight_of_hand', 'stealth',
+                            'investigation', 'arcana', 'history', 'nature', 'religion',
+                            'perception', 'insight', 'animal_handling', 'medicine', 'survival',
+                            'persuasion', 'deception', 'intimidation', 'performance'
+                        ];
+                        let skill = skls_ref[element.parentElement.parentElement.rowIndex];
+                        saved_data.skill_bonus[skill] = element.value;
+                        break;
+                    case 'abilities':
+                        let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
+                        let ability = abs_ref[element.parentElement.parentElement.rowIndex];
+                        saved_data.abilities[ability] = element.value;
+                        break;
+                    case 'conditions':
+                        let cons_ref = {'状态': 'conditions', '免疫': 'immunizations', '易伤': 'vulnerabilities', '抗性': 'resistances'};
+                        let label = cons_ref[element.parentElement.previousElementSibling.innerText];
+                        saved_data.abstract[label] = element.value;
+                        break;
+                    case 'coins_in_main':
+                        let coins1_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
+                        let pieces1 = coins1_ref[element.parentElement.parentElement.rowIndex];
+                        saved_data.coins[pieces1] = element.value;
+                        load_coins();
+                        break;
+                    case 'coins_in_backpack':
+                        let coins2_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
+                        let pieces2 = coins2_ref[element.parentElement.parentElement.rowIndex];
+                        saved_data.coins[pieces2] = element.value;
+                        load_coins();
+                        break;
+                    case 'gear_table':
+                        saved_data.gear[
+                            element.parentElement.previousElementSibling.innerText
+                        ] = element.value;
+                        break;
+                }
+            }
+        }
+    
+        load_main();
+
         fetch(window.location.origin+'/api/update/'+pc_id, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(saved_data)
-        }).catch(err => alert('Fetch3 错误: ' + err)); 
+        }).catch(err => alert('Fetch 错误: ' + err)); 
     });
 });

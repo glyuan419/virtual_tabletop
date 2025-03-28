@@ -27,40 +27,15 @@ function load_character_selector(data) {
 }
 
 /**
- * 加载主要情况栏
- * 
- * 依次加载主要信息、装备、属性、技能、摘要
- * 并计算需要的数值
- */
-function load_main() {
-    if (saved_data.main.character_name!='' && saved_data.main.class!='' && saved_data.main.race!='') {
-        load_info();
-        load_gear();
-        load_abilities();
-        load_skills();
-        load_abstract();
-    }
-}
-
-/**
- * 加载钱币
- */
-function load_coins() {
-    assign(coins_1.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
-    assign(coins_1.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
-    assign(coins_1.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
-    assign(coins_2.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
-    assign(coins_2.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
-    assign(coins_2.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
-}
-
-
-/**
  * 加载物品栏
  * 
  * 将 saved_items 内的条目依次插入表格 items_table
  */
 function load_items() {
+    while (items_table.rows.length > 1) {
+        items_table.deleteRow(1);
+    }
+
     for (let i=0; i<saved_items.length; i++) {
         const row = items_table.insertRow();
         row.classList.add('table-item');
@@ -70,19 +45,30 @@ function load_items() {
         row.insertCell().innerText = saved_items[i].weight + ' 磅';
         row.insertCell().innerText = saved_items[i].source;
 
-        row.addEventListener("click", (event) => {
+        row.addEventListener('click', (event) => {
+            let table = row.closest('table');
+            if (table.selectedIndex != undefined) 
+                table.rows[table.selectedIndex].classList.remove('selected');
+            table.selectedIndex = row.rowIndex;
+            row.classList.add('selected');
+
             items_item_board.children[0].innerHTML = saved_items[i].name;
             items_item_board.children[1].innerHTML = saved_items[i].type.join('、') + '<br/>';
             items_item_board.children[1].innerHTML += saved_items[i].value + ' gp、' + saved_items[i].weight + ' 磅';
             items_item_board.children[1].innerHTML += (
                 (saved_items[i].type.includes('武器'))
-                ?('<br/><span id="item_dice" class="dice">' + saved_items[i].dmg[1] + '</span> ' + saved_items[i].dmg[0])
+                ?('<br/><span class="dice">' + saved_items[i].dmg[1] + '</span> ' + saved_items[i].dmg[0])
                 :('')
             );
+            let tmp_properties = [];
+            if (saved_items[i].properties.includes('可双手'))
+                tmp_properties.push('可双手 (<span class="dice">' + saved_items[i].dmg[2] + '</span>)');
+            if (saved_items[i].properties.includes('弹药'))
+                tmp_properties.push('弹药 (' + saved_items[i].range + ' ft.)');
+            if (saved_items[i].properties.includes('投掷'))
+                tmp_properties.push('投掷 (' + saved_items[i].range + ' ft.)');
             items_item_board.children[1].innerHTML += (
-                (saved_items[i].properties.includes('可双手'))
-                ?(' - 可双手 (<span id="item_dice" class="dice">' + saved_items[i].dmg[2] + '</span>)')
-                :('')
+                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
             );
             items_item_board.children[2].innerHTML = '';
             for (let j=0; j<saved_items[i].entries.length; j++) {
@@ -97,34 +83,39 @@ function load_items() {
             }
 
             items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener("click", () => {
+                dice.addEventListener('click', () => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                     roll_board.innerHTML += get_label(dice);
                     roll_board.innerHTML += roll_dice(dice.innerText);
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
                 });
             });
 
             if (event.ctrlKey) {
-                saved_data.backpack.push({name: saved_items[i].name, label: '', amount: '1'});
+                saved_data.backpack.push(
+                    {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
+                );
                 load_backpack();
+                load_main();
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
                 fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch3 错误: ' + err));
+                }).catch(err => alert('Fetch 错误: ' + err));
             }
 
             if (event.shiftKey) {
-                saved_data.storage.push({name: saved_items[i].name, label: '', amount: '1'});
+                saved_data.storage.push(
+                    {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
+                );
                 load_storage();
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至仓库', 3000);
                 fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch3 错误: ' + err));
+                }).catch(err => alert('Fetch 错误: ' + err));
             }
         });
     }
@@ -149,8 +140,7 @@ function load_backpack() {
         row.value = item.name;
         let label = row.insertCell()
         label.innerHTML = '<input type="text" class="form-control"/>';
-        label.children[0].value = saved_data.backpack[i].label!='' ?
-            saved_data.backpack[i].label : item.name.split('  ')[0];
+        assign(label.children[0], saved_data.backpack[i].label);
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
         row.insertCell().innerText = item.value + ' gp';
@@ -159,19 +149,31 @@ function load_backpack() {
         amount.innerHTML = '<input type="text" class="form-control"/>';
         amount.children[0].value = saved_data.backpack[i].amount;
 
-        row.addEventListener("click", (event) => {
+        row.addEventListener('click', (event) => {
+            if (backpack_table.selectedIndex != undefined) 
+                backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
+            if (storage_table.selectedIndex != undefined) 
+                storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
+            row.closest('table').selectedIndex = row.rowIndex;
+            row.classList.add('selected');
+
             backpack_item_board.children[0].innerHTML = item.name;
             backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
             backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
             backpack_item_board.children[1].innerHTML += (
                 (item.type.includes('武器'))
-                ?('<br/><span id="item_dice" class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
                 :('')
             );
+            let tmp_properties = [];
+            if (item.properties.includes('可双手'))
+                tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
+            if (item.properties.includes('弹药'))
+                tmp_properties.push('弹药 (' + item.range + ' ft.)');
+            if (item.properties.includes('投掷'))
+                tmp_properties.push('投掷 (' + item.range + ' ft.)');
             backpack_item_board.children[1].innerHTML += (
-                (item.properties.includes('可双手'))
-                ?(' - 可双手 (<span id="item_dice" class="dice">' + item.dmg[2] + '</span>)')
-                :('')
+                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
             );
             backpack_item_board.children[2].innerHTML = '';
             for (let j=0; j<item.entries.length; j++) {
@@ -186,11 +188,11 @@ function load_backpack() {
             }
 
             backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener("click", () => {
+                dice.addEventListener('click', () => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                     roll_board.innerHTML += get_label(dice);
                     roll_board.innerHTML += roll_dice(dice.innerText);
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
                 });
             });
 
@@ -199,28 +201,30 @@ function load_backpack() {
                 saved_data.backpack.splice(i, 1);
                 load_backpack();
                 load_storage();
+                load_main();
                 show_toast('已存放【' + label.children[0].value + '】至仓库', 3000);
                 fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch3 错误: ' + err));
+                }).catch(err => alert('Fetch 错误: ' + err));
             }
         });
 
-        label.addEventListener("change", () => {
+        label.addEventListener('change', () => {
             saved_data.backpack[i].label = label.children[0].value;
             fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch3 错误: ' + err));
+            }).catch(err => alert('Fetch 错误: ' + err));
         });
 
-        amount.addEventListener("change", () => {
+        amount.addEventListener('change', () => {
             if (amount.children[0].value == '0') {
                 saved_data.backpack.splice(i, 1);
                 load_backpack();
+                load_main();
                 show_toast('已丢弃【' + label.children[0].value + '】', 3000);
             } else {
                 saved_data.backpack[i].amount = amount.children[0].value;
@@ -228,10 +232,10 @@ function load_backpack() {
             }
             
             fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch3 错误: ' + err));
+            }).catch(err => alert('Fetch 错误: ' + err));
         });
     }
     assign(current_weight_1, current_weight + ' 磅');
@@ -255,8 +259,7 @@ function load_storage() {
         row.value = item.name;
         let label = row.insertCell()
         label.innerHTML = '<input type="text" class="form-control"/>';
-        label.children[0].value = saved_data.storage[i].label!='' ?
-            saved_data.storage[i].label : item.name.split('  ')[0];
+        assign(label.children[0], saved_data.storage[i].label);
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
         row.insertCell().innerText = item.value + ' gp';
@@ -265,19 +268,31 @@ function load_storage() {
         amount.innerHTML = '<input type="text" class="form-control"/>';
         amount.children[0].value = saved_data.storage[i].amount;
 
-        row.addEventListener("click", (event) => {
+        row.addEventListener('click', (event) => {
+            if (backpack_table.selectedIndex != undefined) 
+                backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
+            if (storage_table.selectedIndex != undefined) 
+                storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
+            row.closest('table').selectedIndex = row.rowIndex;
+            row.classList.add('selected');
+
             backpack_item_board.children[0].innerHTML = item.name;
             backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
             backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
             backpack_item_board.children[1].innerHTML += (
                 (item.type.includes('武器'))
-                ?('<br/><span id="item_dice" class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
                 :('')
             );
+            let tmp_properties = [];
+            if (item.properties.includes('可双手'))
+                tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
+            if (item.properties.includes('弹药'))
+                tmp_properties.push('弹药 (' + item.range + ' ft.)');
+            if (item.properties.includes('投掷'))
+                tmp_properties.push('投掷 (' + item.range + ' ft.)');
             backpack_item_board.children[1].innerHTML += (
-                (item.properties.includes('可双手'))
-                ?(' - 可双手 (<span id="item_dice" class="dice">' + item.dmg[2] + '</span>)')
-                :('')
+                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
             );
             backpack_item_board.children[2].innerHTML = '';
             for (let j=0; j<item.entries.length; j++) {
@@ -292,11 +307,11 @@ function load_storage() {
             }
 
             backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener("click", () => {
+                dice.addEventListener('click', () => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                     roll_board.innerHTML += get_label(dice);
                     roll_board.innerHTML += roll_dice(dice.innerText);
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: "smooth"});
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
                 });
             });
 
@@ -305,25 +320,26 @@ function load_storage() {
                 saved_data.storage.splice(i, 1);
                 load_backpack();
                 load_storage();
+                load_main();
                 show_toast('已拿取【' + label.children[0].value + '】至背包', 3000);
                 fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch3 错误: ' + err));
+                }).catch(err => alert('Fetch 错误: ' + err));
             }
         });
 
-        label.addEventListener("change", () => {
+        label.addEventListener('change', () => {
             saved_data.storage[i].label = label.children[0].value;
             fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch3 错误: ' + err));
+            }).catch(err => alert('Fetch 错误: ' + err));
         });
 
-        amount.addEventListener("change", () => {
+        amount.addEventListener('change', () => {
             if (amount.children[0].value == '0') {
                 saved_data.storage.splice(i, 1);
                 load_storage();
@@ -333,13 +349,136 @@ function load_storage() {
             }
             
             fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch3 错误: ' + err));
+            }).catch(err => alert('Fetch 错误: ' + err));
         });
     }
 }
+
+/**
+ * 加载钱币
+ */
+function load_coins() {
+    assign(coins_in_main.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
+    assign(coins_in_main.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
+    assign(coins_in_main.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
+    assign(coins_in_backpack.children[0].children[0].children[1].children[0], saved_data.coins.gold_pieces);
+    assign(coins_in_backpack.children[0].children[1].children[1].children[0], saved_data.coins.silver_pieces);
+    assign(coins_in_backpack.children[0].children[2].children[1].children[0], saved_data.coins.copper_pieces);
+}
+
+/**
+ * 加载法术栏
+ */
+function load_spells() {
+    while (spells_table.rows.length > 1) {
+        spells_table.deleteRow(1);
+    }
+
+    for (let i=0; i<saved_spells.length; i++) {
+        const row = spells_table.insertRow();
+        row.classList.add('table-item');
+        row.insertCell().innerText = saved_spells[i].name.split('  ')[0];
+        row.insertCell().innerText = saved_spells[i].level + ' 环';
+        row.insertCell().innerText = saved_spells[i].school;
+        row.insertCell().innerText = saved_spells[i].time.join(' ');
+        row.insertCell().innerText = saved_spells[i].range.join(' ');
+        row.insertCell().innerText = saved_spells[i].source;
+
+        row.addEventListener('click', (event) => {
+            let table = row.closest('table');
+            if (table.selectedIndex != undefined) 
+                table.rows[table.selectedIndex].classList.remove('selected');
+            table.selectedIndex = row.rowIndex;
+            row.classList.add('selected');
+
+            spells_spell_board.children[0].innerHTML = saved_spells[i].name;
+            spells_spell_board.children[1].innerHTML = saved_spells[i].level + '环 ';
+            spells_spell_board.children[1].innerHTML += saved_spells[i].school + '<br/>';
+            spells_spell_board.children[1].innerHTML += (
+                '<span class="board-item">施法时间: </span>' + saved_spells[i].time.join(' ') + '<br>'
+            );
+            spells_spell_board.children[1].innerHTML += (
+                '<span class="board-item">射程: </span>' + saved_spells[i].range.join(' ') + '<br>'
+            );
+            spells_spell_board.children[1].innerHTML += (
+                '<span class="board-item">构材: </span>' + saved_spells[i].components.join('、') + '<br>'
+            );
+            spells_spell_board.children[1].innerHTML += (
+                '<span class="board-item">持续时间: </span>' + saved_spells[i].duration.join(' ') + '<br>'
+            );
+            spells_spell_board.children[2].innerHTML = '';
+            for (let j=0; j<saved_spells[i].entries.length; j++) {
+                spells_spell_board.children[2].innerHTML += '<p>' + saved_spells[i].entries[j] + '</p>';
+            }
+            for (let j=0; j<saved_spells[i].higher_level.length; j++) {
+                spells_spell_board.children[2].innerHTML += (
+                    '<p><span class="board-item">升环施法效应. </span>'
+                    + saved_spells[i].higher_level[j]
+                    + '</p>'
+                );
+            }
+            spells_spell_board.children[2].innerHTML += (
+                '<p><span class="board-item">职业: </span>'
+                + saved_spells[i].classes.join('、') + '</p>'
+            );
+            let subclass_list = [];
+            for (let j of Object.keys(saved_spells[i].subclasses)) {
+                let subclass = saved_spells[4].subclasses[j];
+                for (let k in subclass) {
+                    subclass_list.push(subclass[k] + ' ' + j);
+                }
+            }
+            spells_spell_board.children[2].innerHTML += (
+                subclass_list.length > 0 ?
+                '<p><span class="board-item">子职业: </span>' + subclass_list.join('、') + '</p>' :
+                ''
+            );
+
+        //     items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+        //         dice.addEventListener('click', () => {
+        //             if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+        //             roll_board.innerHTML += get_label(dice);
+        //             roll_board.innerHTML += roll_dice(dice.innerText);
+        //             roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+        //         });
+        //     });
+
+        //     if (event.ctrlKey) {
+        //         saved_data.backpack.push(
+        //             {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
+        //         );
+        //         load_backpack();
+        //         load_main();
+        //         show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
+        //         fetch(window.location.origin+'/api/update/'+pc_id, {
+        //             method: 'POST',
+        //             headers: {'Content-Type': 'application/json'},
+        //             body: JSON.stringify(saved_data)
+        //         }).catch(err => alert('Fetch 错误: ' + err));
+        //     }
+        });
+    }
+}
+
+/**
+ * 加载主要情况栏
+ * 
+ * 依次加载主要信息、装备、属性、技能、摘要
+ * 并计算需要的数值
+ */
+function load_main() {
+    if (saved_data.main.character_name!='' && saved_data.main.class!='' && saved_data.main.race!='') {
+        load_info();
+        load_gear();
+        load_abilities();
+        load_skills();
+        load_abstract();
+    }
+}
+
 
 /**
  * 加载主要信息
@@ -356,28 +495,247 @@ function load_info() {
 }
 
 /**
- * 载入装备
+ * 载入装备、武器、护甲
  */
 function load_gear() {
-    // for (all gear) {
-    //     equip this gear
-    // }
+    for (let x in saved_data.abilities) {
+        computed_data[x] = saved_data.abilities[x];
+    }
+
+    // 载入装备
+    assign(gear_table.rows[1].children[1].children[0], saved_data.gear['头部']);
+    assign(gear_table.rows[2].children[1].children[0], saved_data.gear['胸部']);
+    assign(gear_table.rows[3].children[1].children[0], saved_data.gear['腰部']);
+    assign(gear_table.rows[4].children[1].children[0], saved_data.gear['手部']);
+    assign(gear_table.rows[5].children[1].children[0], saved_data.gear['腿部']);
+    assign(gear_table.rows[1].children[3].children[0], saved_data.gear['颈部']);
+    assign(gear_table.rows[2].children[3].children[0], saved_data.gear['肩部']);
+    assign(gear_table.rows[3].children[3].children[0], saved_data.gear['背部']);
+    assign(gear_table.rows[4].children[3].children[0], saved_data.gear['腕部']);
+    assign(gear_table.rows[5].children[3].children[0], saved_data.gear['脚部']);
+
+    // 载入武器
+    for (let i=1; i<4; i++) {
+        weapons_table.rows[i].innerHTML = [
+            '<td><select class="form-control"></select></td>',
+            '<td><select class="form-control"><option></option></select></td>',
+            '<td></td>',
+            '<td><select class="form-control"></select></td>',
+            '<td></td>',
+            '<td></td>',
+        ].join('');
+    }
+
+    for (let i in saved_data.backpack) {
+        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
+        if (item.type.includes('武器')) {
+            weapons_table.rows[1].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+            weapons_table.rows[2].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+            weapons_table.rows[3].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+        }
+    }
+
+    for (let i in saved_data.weapons) {
+        let item = saved_data.backpack.find(element => element.label == saved_data.weapons[i].label);
+        if (item == undefined) {
+            saved_data.weapons.splice(i, 1);
+            continue;
+        }
+        item = saved_items.find(element => element.name == item.name);
+
+        if (item.properties.includes('双手')) {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+        } else if (item.properties.includes('可双手')) {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+        } else {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
+        }
+
+        if (item.properties.includes('灵巧')) {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+        } else if (item.type.includes('远程')) {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+        } else {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
+        }
+
+        assign(weapons_table.rows[Number(i)+1].cells[0].children[0], saved_data.weapons[i].hand);
+        assign(weapons_table.rows[Number(i)+1].cells[1].children[0], saved_data.weapons[i].label);
+        let tmp_properties = [...item.properties];
+        for (let j in tmp_properties) {
+            if (tmp_properties[j] == '可双手')
+                tmp_properties[j] = '可双手 (<span class="dice">' + item.dmg[2] + '</span>)';
+            if (tmp_properties[j] == '弹药') tmp_properties[j] = '弹药 (' + item.range + ' ft.)';
+            if (tmp_properties[j] == '投掷') tmp_properties[j] = '投掷 (' + item.range + ' ft.)';
+        }
+        assign(weapons_table.rows[Number(i)+1].cells[2], tmp_properties.join('、'));
+        assign(weapons_table.rows[Number(i)+1].cells[3]. children[0], saved_data.weapons[i].ability);
+
+        const adice = document.createElement('button');
+        adice.className = 'btn dice';
+        const abs_ref = {'力量': 'strength', '敏捷': 'dexterity'};
+        assign(adice, '1d20+' + (
+            parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
+            + computed_data.proficiency_bonus
+        ));
+        weapons_table.rows[Number(i)+1].cells[4].appendChild(adice);
+
+        const hdice = document.createElement('button');
+        hdice.className = 'btn dice';
+        assign(hdice,
+            item.properties.includes('可双手') && saved_data.weapons[i].hand=='双手' ?
+            item.dmg[2] :
+            item.dmg[1]
+        );
+        weapons_table.rows[Number(i)+1].cells[5].appendChild(hdice);
+    }
+
+    weapons_table.querySelectorAll('.dice').forEach(dice => {
+        dice.addEventListener('click', () => {
+            let label = dice.parentElement.parentElement
+                .children[1].children[0].selectedOptions[0].value;
+            if (dice.tagName == 'BUTTON') {
+                label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
+            }
+            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+            roll_board.innerHTML += label + ': ';
+            roll_board.innerHTML += roll_dice(dice.innerText);
+            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+        });
+    });
+
+    weapons_table.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+            switch (select.parentElement.cellIndex) {
+                case 0:
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['hand'] = (
+                        select.selectedOptions[0].innerText
+                    );
+                    break;
+                case 1:
+                    let label = select.selectedOptions[0].innerText;
+                    if (label == '') {
+                        saved_data.weapons.splice(select.parentElement.parentElement.rowIndex-1, 1);
+                        break;
+                    }
+                    let item = saved_data.backpack.find(element => element.label == label);
+                    item = saved_items.find(element => element.name == item.name);
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1] = {
+                        "label": label,
+                        "hand": item.properties.includes('双手')?'双手':'右手',
+                        "ability": item.type.includes('远程')?"敏捷":'力量',
+                    };
+                    break;
+                case 3:
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['ability'] = (
+                        select.selectedOptions[0].innerText
+                    );
+                    break;
+            }
+            load_main();
+
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+
+    // 载入护甲
+    armor_table.rows[0].innerHTML = [
+        '<td class="w-p15 bg-gray-50"><select class="form-control bg-gray-50"></select></td>',
+        '<td class="w-p35"><select class="form-control"></select></td>',
+        '<td class="w-p15 bg-gray-50">盾牌</td>',
+        '<td class="w-p35"><select class="form-control"><option></option></select></td>'
+    ].join('');
+
+    computed_data.armor_type = {
+        '无甲': ['', '法师护甲'],
+        '轻甲': [],
+        '中甲': [],
+        '重甲': []
+    };
+    if (saved_data.main.class == '野蛮人') computed_data.armor_type['无甲'].push('野蛮人无甲防御');
+    if (saved_data.main.class == '武僧') computed_data.armor_type['无甲'].push('武僧无甲防御');
+    for (let i in saved_data.backpack) {
+        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
+        if (item.type.includes('盾牌')) {
+            armor_table.rows[0].cells[3].children[0].add(new Option(saved_data.backpack[i].label));
+        } else if (item.type.includes('轻甲')) {
+            computed_data.armor_type['轻甲'].push(saved_data.backpack[i].label);
+        } else if (item.type.includes('中甲')) {
+            computed_data.armor_type['中甲'].push(saved_data.backpack[i].label);
+        } else if (item.type.includes('重甲')) {
+            computed_data.armor_type['重甲'].push(saved_data.backpack[i].label);
+        }
+    }
+    armor_table.rows[0].cells[0].children[0].add(new Option('无甲'));
+    if (computed_data.armor_type['轻甲'].length != 0)
+        armor_table.rows[0].cells[0].children[0].add(new Option('轻甲'));
+    if (computed_data.armor_type['中甲'].length != 0)
+        armor_table.rows[0].cells[0].children[0].add(new Option('中甲'));
+    if (computed_data.armor_type['重甲'].length != 0)
+        armor_table.rows[0].cells[0].children[0].add(new Option('重甲'));
+
+    if (
+        saved_data.armor[0] != '无甲' &&
+        saved_data.backpack.find(element => element.label == saved_data.armor[1]) == undefined
+    ) {
+        saved_data.armor[0] = '无甲';
+        saved_data.armor[1] = '';
+    }
+    if (saved_data.backpack.find(element => element.label == saved_data.armor[2]) == undefined) {
+        saved_data.armor[2] = '';
+    }
+    assign(armor_table.rows[0].cells[0].children[0], saved_data.armor[0]);
+    armor_table.rows[0].cells[1].children[0].innerHTML = '';
+    for (let i in computed_data.armor_type[saved_data.armor[0]]) {
+        armor_table.rows[0].cells[1].children[0]
+            .add(new Option(computed_data.armor_type[saved_data.armor[0]][i]));
+    }
+    assign(armor_table.rows[0].cells[1].children[0], saved_data.armor[1]);
+    assign(armor_table.rows[0].cells[3].children[0], saved_data.armor[2]);
+
+    armor_table.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+            switch (select.parentElement.cellIndex) {
+                case 0:
+                    saved_data.armor[0] = select.selectedOptions[0].innerText;
+                    saved_data.armor[1] = computed_data.armor_type[saved_data.armor[0]][0];
+                    armor_table.rows[0].cells[1].children[0].innerHTML = '';
+                    for (let i in computed_data.armor_type[saved_data.armor[0]]) {
+                        armor_table.rows[0].cells[1].children[0]
+                            .add(new Option(computed_data.armor_type[saved_data.armor[0]][i]));
+                    }
+                    assign(armor_table.rows[0].cells[1].children[0], saved_data.armor[1]);
+                    break;
+                case 1:
+                    saved_data.armor[1] = select.selectedOptions[0].innerText;
+                    break;
+                case 3:
+                    saved_data.armor[2] = select.selectedOptions[0].innerText;
+                    break;
+            }
+            load_main();
+
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
 }
 
 /**
  * 载入属性
  */
 function load_abilities() {
-    for (let x in saved_data.abilities) {
-        computed_data[x] = saved_data.abilities[x];
-    }
-
-    
-    // 根据装备修改属性
-    // for (all gear) {
-    //     modify info
-    // }
-
     let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
     let prof_ref = {
         '野蛮人': ['strength', 'constitution'],
@@ -451,10 +809,38 @@ function load_abstract() {
         parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.abstract['initiative_bonus'])
     ); // 先攻
 
+    let tmp_armor_class = 0;
+    if (saved_data.armor[0] == '无甲') {
+        if (saved_data.armor[1] == '')
+            tmp_armor_class += (10 + parseInt(sum(computed_data['dexterity'])/2)-5);
+        if (saved_data.armor[1] == '法师护甲')
+            tmp_armor_class += (13 + parseInt(sum(computed_data['dexterity'])/2)-5);
+        if (saved_data.armor[1] == '野蛮人无甲防御')
+            tmp_armor_class += (
+                10 + parseInt(sum(computed_data['dexterity'])/2)-5
+                + parseInt(sum(computed_data['constitution'])/2)-5
+            );
+        if (saved_data.armor[1] == '武僧无甲防御')
+            tmp_armor_class += (
+                10 + parseInt(sum(computed_data['dexterity'])/2)-5
+                + parseInt(sum(computed_data['wisdom'])/2)-5
+            );
+    } else {
+        tmp_armor_class += Number(data_armors[saved_data.armor[1]][0]);
+        tmp_armor_class += (
+            data_armors[saved_data.armor[1]][1] == '' ?
+            parseInt(sum(computed_data['dexterity'])/2)-5 :
+            Math.min(
+                parseInt(sum(computed_data['dexterity'])/2)-5,
+                Number(data_armors[saved_data.armor[1]][1])
+            )
+        );
+    }
     assign(armor_class.children[1].children[0], saved_data.abstract['armor_class_bonus']);
-    assign(armor_class.children[2],
-        10 + parseInt(sum(computed_data['dexterity'])/2)-5
+    assign(armor_class.children[2], 
+        tmp_armor_class
         + Number(saved_data.abstract['armor_class_bonus'])
+        + (saved_data.armor[2]!='' ? 2 : 0)
     ); // 护甲等级
 
     let abs_ref = {
@@ -537,11 +923,11 @@ function assign(element, value) {
                 }
             }
             if (!isFound) {
-                console.log(element.options[0])
+                console.log('Select Error: ', element.options[0])
                 alert('未知选项 in ' + element.id + ': ' + value + '!');
             }
             break;
-        default: element.innerText = value;
+        default: element.innerHTML = value;
     }
 }
 
@@ -558,97 +944,6 @@ function sum(list) {
         res += Number(list[i][0]);
     }
     return res;
-}
-
-/**
- * 当某个可输入元素变动时调用
- * 修改 saved_data 
- * 并重新载入数据
- */
-function change_data(element) {
-    let character_selector = document.getElementById('character_selector');
-
-    if (element.tagName == 'SELECT') {
-        if (element.id != '') {
-            saved_data.main.class = element.selectedOptions[0].innerText;
-            character_selector.selectedOptions[0].innerText = saved_data.main.race
-                + saved_data.main.class + ': ' + saved_data.main.character_name;
-            document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
-        } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
-            let skls_ref = ['', 
-                'athletics',
-                'acrobatics', 'sleight_of_hand', 'stealth',
-                'investigation', 'arcana', 'history', 'nature', 'religion',
-                'perception', 'insight', 'animal_handling', 'medicine', 'survival',
-                'persuasion', 'deception', 'intimidation', 'performance'
-            ];
-            let skill = skls_ref[element.parentElement.parentElement.rowIndex];
-            saved_data.skill_proficiency = saved_data.skill_proficiency.filter(x => x!=skill);
-            saved_data.double_skill_proficiency = saved_data.double_skill_proficiency.filter(x => x!=skill);
-            saved_data.half_skill_proficiency = saved_data.half_skill_proficiency.filter(x => x!=skill);
-            
-            switch (element.selectedOptions[0].innerText) {
-                case 'O': saved_data.skill_proficiency.push(skill); break;
-                case 'D': saved_data.double_skill_proficiency.push(skill); break;
-                case 'H': saved_data.half_skill_proficiency.push(skill); break;
-            }
-        }
-    } else if (element.tagName == 'INPUT') {
-        if (element.id != '') {
-            saved_data.main[element.id] = element.value;
-            character_selector.selectedOptions[0].innerText = saved_data.main.race
-                + saved_data.main.class + ': ' + saved_data.main.character_name;
-            document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
-        } else if (element.parentElement.parentElement.id != '') {
-            switch (element.parentElement.parentElement.id) {
-                case 'initiative': saved_data.abstract['initiative_bonus'] = element.value; break;
-                case 'armor_class': saved_data.abstract['armor_class_bonus'] = element.value; break;
-                case 'hit_point': saved_data.abstract['hit_point'][element.parentElement.cellIndex-1] = element.value; break;
-                case 'hit_dice': saved_data.abstract['hit_dice'] = element.value; break;
-                case 'special_value': saved_data.abstract['special_value'][element.parentElement.cellIndex] = element.value; break;
-                case 'temporary_hit_point': saved_data.abstract['hit_point'][2] = element.value; break;
-                case 'inspiration': saved_data.abstract['inspiration'] = element.value; break;
-            }
-        } else if (element.parentElement.parentElement.parentElement.parentElement.id != '') {
-            switch (element.parentElement.parentElement.parentElement.parentElement.id) {
-                case 'skills':
-                    let skls_ref = ['', 
-                        'athletics',
-                        'acrobatics', 'sleight_of_hand', 'stealth',
-                        'investigation', 'arcana', 'history', 'nature', 'religion',
-                        'perception', 'insight', 'animal_handling', 'medicine', 'survival',
-                        'persuasion', 'deception', 'intimidation', 'performance'
-                    ];
-                    let skill = skls_ref[element.parentElement.parentElement.rowIndex];
-                    saved_data.skill_bonus[skill] = element.value;
-                    break;
-                case 'abilities':
-                    let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-                    let ability = abs_ref[element.parentElement.parentElement.rowIndex];
-                    saved_data.abilities[ability] = element.value;
-                    break;
-                case 'conditions':
-                    let cons_ref = {'状态': 'conditions', '免疫': 'immunizations', '易伤': 'vulnerabilities', '抗性': 'resistances'};
-                    let label = cons_ref[element.parentElement.previousElementSibling.innerText];
-                    saved_data.abstract[label] = element.value;
-                    break;
-                case 'coins_1':
-                    let coins1_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
-                    let pieces1 = coins1_ref[element.parentElement.parentElement.rowIndex];
-                    saved_data.coins[pieces1] = element.value;
-                    load_coins();
-                    break;
-                case 'coins_2':
-                    let coins2_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
-                    let pieces2 = coins2_ref[element.parentElement.parentElement.rowIndex];
-                    saved_data.coins[pieces2] = element.value;
-                    load_coins();
-                    break;
-            }
-        }
-    }
-
-    load_main();
 }
 
 /**

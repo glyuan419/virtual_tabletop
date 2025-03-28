@@ -62,7 +62,7 @@
 
 .space-y-sm > * {
     &:not(:first-child) {
-        margin-top: 13px;
+        margin-top: 12px;
     }
 }
 
@@ -113,6 +113,21 @@
     height: 24px;
     font-size: 12px;
     background: #e4e8ef;
+    cursor: pointer;
+}
+
+.selected {
+    position: relative;
+}
+
+.selected td:first-child::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 32px;
+    width: 4px;
+    background: #4CAF50;
+    content: "";
 }
 
 .board {
@@ -204,8 +219,6 @@
     }
 }
 
-
-
 .active {
     font-weight: 700;
     color: #5681ee;
@@ -220,7 +233,33 @@
     display: none;
 }
 
+#long_rest {
+    border: 1px solid #e4e8ef;
+}
 
+#death_saving {
+    height: 45px;
+}
+
+#death_saving span{
+    color: #000;
+}
+
+#death_saving div:first-child {
+    border-bottom: 1px solid #e4e8ef;
+}
+
+#death_saving div:first-child input {
+    margin: 5px 4px 3px 4px;
+    cursor: pointer;
+    accent-color: #4CAF50;
+}
+
+#death_saving div:last-child input {
+    margin: 5px 4px 0 4px;
+    cursor: pointer;
+    accent-color: #F44336;
+}
 
 #roll_box {
     position: absolute;
