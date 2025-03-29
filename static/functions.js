@@ -7,8 +7,11 @@ function load_character_selector(data) {
     let character_selector = document.getElementById('character_selector');
     for (let i in data) {
         let label = data[i][1]+': '+data[i][2]
-        if (data[i][0] == 'template') label = '创建新角色';
-        if (data[i][1]=='' && data[i][2]==0) label = '正在创建';
+        if (data[i][0] == 'template') {
+            label = '创建新角色';
+        } else if (data[i][1]=='' && data[i][2]==0) {
+            label = '正在创建';
+        }
 
         const option = new Option(label, data[i][0]);
         character_selector.add(option);
@@ -93,7 +96,12 @@ function load_items() {
 
             if (event.ctrlKey) {
                 saved_data.backpack.push(
-                    {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
+                    {
+                        name: saved_items[i].name,
+                        label: saved_items[i].name.split('  ')[0],
+                        weight: saved_items[i].weight,
+                        amount: '1'
+                    }
                 );
                 load_backpack();
                 load_main();
@@ -107,7 +115,12 @@ function load_items() {
 
             if (event.shiftKey) {
                 saved_data.storage.push(
-                    {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
+                    {
+                        name: saved_items[i].name,
+                        label: saved_items[i].name.split('  ')[0],
+                        weight: saved_items[i].weight,
+                        amount: '1'
+                    }
                 );
                 load_storage();
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至仓库', 3000);
@@ -133,7 +146,7 @@ function load_backpack() {
     let current_weight = 0;
     for (let i in saved_data.backpack) {
         let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
-        current_weight += Number(item.weight) * Number(saved_data.backpack[i].amount);
+        current_weight += Number(saved_data.backpack[i].weight) * Number(saved_data.backpack[i].amount);
 
         const row = backpack_table.insertRow();
         row.classList.add('table-item');
@@ -144,57 +157,90 @@ function load_backpack() {
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
         row.insertCell().innerText = item.value + ' gp';
-        row.insertCell().innerText = item.weight + ' 磅';
-        let amount = row.insertCell()
+        let weight = row.insertCell();
+        weight.innerHTML = '<input type="text" class="form-control"/>';
+        assign(weight.children[0], saved_data.backpack[i].weight);
+        let amount = row.insertCell();
         amount.innerHTML = '<input type="text" class="form-control"/>';
-        amount.children[0].value = saved_data.backpack[i].amount;
+        assign(amount.children[0], saved_data.backpack[i].amount);
 
         row.addEventListener('click', (event) => {
-            if (backpack_table.selectedIndex != undefined) 
-                backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
-            if (storage_table.selectedIndex != undefined) 
-                storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
+            if (
+                backpack_table.selectedIndex != undefined
+                && backpack_table.rows[backpack_table.selectedIndex] != undefined
+            ) backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
+            if (
+                storage_table.selectedIndex != undefined
+                && storage_table.rows[storage_table.selectedIndex] != undefined
+            ) storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
             row.closest('table').selectedIndex = row.rowIndex;
             row.classList.add('selected');
 
-            backpack_item_board.children[0].innerHTML = item.name;
-            backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
-            backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
-            backpack_item_board.children[1].innerHTML += (
-                (item.type.includes('武器'))
-                ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
-                :('')
-            );
-            let tmp_properties = [];
-            if (item.properties.includes('可双手'))
-                tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
-            if (item.properties.includes('弹药'))
-                tmp_properties.push('弹药 (' + item.range + ' ft.)');
-            if (item.properties.includes('投掷'))
-                tmp_properties.push('投掷 (' + item.range + ' ft.)');
-            backpack_item_board.children[1].innerHTML += (
-                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
-            );
-            backpack_item_board.children[2].innerHTML = '';
-            for (let j=0; j<item.entries.length; j++) {
-                backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
-            }
-            for (let j=0; j<item.properties.length; j++) {
-                let element = '<p>'
-                    + '<span class="board-item">' + item.properties[j] + '. </span>'
-                    + data_properties[item.properties[j]].entries.join('<br/><br/>')
-                    + '</p>';
-                backpack_item_board.children[2].innerHTML += element;
-            }
+            if (item.name != '自定义  Custom Thing') {
+                backpack_item_board.children[0].innerHTML = item.name;
+                backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
+                backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
+                backpack_item_board.children[1].innerHTML += (
+                    (item.type.includes('武器'))
+                    ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                    :('')
+                );
+                let tmp_properties = [];
+                if (item.properties.includes('可双手'))
+                    tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
+                if (item.properties.includes('弹药'))
+                    tmp_properties.push('弹药 (' + item.range + ' ft.)');
+                if (item.properties.includes('投掷'))
+                    tmp_properties.push('投掷 (' + item.range + ' ft.)');
+                backpack_item_board.children[1].innerHTML += (
+                    tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
+                );
+                backpack_item_board.children[2].innerHTML = '';
+                for (let j=0; j<item.entries.length; j++) {
+                    backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
+                }
+                for (let j=0; j<item.properties.length; j++) {
+                    let element = '<p>'
+                        + '<span class="board-item">' + item.properties[j] + '. </span>'
+                        + data_properties[item.properties[j]].entries.join('<br/><br/>')
+                        + '</p>';
+                    backpack_item_board.children[2].innerHTML += element;
+                }
 
-            backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener('click', () => {
-                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += get_label(dice);
-                    roll_board.innerHTML += roll_dice(dice.innerText);
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+                    dice.addEventListener('click', () => {
+                        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                        roll_board.innerHTML += get_label(dice);
+                        roll_board.innerHTML += roll_dice(dice.innerText);
+                        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                    });
                 });
-            });
+            } else {
+                backpack_item_board.children[0].innerHTML = saved_data.backpack[i].label;
+                backpack_item_board.children[1].innerHTML = '';
+                backpack_item_board.children[2].innerHTML = (
+                    '<textarea class="edit-board"/>'
+                );
+                if ("description" in saved_data.backpack[i]) {
+                    backpack_item_board.children[2].children[0].innerHTML = (
+                        saved_data.backpack[i].description
+                    );
+                }
+
+                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
+                    ele.addEventListener('change', () => {
+                        saved_data.backpack[i].description = (
+                            backpack_item_board.children[2].children[0].value
+                        );
+
+                        fetch(window.location.origin+'/api/update/'+pc_id, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(saved_data)
+                        }).catch(err => alert('Fetch 错误: ' + err));
+                    });
+                });
+            }
 
             if (event.ctrlKey) {
                 saved_data.storage.push(saved_data.backpack[i]);
@@ -213,6 +259,19 @@ function load_backpack() {
 
         label.addEventListener('change', () => {
             saved_data.backpack[i].label = label.children[0].value;
+            load_backpack();
+            load_main();
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        });
+
+        weight.addEventListener('change', () => {
+            saved_data.backpack[i].weight = weight.children[0].value;
+            load_backpack();
+            load_main();
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -229,6 +288,7 @@ function load_backpack() {
             } else {
                 saved_data.backpack[i].amount = amount.children[0].value;
                 load_backpack();
+                load_main();
             }
             
             fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -238,8 +298,8 @@ function load_backpack() {
             }).catch(err => alert('Fetch 错误: ' + err));
         });
     }
-    assign(current_weight_1, current_weight + ' 磅');
-    assign(current_weight_2, current_weight + ' 磅');
+
+    computed_data.current_weight = current_weight;
 }
 
 /**
@@ -263,57 +323,90 @@ function load_storage() {
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
         row.insertCell().innerText = item.value + ' gp';
-        row.insertCell().innerText = item.weight + ' 磅';
+        let weight = row.insertCell();
+        weight.innerHTML = '<input type="text" class="form-control"/>';
+        assign(weight.children[0], saved_data.storage[i].weight);
         let amount = row.insertCell()
         amount.innerHTML = '<input type="text" class="form-control"/>';
-        amount.children[0].value = saved_data.storage[i].amount;
+        assign(amount.children[0], saved_data.storage[i].amount);
 
         row.addEventListener('click', (event) => {
-            if (backpack_table.selectedIndex != undefined) 
-                backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
-            if (storage_table.selectedIndex != undefined) 
-                storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
+            if (
+                backpack_table.selectedIndex != undefined
+                && backpack_table.rows[backpack_table.selectedIndex] != undefined
+            ) backpack_table.rows[backpack_table.selectedIndex].classList.remove('selected');
+            if (
+                storage_table.selectedIndex != undefined
+                && storage_table.rows[storage_table.selectedIndex] != undefined
+            ) storage_table.rows[storage_table.selectedIndex].classList.remove('selected');
             row.closest('table').selectedIndex = row.rowIndex;
             row.classList.add('selected');
 
-            backpack_item_board.children[0].innerHTML = item.name;
-            backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
-            backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
-            backpack_item_board.children[1].innerHTML += (
-                (item.type.includes('武器'))
-                ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
-                :('')
-            );
-            let tmp_properties = [];
-            if (item.properties.includes('可双手'))
-                tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
-            if (item.properties.includes('弹药'))
-                tmp_properties.push('弹药 (' + item.range + ' ft.)');
-            if (item.properties.includes('投掷'))
-                tmp_properties.push('投掷 (' + item.range + ' ft.)');
-            backpack_item_board.children[1].innerHTML += (
-                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
-            );
-            backpack_item_board.children[2].innerHTML = '';
-            for (let j=0; j<item.entries.length; j++) {
-                backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
-            }
-            for (let j=0; j<item.properties.length; j++) {
-                let element = '<p>'
-                    + '<span class="board-item">' + item.properties[j] + '. </span>'
-                    + data_properties[item.properties[j]].entries.join('<br/><br/>')
-                    + '</p>';
-                backpack_item_board.children[2].innerHTML += element;
-            }
+            if (item.name != '自定义  Custom Thing') {
+                backpack_item_board.children[0].innerHTML = item.name;
+                backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
+                backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
+                backpack_item_board.children[1].innerHTML += (
+                    (item.type.includes('武器'))
+                    ?('<br/><span class="dice">' + item.dmg[1] + '</span> ' + item.dmg[0])
+                    :('')
+                );
+                let tmp_properties = [];
+                if (item.properties.includes('可双手'))
+                    tmp_properties.push('可双手 (<span class="dice">' + item.dmg[2] + '</span>)');
+                if (item.properties.includes('弹药'))
+                    tmp_properties.push('弹药 (' + item.range + ' ft.)');
+                if (item.properties.includes('投掷'))
+                    tmp_properties.push('投掷 (' + item.range + ' ft.)');
+                backpack_item_board.children[1].innerHTML += (
+                    tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
+                );
+                backpack_item_board.children[2].innerHTML = '';
+                for (let j=0; j<item.entries.length; j++) {
+                    backpack_item_board.children[2].innerHTML += '<p>' + item.entries[j] + '</p>';
+                }
+                for (let j=0; j<item.properties.length; j++) {
+                    let element = '<p>'
+                        + '<span class="board-item">' + item.properties[j] + '. </span>'
+                        + data_properties[item.properties[j]].entries.join('<br/><br/>')
+                        + '</p>';
+                    backpack_item_board.children[2].innerHTML += element;
+                }
 
-            backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener('click', () => {
-                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += get_label(dice);
-                    roll_board.innerHTML += roll_dice(dice.innerText);
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+                    dice.addEventListener('click', () => {
+                        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                        roll_board.innerHTML += get_label(dice);
+                        roll_board.innerHTML += roll_dice(dice.innerText);
+                        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                    });
                 });
-            });
+            } else {
+                backpack_item_board.children[0].innerHTML = saved_data.storage[i].label;
+                backpack_item_board.children[1].innerHTML = '';
+                backpack_item_board.children[2].innerHTML = (
+                    '<textarea class="edit-board"/>'
+                );
+                if ("description" in saved_data.storage[i]) {
+                    backpack_item_board.children[2].children[0].innerHTML = (
+                        saved_data.storage[i].description
+                    );
+                }
+
+                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
+                    ele.addEventListener('change', () => {
+                        saved_data.storage[i].description = (
+                            backpack_item_board.children[2].children[0].value
+                        );
+
+                        fetch(window.location.origin+'/api/update/'+pc_id, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(saved_data)
+                        }).catch(err => alert('Fetch 错误: ' + err));
+                    });
+                });
+            }
 
             if (event.ctrlKey) {
                 saved_data.backpack.push(saved_data.storage[i]);
@@ -332,6 +425,17 @@ function load_storage() {
 
         label.addEventListener('change', () => {
             saved_data.storage[i].label = label.children[0].value;
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        });
+
+        weight.addEventListener('change', () => {
+            saved_data.storage[i].weight = weight.children[0].value;
+            load_backpack();
+            load_main();
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -426,7 +530,7 @@ function load_spells() {
             );
             let subclass_list = [];
             for (let j of Object.keys(saved_spells[i].subclasses)) {
-                let subclass = saved_spells[4].subclasses[j];
+                let subclass = saved_spells[i].subclasses[j];
                 for (let k in subclass) {
                     subclass_list.push(subclass[k] + ' ' + j);
                 }
@@ -446,36 +550,134 @@ function load_spells() {
         //         });
         //     });
 
-        //     if (event.ctrlKey) {
-        //         saved_data.backpack.push(
-        //             {name: saved_items[i].name, label: saved_items[i].name.split('  ')[0], amount: '1'}
-        //         );
-        //         load_backpack();
-        //         load_main();
-        //         show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
-        //         fetch(window.location.origin+'/api/update/'+pc_id, {
-        //             method: 'POST',
-        //             headers: {'Content-Type': 'application/json'},
-        //             body: JSON.stringify(saved_data)
-        //         }).catch(err => alert('Fetch 错误: ' + err));
-        //     }
+            if (event.ctrlKey) {
+                saved_data.spells.push(saved_spells[i].name);
+                load_spellcasting();
+                load_main();
+                show_toast('已记忆法术【' + saved_spells[i].name.split('  ')[0] + '】', 3000);
+
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch 错误: ' + err));
+            }
         });
     }
 }
 
 /**
- * 加载主要情况栏
+ * 加载施法界面
+ */
+function load_spellcasting() {
+    while (spellcasting_table.rows.length > 1) {
+        spellcasting_table.deleteRow(1);
+    }
+
+    for (let i in saved_data.spells) {
+        let spell = saved_spells.find(element => element.name == saved_data.spells[i]);
+
+        const row = spellcasting_table.insertRow();
+        row.classList.add('table-item');
+        row.insertCell().innerText = spell.name.split('  ')[0];
+        row.insertCell().innerText = spell.level + ' 环';
+        row.insertCell().innerText = spell.school;
+        row.insertCell().innerText = spell.time.join(' ');
+        row.insertCell().innerText = spell.range.join(' ');
+        row.insertCell().innerText = spell.source;
+
+        row.addEventListener('click', (event) => {
+            let table = row.closest('table');
+            if (table.selectedIndex != undefined) 
+                table.rows[table.selectedIndex].classList.remove('selected');
+            table.selectedIndex = row.rowIndex;
+            row.classList.add('selected');
+
+            spellcasting_spell_board.children[0].innerHTML = spell.name;
+            spellcasting_spell_board.children[1].innerHTML = spell.level + '环 ';
+            spellcasting_spell_board.children[1].innerHTML += spell.school + '<br/>';
+            spellcasting_spell_board.children[1].innerHTML += (
+                '<span class="board-item">施法时间: </span>' + spell.time.join(' ') + '<br>'
+            );
+            spellcasting_spell_board.children[1].innerHTML += (
+                '<span class="board-item">射程: </span>' + spell.range.join(' ') + '<br>'
+            );
+            spellcasting_spell_board.children[1].innerHTML += (
+                '<span class="board-item">构材: </span>' + spell.components.join('、') + '<br>'
+            );
+            spellcasting_spell_board.children[1].innerHTML += (
+                '<span class="board-item">持续时间: </span>' + spell.duration.join(' ') + '<br>'
+            );
+            spellcasting_spell_board.children[2].innerHTML = '';
+            for (let j=0; j<spell.entries.length; j++) {
+                spellcasting_spell_board.children[2].innerHTML += '<p>' + spell.entries[j] + '</p>';
+            }
+            for (let j=0; j<spell.higher_level.length; j++) {
+                spellcasting_spell_board.children[2].innerHTML += (
+                    '<p><span class="board-item">升环施法效应. </span>'
+                    + spell.higher_level[j]
+                    + '</p>'
+                );
+            }
+            spellcasting_spell_board.children[2].innerHTML += (
+                '<p><span class="board-item">职业: </span>'
+                + spell.classes.join('、') + '</p>'
+            );
+            let subclass_list = [];
+            for (let j of Object.keys(spell.subclasses)) {
+                let subclass = saved_spells[i].subclasses[j];
+                for (let k in subclass) {
+                    subclass_list.push(subclass[k] + ' ' + j);
+                }
+            }
+            spellcasting_spell_board.children[2].innerHTML += (
+                subclass_list.length > 0 ?
+                '<p><span class="board-item">子职业: </span>' + subclass_list.join('、') + '</p>' :
+                ''
+            );
+
+            if (event.ctrlKey) {
+                saved_data.spells.splice(i, 1);
+                load_spellcasting();
+                load_main();
+                show_toast('已遗忘法术【' + spell.name.split('  ')[0] + '】', 3000);
+
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch 错误: ' + err));
+            }
+        });
+    }
+}
+
+/**
+ * 加载主界面
  * 
  * 依次加载主要信息、装备、属性、技能、摘要
  * 并计算需要的数值
  */
 function load_main() {
-    if (saved_data.main.character_name!='' && saved_data.main.class!='' && saved_data.main.race!='') {
+    if (
+        saved_data.main.race != ''
+        && saved_data.main.character_name != ''
+        && saved_data.main.class != ''
+        && saved_data.main.class_level != ''
+    ) {
         load_info();
         load_gear();
         load_abilities();
         load_skills();
         load_abstract();
+    
+        load_weapons();
+        load_quick_spellcasting();
+    
+        // 顺便加载施法界面的施法信息
+        load_spellcasting_info();
+    } else {
+        load_info();
     }
 }
 
@@ -513,138 +715,6 @@ function load_gear() {
     assign(gear_table.rows[3].children[3].children[0], saved_data.gear['背部']);
     assign(gear_table.rows[4].children[3].children[0], saved_data.gear['腕部']);
     assign(gear_table.rows[5].children[3].children[0], saved_data.gear['脚部']);
-
-    // 载入武器
-    for (let i=1; i<4; i++) {
-        weapons_table.rows[i].innerHTML = [
-            '<td><select class="form-control"></select></td>',
-            '<td><select class="form-control"><option></option></select></td>',
-            '<td></td>',
-            '<td><select class="form-control"></select></td>',
-            '<td></td>',
-            '<td></td>',
-        ].join('');
-    }
-
-    for (let i in saved_data.backpack) {
-        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
-        if (item.type.includes('武器')) {
-            weapons_table.rows[1].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
-            weapons_table.rows[2].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
-            weapons_table.rows[3].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
-        }
-    }
-
-    for (let i in saved_data.weapons) {
-        let item = saved_data.backpack.find(element => element.label == saved_data.weapons[i].label);
-        if (item == undefined) {
-            saved_data.weapons.splice(i, 1);
-            continue;
-        }
-        item = saved_items.find(element => element.name == item.name);
-
-        if (item.properties.includes('双手')) {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
-        } else if (item.properties.includes('可双手')) {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
-        } else {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
-        }
-
-        if (item.properties.includes('灵巧')) {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
-        } else if (item.type.includes('远程')) {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
-        } else {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
-        }
-
-        assign(weapons_table.rows[Number(i)+1].cells[0].children[0], saved_data.weapons[i].hand);
-        assign(weapons_table.rows[Number(i)+1].cells[1].children[0], saved_data.weapons[i].label);
-        let tmp_properties = [...item.properties];
-        for (let j in tmp_properties) {
-            if (tmp_properties[j] == '可双手')
-                tmp_properties[j] = '可双手 (<span class="dice">' + item.dmg[2] + '</span>)';
-            if (tmp_properties[j] == '弹药') tmp_properties[j] = '弹药 (' + item.range + ' ft.)';
-            if (tmp_properties[j] == '投掷') tmp_properties[j] = '投掷 (' + item.range + ' ft.)';
-        }
-        assign(weapons_table.rows[Number(i)+1].cells[2], tmp_properties.join('、'));
-        assign(weapons_table.rows[Number(i)+1].cells[3]. children[0], saved_data.weapons[i].ability);
-
-        const adice = document.createElement('button');
-        adice.className = 'btn dice';
-        const abs_ref = {'力量': 'strength', '敏捷': 'dexterity'};
-        assign(adice, '1d20+' + (
-            parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
-            + computed_data.proficiency_bonus
-        ));
-        weapons_table.rows[Number(i)+1].cells[4].appendChild(adice);
-
-        const hdice = document.createElement('button');
-        hdice.className = 'btn dice';
-        assign(hdice,
-            item.properties.includes('可双手') && saved_data.weapons[i].hand=='双手' ?
-            item.dmg[2] :
-            item.dmg[1]
-        );
-        weapons_table.rows[Number(i)+1].cells[5].appendChild(hdice);
-    }
-
-    weapons_table.querySelectorAll('.dice').forEach(dice => {
-        dice.addEventListener('click', () => {
-            let label = dice.parentElement.parentElement
-                .children[1].children[0].selectedOptions[0].value;
-            if (dice.tagName == 'BUTTON') {
-                label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
-            }
-            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += label + ': ';
-            roll_board.innerHTML += roll_dice(dice.innerText);
-            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-        });
-    });
-
-    weapons_table.querySelectorAll('select').forEach(select => {
-        select.addEventListener('change', () => {
-            switch (select.parentElement.cellIndex) {
-                case 0:
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['hand'] = (
-                        select.selectedOptions[0].innerText
-                    );
-                    break;
-                case 1:
-                    let label = select.selectedOptions[0].innerText;
-                    if (label == '') {
-                        saved_data.weapons.splice(select.parentElement.parentElement.rowIndex-1, 1);
-                        break;
-                    }
-                    let item = saved_data.backpack.find(element => element.label == label);
-                    item = saved_items.find(element => element.name == item.name);
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1] = {
-                        "label": label,
-                        "hand": item.properties.includes('双手')?'双手':'右手',
-                        "ability": item.type.includes('远程')?"敏捷":'力量',
-                    };
-                    break;
-                case 3:
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['ability'] = (
-                        select.selectedOptions[0].innerText
-                    );
-                    break;
-            }
-            load_main();
-
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
-        });
-    });
 
     // 载入护甲
     armor_table.rows[0].innerHTML = [
@@ -844,24 +914,26 @@ function load_abstract() {
     ); // 护甲等级
 
     let abs_ref = {
-        '野蛮人': '体质',
-        '吟游诗人': '魅力',
-        '牧师': '感知',
-        '德鲁伊': '感知',
-        '战士': '智力',
-        '武僧': '感知',
-        '圣武士': '魅力',
-        '游侠': '感知',
-        '游荡者': '智力',
-        '术士': '魅力',
-        '契术师': '魅力',
-        '法师': '智力'
+        '野蛮人': ['体质', 'constitution'],
+        '吟游诗人': ['魅力', 'charisma'],
+        '牧师': ['感知', 'wisdom'],
+        '德鲁伊': ['感知', 'wisdom'],
+        '战士': ['智力', 'intelligence'],
+        '武僧': ['感知', 'wisdom'],
+        '圣武士': ['魅力', 'charisma'],
+        '游侠': ['感知', 'wisdom'],
+        '游荡者': ['智力', 'intelligence'],
+        '术士': ['魅力', 'charisma'],
+        '契术师': ['魅力', 'charisma'],
+        '法师': ['智力', 'intelligence']
     };
-    assign(spellcasting_ability.children[1], abs_ref[saved_data.main['class']]); // 施法关键属性
+    assign(spellcasting_ability.children[1], abs_ref[saved_data.main['class']][0]); // 施法关键属性
     
-    assign(difficulty_class.children[1],
-        8 + parseInt(sum(computed_data['intelligence'])/2)-5 + Number(computed_data.proficiency_bonus)
-    ); // 法术豁免难度等级
+    assign(difficulty_class.children[1], (
+        8 + parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+        + Number(computed_data.proficiency_bonus)
+    )); // 法术豁免难度等级
+
 
     assign(passive_perception.children[1],
         10 + Number(skills.tBodies[0].children[10].children[3].innerText)
@@ -870,6 +942,18 @@ function load_abstract() {
     assign(hit_point.children[1].children[0], saved_data.abstract['hit_point'][0]); // 当前生命值
     assign(hit_point.children[2].children[0], saved_data.abstract['hit_point'][1]); // 最大生命值
     assign(temporary_hit_point.children[1].children[0], saved_data.abstract['hit_point'][2]); // 临时生命值
+    let color = '';
+    if (
+        Number(saved_data.abstract['hit_point'][0]) == Number(saved_data.abstract['hit_point'][1])
+    ) {color = '#00bb20';} else if (
+        Number(saved_data.abstract['hit_point'][0]) > Number(saved_data.abstract['hit_point'][1])/2
+    ) {color = '#c5ca00';} else if (
+        Number(saved_data.abstract['hit_point'][0]) > 0
+    ) {color = '#f7a100';} else {color = '#cc0000';}
+    scroll_main.querySelectorAll('#hit_point input').forEach(el => {
+        el.style.color = color;
+        el.style['font-size'] = '16px';
+    });
 
     let hd_ref = {
         '野蛮人': '1d12',
@@ -903,8 +987,397 @@ function load_abstract() {
         saved_data.abstract['vulnerabilities']); // 易伤
     assign(conditions.children[0].children[1].children[3].children[0],
         saved_data.abstract['resistances']); // 抗性
+    
+
+    // 顺便修改载重信息
+    let max_weight = 5 * Number(computed_data.strength);
+    let weight_color = '#000000';
+    if (computed_data.current_weight > 10*Number(computed_data.strength)) {
+        weight_color = '#cc0000';
+    } else if (computed_data.current_weight > 5*Number(computed_data.strength)) {
+        weight_color = '#f7a100';
+    }
+    document.querySelectorAll('#current_weight_1, #current_weight_2').forEach(el => {
+        el.style.color = weight_color;
+    });
+        
+    assign(current_weight_1, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
+    assign(current_weight_2, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
 }
 
+
+/**
+ * 载入武器
+ */
+function load_weapons() {
+    for (let i=1; i<4; i++) {
+        weapons_table.rows[i].innerHTML = [
+            '<td><select class="form-control"></select></td>',
+            '<td><select class="form-control"><option></option></select></td>',
+            '<td></td>',
+            '<td><select class="form-control"></select></td>',
+            '<td></td>',
+            '<td></td>',
+        ].join('');
+    }
+
+    for (let i in saved_data.backpack) {
+        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
+        if (item.type.includes('武器')) {
+            weapons_table.rows[1].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+            weapons_table.rows[2].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+            weapons_table.rows[3].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+        }
+    }
+
+    for (let i in saved_data.weapons) {
+        let item = saved_data.backpack.find(element => element.label == saved_data.weapons[i].label);
+        if (item == undefined) {
+            saved_data.weapons.splice(i, 1);
+            continue;
+        }
+        item = saved_items.find(element => element.name == item.name);
+
+        if (item.properties.includes('双手')) {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+        } else if (item.properties.includes('可双手')) {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+        } else {
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
+            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
+        }
+
+        if (item.properties.includes('灵巧')) {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+        } else if (item.type.includes('远程')) {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+        } else {
+            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
+        }
+
+        assign(weapons_table.rows[Number(i)+1].cells[0].children[0], saved_data.weapons[i].hand);
+        assign(weapons_table.rows[Number(i)+1].cells[1].children[0], saved_data.weapons[i].label);
+        let tmp_properties = [...item.properties];
+        for (let j in tmp_properties) {
+            if (tmp_properties[j] == '可双手')
+                tmp_properties[j] = '可双手 (<span class="dice">' + item.dmg[2] + '</span>)';
+            if (tmp_properties[j] == '弹药') tmp_properties[j] = '弹药 (' + item.range + ' ft.)';
+            if (tmp_properties[j] == '投掷') tmp_properties[j] = '投掷 (' + item.range + ' ft.)';
+        }
+        assign(weapons_table.rows[Number(i)+1].cells[2], tmp_properties.join('、'));
+        assign(weapons_table.rows[Number(i)+1].cells[3]. children[0], saved_data.weapons[i].ability);
+
+        const adice = document.createElement('button');
+        adice.className = 'btn dice';
+        const abs_ref = {'力量': 'strength', '敏捷': 'dexterity'};
+        assign(adice, '1d20+' + (
+            parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
+            + computed_data.proficiency_bonus
+        ));
+        weapons_table.rows[Number(i)+1].cells[4].appendChild(adice);
+
+        const hdice = document.createElement('button');
+        hdice.className = 'btn dice';
+        assign(hdice, (
+            (
+                item.properties.includes('可双手') && saved_data.weapons[i].hand=='双手' ?
+                item.dmg[2] :
+                item.dmg[1]
+            ) + (
+                parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 < 0 ?
+                parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 :
+                '+' + (parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5)
+            )
+        ));
+        weapons_table.rows[Number(i)+1].cells[5].appendChild(hdice);
+    }
+
+    weapons_table.querySelectorAll('.dice').forEach(dice => {
+        dice.addEventListener('click', () => {
+            let label = dice.parentElement.parentElement
+                .children[1].children[0].selectedOptions[0].value;
+            if (dice.tagName == 'BUTTON') {
+                label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
+            }
+            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+            roll_board.innerHTML += label + ': ';
+            roll_board.innerHTML += roll_dice(dice.innerText);
+            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+        });
+    });
+
+    weapons_table.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+            switch (select.parentElement.cellIndex) {
+                case 0:
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['hand'] = (
+                        select.selectedOptions[0].innerText
+                    );
+                    break;
+                case 1:
+                    let label = select.selectedOptions[0].innerText;
+                    if (label == '') {
+                        saved_data.weapons.splice(select.parentElement.parentElement.rowIndex-1, 1);
+                        break;
+                    }
+                    let item = saved_data.backpack.find(element => element.label == label);
+                    item = saved_items.find(element => element.name == item.name);
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1] = {
+                        "label": label,
+                        "hand": item.properties.includes('双手')?'双手':'右手',
+                        "ability": item.type.includes('远程')?"敏捷":'力量',
+                    };
+                    break;
+                case 3:
+                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['ability'] = (
+                        select.selectedOptions[0].innerText
+                    );
+                    break;
+            }
+            load_main();
+
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+}
+
+
+/**
+ * 载入快速施法
+ */
+function load_quick_spellcasting() {
+    let quick_spellcasting = document.querySelector('#quick_spellcasting');
+    for (let i=1; i<4; i++) {
+        quick_spellcasting.rows[i].innerHTML = [
+            '<td><select class="form-control"><option></option></select></td>',
+            '<td></td>',
+            '<td></td>',
+            '<td></td>',
+            '<td></td>'
+        ].join('');
+    }
+
+    let spells = {'0': [], '1': [], '2': [], '3': [], '4': [],
+        '5': [], '6': [], '7': [], '8': [], '9': []};
+    for (let i in saved_data.spells) {
+        let spell = saved_spells.find(element => element.name == saved_data.spells[i]);
+        spells[spell.level].push(spell.name);
+    }
+    for (let i in Object.keys(spells)) {
+        if (spells[i].length == 0) continue;
+        quick_spellcasting.rows[1].cells[0].children[0].add(new Option(i + ' 环'));
+        quick_spellcasting.rows[2].cells[0].children[0].add(new Option(i + ' 环'));
+        quick_spellcasting.rows[3].cells[0].children[0].add(new Option(i + ' 环'));
+    }
+
+    for (let i in saved_data.quick_spellcasting) {
+        if (!saved_data.spells.includes(saved_data.quick_spellcasting[i][1])) {
+            saved_data.quick_spellcasting[i] = ['', '', '']
+        }
+
+        assign(quick_spellcasting.rows[Number(i)+1].cells[0].children[0], (
+            saved_data.quick_spellcasting[i][0] == '' ?
+            '' :
+            saved_data.quick_spellcasting[i][0] + ' 环'
+        ));
+
+        if (saved_data.quick_spellcasting[i][0] == '') continue;
+        const ssel = document.createElement('select');
+        ssel.className = 'form-control';
+        quick_spellcasting.rows[Number(i)+1].cells[1].appendChild(ssel);
+        for (let j in spells[saved_data.quick_spellcasting[i][0]]) {
+            let opt = new Option(spells[saved_data.quick_spellcasting[i][0]][j].split('  ')[0]);
+            opt.name = spells[saved_data.quick_spellcasting[i][0]][j];
+            quick_spellcasting.rows[Number(i)+1].cells[1].children[0].add(opt);
+        }
+        assign(quick_spellcasting.rows[Number(i)+1].cells[1].children[0], (
+            saved_data.quick_spellcasting[i][1].split('  ')[0]
+        ));
+        
+        const dinp = document.createElement('input');
+        dinp.className = 'form-control';
+        assign(dinp, saved_data.quick_spellcasting[i][2])
+        if (saved_data.quick_spellcasting[i][1] != '')
+            quick_spellcasting.rows[Number(i)+1].cells[2].appendChild(dinp);
+        
+        let abs_ref = {
+            '野蛮人': ['体质', 'constitution'],
+            '吟游诗人': ['魅力', 'charisma'],
+            '牧师': ['感知', 'wisdom'],
+            '德鲁伊': ['感知', 'wisdom'],
+            '战士': ['智力', 'intelligence'],
+            '武僧': ['感知', 'wisdom'],
+            '圣武士': ['魅力', 'charisma'],
+            '游侠': ['感知', 'wisdom'],
+            '游荡者': ['智力', 'intelligence'],
+            '术士': ['魅力', 'charisma'],
+            '契术师': ['魅力', 'charisma'],
+            '法师': ['智力', 'intelligence']
+        };
+        const adice = document.createElement('button');
+        adice.className = 'btn dice';
+        assign(adice, '1d20+' + (
+            parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+            + Number(computed_data.proficiency_bonus)
+        ));
+        if (saved_data.quick_spellcasting[i][1] != '')
+            quick_spellcasting.rows[Number(i)+1].cells[3].appendChild(adice);
+
+        const ddice = document.createElement('button');
+        ddice.className = 'btn dice';
+        assign(ddice, (
+            saved_data.quick_spellcasting[i][2] == '' ?
+            '0' :
+            saved_data.quick_spellcasting[i][2]
+        ));
+        if (saved_data.quick_spellcasting[i][1] != '')
+            quick_spellcasting.rows[Number(i)+1].cells[4].appendChild(ddice);
+
+    }
+
+    quick_spellcasting.querySelectorAll('.dice').forEach(dice => {
+        dice.addEventListener('click', () => {
+            let label = (
+                dice.parentElement.parentElement.children[1].children[0].selectedOptions[0].value
+                + ['', '', '', '命中', '伤害'][dice.parentElement.cellIndex]
+            );
+            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+            roll_board.innerHTML += label + ': ';
+            roll_board.innerHTML += roll_dice(dice.innerText);
+            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+        });
+    });
+
+    quick_spellcasting.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', () => {
+            switch (select.parentElement.cellIndex) {
+                case 0:
+                    if (select.selectedOptions[0].innerText == '') {
+                        saved_data.quick_spellcasting[
+                            select.parentElement.parentElement.rowIndex-1
+                        ] = ['', '', ''];
+                    } else {
+                        saved_data.quick_spellcasting[
+                            select.parentElement.parentElement.rowIndex-1
+                        ][0] = select.selectedOptions[0].innerText.split(' ')[0];
+                        saved_data.quick_spellcasting[
+                            select.parentElement.parentElement.rowIndex-1
+                        ][1] = spells[select.selectedOptions[0].innerText.split(' ')[0]][0];
+                        saved_data.quick_spellcasting[
+                            select.parentElement.parentElement.rowIndex-1
+                        ][2] = '';
+                    }
+                    break;
+                case 1:
+                    saved_data.quick_spellcasting[
+                        select.parentElement.parentElement.rowIndex-1
+                    ][1] = select.selectedOptions[0].name;
+                    saved_data.quick_spellcasting[
+                        select.parentElement.parentElement.rowIndex-1
+                    ][2] = '';
+                    break;
+            }
+            
+            load_main();
+
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+
+    quick_spellcasting.querySelectorAll('input').forEach(input => {
+        input.addEventListener('change', () => {
+            saved_data.quick_spellcasting[
+                input.parentElement.parentElement.rowIndex-1
+            ][2] = input.value;
+
+            load_main();
+
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+}
+
+/**
+ * 加载施法界面中的施法信息
+ */
+function load_spellcasting_info() {
+    let sls_ref = {
+        '0':  ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '1':  ['2', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '2':  ['3', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '3':  ['4', '2', '0', '0', '0', '0', '0', '0', '0'],
+        '4':  ['4', '3', '0', '0', '0', '0', '0', '0', '0'],
+        '5':  ['4', '3', '2', '0', '0', '0', '0', '0', '0'],
+        '6':  ['4', '3', '3', '0', '0', '0', '0', '0', '0'],
+        '7':  ['4', '3', '3', '1', '0', '0', '0', '0', '0'],
+        '8':  ['4', '3', '3', '2', '0', '0', '0', '0', '0'],
+        '9':  ['4', '3', '3', '3', '1', '0', '0', '0', '0'],
+        '10': ['4', '3', '3', '3', '2', '0', '0', '0', '0'],
+        '11': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
+        '12': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
+        '13': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
+        '14': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
+        '15': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
+        '16': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
+        '17': ['4', '3', '3', '3', '2', '1', '1', '1', '1'],
+        '18': ['4', '3', '3', '3', '3', '1', '1', '1', '1'],
+        '19': ['4', '3', '3', '3', '3', '2', '1', '1', '1'],
+        '20': ['4', '3', '3', '3', '3', '2', '2', '1', '1']
+    }
+    let level = 0;
+    if (['吟游诗人', '牧师', '德鲁伊', '术士', '法师'].includes(saved_data.main.class)) {
+        level = saved_data.main.class_level;
+    } else if (['圣武士', '游侠'].includes(saved_data.main.class)) {
+        level = parseInt(Number(saved_data.main.class_level)/2 + 0.9);
+        if (saved_data.main.class_level == '1') level = 0;
+    }
+    for (let i=0; i<9; i++) {
+        let label = saved_data.spell_slots[i] + ' / ' + sls_ref[level][i];
+        assign(spell_slot.rows[1].cells[i+1].children[0], label);
+    }
+
+    let abs_ref = {
+        '野蛮人': ['体质', 'constitution'],
+        '吟游诗人': ['魅力', 'charisma'],
+        '牧师': ['感知', 'wisdom'],
+        '德鲁伊': ['感知', 'wisdom'],
+        '战士': ['智力', 'intelligence'],
+        '武僧': ['感知', 'wisdom'],
+        '圣武士': ['魅力', 'charisma'],
+        '游侠': ['感知', 'wisdom'],
+        '游荡者': ['智力', 'intelligence'],
+        '术士': ['魅力', 'charisma'],
+        '契术师': ['魅力', 'charisma'],
+        '法师': ['智力', 'intelligence']
+    };
+
+    assign(spellcasting_ability_in_spellcasting.children[1], (
+        abs_ref[saved_data.main['class']][0]
+    )); // 施法关键属性
+    assign(difficulty_class_in_spellcasting.children[1], (
+        8 + parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+        + Number(computed_data.proficiency_bonus)
+    )); // 法术豁免难度等级
+    assign(attack_bonus_in_spellcasting.children[1].children[0], (
+        parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+        + Number(computed_data.proficiency_bonus)
+    )); // 法术命中加值
+}
 
 /**
  * 为元素 element 设置值 value

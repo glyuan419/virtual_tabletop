@@ -6,6 +6,11 @@ from os import listdir
 from json import loads
 from hashlib import md5
 from time import time
+import logging, ngrok
+
+# logging.basicConfig(level=logging.INFO)
+# listener = ngrok.werkzeug_develop()
+# bash-> NGROK_AUTHTOKEN=2umvdb5udVAnlJShSMBQ0vcJjxs_2agDiY5mC8LUgmgp4o2qr ./run.py
 
 app = Flask(__name__)
 
@@ -17,7 +22,6 @@ def home():
         with open(f'savefiles/{file_name}', 'r') as f:
             data = loads(f.read())['main']
             res.append([file_name.split('.')[0], data['race']+data['class'], data['character_name']])
-    print(str(res).encode())
     return render_template('select_pc.html', data=str(res))
 
 @app.route('/template/main')
@@ -71,10 +75,7 @@ def api_query_spells():
     return res
 
 
-
-
-
-
+# # ngrok http 5000
 
 @app.route('/dm')
 def dm_view():

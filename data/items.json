@@ -1,5 +1,14 @@
 [
     {
+        "name": "自定义  Custom Thing",
+        "source": "自定义",
+        "type": ["其它"],
+        "properties": [],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
         "name": "箭  Arrow",
         "source": "PHB",
         "type": [
@@ -447,6 +456,7 @@
             "穿刺",
             "1d6"
         ],
+        "range": "10/120",
         "weight": 2,
         "value": 50,
         "entries": []

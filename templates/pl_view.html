@@ -14,833 +14,828 @@
             <select id="character_selector" class="form-control">
             </select>
         </li>
-        <li class="nav-item"><button type="button" id="btn_background" class="btn">背景</button></li>
-        <li class="nav-item"><button type="button" id="btn_main" class="btn">主要情况</button></li>
-        <li class="nav-item"><button type="button" id="btn_backpack" class="btn">背包</button></li>
-        <li class="nav-item"><button type="button" id="btn_spellcasting" class="btn">施法</button></li>
-        <li class="nav-item"><button type="button" id="btn_maps" class="btn">地图</button></li>
+        <li class="nav-item"><button id="btn_background" class="btn">背景</button></li>
+        <li class="nav-item"><button id="btn_main" class="btn">主要情况</button></li>
+        <li class="nav-item"><button id="btn_backpack" class="btn">背包</button></li>
+        <li class="nav-item"><button id="btn_spellcasting" class="btn">施法</button></li>
+        <li class="nav-item"><button id="btn_maps" class="btn">地图</button></li>
         <li class="nav-divider"></li>
-        <li class="nav-item"><button type="button" id="btn_items" class="btn">物品</button></li>
-        <li class="nav-item"><button type="button" id="btn_spells" class="btn">法术</button></li>
+        <li class="nav-item"><button id="btn_items" class="btn">物品</button></li>
+        <li class="nav-item"><button id="btn_spells" class="btn">法术</button></li>
         <li class="nav-divider"></li>
         <li class="nav-space"></li>
-        <li class="nav-item"><button id="long_rest" type="button" class="btn">长休息</button></li>
+        <li class="nav-item"><button id="long_rest" class="btn">长休息</button></li>
         <li class="nav-divider" style="border: none;"></li>
     </menu>
     
     <div id="scroll_background" class="container" style="display: none;"></div>
     
-    <div id="scroll_main" class="container" style="display: none;">
-        <div class="w-p15 col scroll"> <!-- 左栏（技能栏） -->
-            <div class="table-title">技能</div>
-            <table id="skills" class="table">
-                <tbody>
-                    <tr class="table-heading">
-                        <td class="w-p20">熟练</td>
-                        <td class="w-p20">技能</td>
-                        <td class="w-p20">修正</td>
-                        <td class="w-p20">总值</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">运动</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">特技</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">巧手</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">隐匿</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">调查</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">奥秘</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">历史</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">自然</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">宗教</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">察觉</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">洞悉</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">驯兽</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">医药</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-gray-50">求生</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">游说</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">欺瞒</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">威吓</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <select class="form-control">
-                                <option>X</option>
-                                <option>O</option>
-                                <option>D</option>
-                                <option>H</option>
-                            </select>
-                        </td>
-                        <td class="bg-primary-50">表演</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="w-p50 space-y-lg"> <!-- 中栏 -->
-            <div class="row space-x"> <!-- 中栏-上栏（基本信息） -->
-                <table class="table w-p30">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input id="character_name" type="text" class="form-control" placeholder="角色名"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input id="race" type="text" class="form-control" placeholder="种族"/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table w-p40">
-                    <tbody>
-                        <tr>
-                            <td class="w-p80">
-                                <select id="class_name" class="form-control">
-                                    <option></option>
-                                    <option>野蛮人</option>
-                                    <option>吟游诗人</option>
-                                    <option>牧师</option>
-                                    <option>德鲁伊</option>
-                                    <option>战士</option>
-                                    <option>武僧</option>
-                                    <option>圣武士</option>
-                                    <option>游侠</option>
-                                    <option>游荡者</option>
-                                    <option>术士</option>
-                                    <option>契术师</option>
-                                    <option>法师</option>
-                                </select>
-                            </td>
-                            <td class="w-p20">
-                                <input id="class_level" type="text" class="form-control" placeholder="等级"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <!-- <input type="text" class="form-control" placeholder="兼职"/> -->
-                            </td>
-                            <td>
-                                <!-- <input type="text" class="form-control" placeholder="等级"/> -->
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table w-p30">
-                    <tbody>
-                        <tr>
-                            <td class="w-p50">经验值</td>
-                            <td>
-                                <input id="experience_points" type="text" class="form-control"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="w-p50">熟练加值</td>
-                            <td>
-                                <button id="proficiency_bonus" type="button" class="btn dice">0</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="row space-x"> <!-- 中栏-次栏（属性、数值、生命） -->
-                <div class="w-p40"> <!-- 中栏-中栏-左栏（属性栏） -->
-                    <div class="table-title">属性</div>
-                    <table id="abilities" class="table">
+
+    <div id="scroll_main" style="display: none;">
+        <div class="container">
+            <div class="w-p15 col"> <!-- 左栏（技能栏） -->
+                <div class="scroll">
+                    <div class="table-title">技能</div>
+                    <table id="skills" class="table">
                         <tbody>
                             <tr class="table-heading">
                                 <td class="w-p20">熟练</td>
-                                <td class="w-p20">属性</td>
-                                <td class="w-p20">属性值</td>
-                                <td class="w-p20">调整值</td>
-                                <td class="w-p20">豁免</td>
+                                <td class="w-p20">技能</td>
+                                <td class="w-p20">修正</td>
+                                <td class="w-p20">总值</td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="bg-gray-50">力量</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">运动</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="bg-gray-50">敏捷</td>
-                                <td>
-                                    <input type="text" class="form-control"/>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="bg-gray-50">体质</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">特技</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="bg-gray-50">智力</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">巧手</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="bg-gray-50">感知</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">隐匿</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td class="bg-gray-50">魅力</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">调查</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
+                            </tr>
+                            <tr>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
                                 </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="w-p30 space-y-sm"> <!-- 中栏-中栏-中栏（摘要） -->
-                    <table class="table">
-                        <tbody>
-                            <tr class="table-heading">
-                                <td class="w-p40"></td>
-                                <td class="w-p30">加值</td>
-                                <td class="w-p30">总值</td>
-                            </tr>
-                            <tr id="initiative">
-                                <td class="bg-gray-50">先攻</td>
+                                <td class="bg-primary-50">奥秘</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
-                            <tr id="armor_class">
-                                <td class="bg-gray-50">护甲等级</td>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">历史</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control"/>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <table class="table">
-                        <tbody>
-                            <tr id="spellcasting_ability">
-                                <td class="w-p40 bg-gray-50">关键属性</td>
-                                <td class="w-p60"></td>
-                            </tr>
-                            <tr id="difficulty_class">
-                                <td class="bg-gray-50">难度等级</td>
-                                <td></td>
-                            </tr>
-                            <tr id="passive_perception">
-                                <td class="bg-gray-50">被动察觉</td>
-                                <td></td>
-                            </tr>
-                            <tr id="death_saving" >
-                                <td class="w-p40 bg-gray-50">
-                                    <span class="dice">死亡豁免</span>
-                                </td>
-                                <td class="w-p60">
-                                    <div>
-                                        <input type="checkbox"/>
-                                        <input type="checkbox"/>
-                                        <input type="checkbox"/>
-                                    </div>
-                                    <div>
-                                        <input type="checkbox"/>
-                                        <input type="checkbox"/>
-                                        <input type="checkbox"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="w-p30 space-y-sm"> <!-- 中栏-中栏-右栏 -->
-                    <table class="table">
-                        <tbody>
-                            <tr class="table-heading">
-                                <td class="w-p40"></td>
-                                <td class="w-p30">当前值</td>
-                                <td class="w-p30">最大值</td>
-                            </tr>
-                            <tr id="hit_point" style="color: #ef4444;">
-                                <td class="bg-gray-50">生命值</td>
+                            <tr>
                                 <td>
-                                    <input type="text" class="form-control" style="color: #ef4444;"/>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
                                 </td>
-                                <td>
-                                    <input type="text" class="form-control" style="color: #ef4444;"/>
-                                </td>
-                            </tr>
-                            <tr id="hit_dice">
-                                <td class="bg-gray-50">生命骰</td>
+                                <td class="bg-primary-50">自然</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control"/>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
-                            <tr id="special_value">
-                                <td class="bg-gray-50">
-                                    <input type="text" class="form-control bg-gray-50" placeholder="特殊能力"/>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
                                 </td>
+                                <td class="bg-primary-50">宗教</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control"/>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <table class="table">
-                        <tbody>
-                            <tr id="temporary_hit_point">
-                                <td class="w-p50 bg-gray-50">临时生命</td>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">察觉</td>
                                 <td>
                                     <input type="text" class="form-control"/>
                                 </td>
-                            </tr>
-                            <tr id="hit_dice_value">
-                                <td class="bg-gray-50">生命值恢复</td>
                                 <td>
-                                    <button type="button" class="btn dice">0</button>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <table class="table">
-                        <tbody>
-                            <tr id="inspiration">
-                                <td class="w-p50 bg-gray-50">激励</td>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">洞悉</td>
                                 <td>
                                     <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">驯兽</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">医药</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-gray-50">求生</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">游说</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">欺瞒</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">威吓</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control">
+                                        <option>X</option>
+                                        <option>O</option>
+                                        <option>D</option>
+                                        <option>H</option>
+                                    </select>
+                                </td>
+                                <td class="bg-primary-50">表演</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td>
+                                    <button class="btn dice">0</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="row"> <!-- 中栏-中栏（状态栏） -->
-                <table id="conditions" class="table w-p100">
+            <div class="w-p50 space-y"> <!-- 中栏 -->
+                <div class="row space-x"> <!-- 中栏-上栏（基本信息） -->
+                    <table class="table w-p30">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input id="character_name" type="text" class="form-control" placeholder="角色名"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="race" type="text" class="form-control" placeholder="种族"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table w-p40">
+                        <tbody>
+                            <tr>
+                                <td class="w-p80">
+                                    <select id="class_name" class="form-control">
+                                        <option></option>
+                                        <option>野蛮人</option>
+                                        <option>吟游诗人</option>
+                                        <option>牧师</option>
+                                        <option>德鲁伊</option>
+                                        <option>战士</option>
+                                        <option>武僧</option>
+                                        <option>圣武士</option>
+                                        <option>游侠</option>
+                                        <option>游荡者</option>
+                                        <option>术士</option>
+                                        <option>契术师</option>
+                                        <option>法师</option>
+                                    </select>
+                                </td>
+                                <td class="w-p20">
+                                    <input id="class_level" type="text" class="form-control" placeholder="等级"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <!-- <input type="text" class="form-control" placeholder="兼职"/> -->
+                                </td>
+                                <td>
+                                    <!-- <input type="text" class="form-control" placeholder="等级"/> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table w-p30">
+                        <tbody>
+                            <tr>
+                                <td class="w-p50">经验值</td>
+                                <td>
+                                    <input id="experience_points" type="text" class="form-control"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="w-p50">熟练加值</td>
+                                <td>
+                                    <button id="proficiency_bonus" class="btn dice">0</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row space-x"> <!-- 中栏-次栏（属性、数值、生命） -->
+                    <div class="w-p40"> <!-- 中栏-中栏-左栏（属性栏） -->
+                        <div class="table-title">属性</div>
+                        <table id="abilities" class="table">
+                            <tbody>
+                                <tr class="table-heading">
+                                    <td class="w-p20">熟练</td>
+                                    <td class="w-p20">属性</td>
+                                    <td class="w-p20">属性值</td>
+                                    <td class="w-p20">调整值</td>
+                                    <td class="w-p20">豁免</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">力量</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">敏捷</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">体质</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">智力</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">感知</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="bg-gray-50">魅力</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="w-p30 space-y-sm"> <!-- 中栏-中栏-中栏（摘要） -->
+                        <table class="table">
+                            <tbody>
+                                <tr class="table-heading">
+                                    <td class="w-p40"></td>
+                                    <td class="w-p30">加值</td>
+                                    <td class="w-p30">总值</td>
+                                </tr>
+                                <tr id="initiative">
+                                    <td class="bg-gray-50">先攻</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                                <tr id="armor_class">
+                                    <td class="bg-gray-50">护甲等级</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <tbody>
+                                <tr id="spellcasting_ability">
+                                    <td class="w-p40 bg-gray-50">关键属性</td>
+                                    <td class="w-p60"></td>
+                                </tr>
+                                <tr id="difficulty_class">
+                                    <td class="bg-gray-50">难度等级</td>
+                                    <td></td>
+                                </tr>
+                                <tr id="passive_perception">
+                                    <td class="bg-gray-50">被动察觉</td>
+                                    <td></td>
+                                </tr>
+                                <tr id="death_saving" >
+                                    <td class="w-p40 bg-gray-50">
+                                        <span class="dice">死亡豁免</span>
+                                    </td>
+                                    <td class="w-p60">
+                                        <div>
+                                            <input type="checkbox"/>
+                                            <input type="checkbox"/>
+                                            <input type="checkbox"/>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox"/>
+                                            <input type="checkbox"/>
+                                            <input type="checkbox"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="w-p30 space-y-sm"> <!-- 中栏-中栏-右栏 -->
+                        <table class="table">
+                            <tbody>
+                                <tr class="table-heading">
+                                    <td class="w-p40"></td>
+                                    <td class="w-p30">当前值</td>
+                                    <td class="w-p30">最大值</td>
+                                </tr>
+                                <tr id="hit_point">
+                                    <td class="bg-gray-50">生命值</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                                <tr id="hit_dice">
+                                    <td class="bg-gray-50">生命骰</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                                <tr id="special_value">
+                                    <td class="bg-gray-50">
+                                        <input type="text" class="form-control bg-gray-50" placeholder="特殊能力"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <tbody>
+                                <tr id="temporary_hit_point">
+                                    <td class="w-p50 bg-gray-50">临时生命</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                                <tr id="hit_dice_value">
+                                    <td class="bg-gray-50">生命值恢复</td>
+                                    <td>
+                                        <button class="btn dice">0</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <tbody>
+                                <tr id="inspiration">
+                                    <td class="w-p50 bg-gray-50">激励</td>
+                                    <td>
+                                        <input type="text" class="form-control"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row"> <!-- 中栏-中栏（状态栏） -->
+                    <table id="conditions" class="table w-p100">
+                        <tbody>
+                            <tr>
+                                <td class="w-p10 bg-gray-50">状态</td>
+                                <td class="w-p40">
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td class="w-p10 bg-gray-50">免疫</td>
+                                <td class="w-p40">
+                                    <input type="text" class="form-control"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-gray-50">易伤</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                                <td class="bg-gray-50">抗性</td>
+                                <td>
+                                    <input type="text" class="form-control"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row"> <!-- 中栏-下栏（武器栏） -->
+                    <table id="weapons_table" class="table w-p100">
+                        <tr class="table-heading">
+                            <td class="w-p10">
+                                <div class="m-1">武器</div>
+                            </td>
+                            <td class="w-p20">名称</td>
+                            <td class="w-p30">特性</td>
+                            <td class="w-p10">攻击属性</td>
+                            <td class="w-p10">攻击命中</td>
+                            <td class="w-p10">武器伤害</td>
+                        </tr>
+                        <tr>
+                            <td><select class="form-control"></select></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><select class="form-control"></select></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><select class="form-control"></select></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td><select class="form-control"></select></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="w-p35 col space-y"> <!-- 右栏（装备、护甲、法术） -->
+                <table id="gear_table" class="table"> <!-- 装备栏 -->
+                    <tr class="table-heading">
+                        <td class="w-p15"><div class="m-1">装备</div></td>
+                        <td class="w-p35">名称</td>
+                        <td class="w-p15">装备</td>
+                        <td class="w-p35">名称</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-gray-50">头部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                        <td class="bg-gray-50">颈部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-gray-50">胸部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                        <td class="bg-gray-50">肩部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-gray-50">腰部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                        <td class="bg-gray-50">背部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-gray-50">手部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                        <td class="bg-gray-50">腕部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bg-gray-50">腿部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                        <td class="bg-gray-50">脚部</td>
+                        <td>
+                            <input type="text" class="form-control"/>
+                        </td>
+                    </tr>
+                </table>
+                <table id="armor_table" class="table"> <!-- 护甲栏 -->
+                    <tr>
+                        <td class="w-p15"></td>
+                        <td class="w-p35"></td>
+                        <td class="w-p15 bg-gray-50">盾牌</td>
+                        <td class="w-p35"></td>
+                    </tr>
+                </table>
+                <table id="quick_spellcasting" class="table"> <!-- 法术栏 -->
+                    <tbody>
+                        <tr class="table-heading">
+                            <td class="w-p10">环阶</td>
+                            <td class="w-p35">法术名称</td>
+                            <td class="w-p15">法术伤害</td>
+                            <td class="w-p20">法术命中</td>
+                            <td class="w-p20">伤害骰</td>
+                        </tr>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                        <tr><td></td></tr>
+                    </tbody>
+                </table>
+                <table id="coins_in_main" class="table w-p35"> <!-- 财富 -->
                     <tbody>
                         <tr>
-                            <td class="w-p10 bg-gray-50">状态</td>
-                            <td class="w-p40">
-                                <input type="text" class="form-control"/>
-                            </td>
-                            <td class="w-p10 bg-gray-50">免疫</td>
-                            <td class="w-p40">
+                            <td class="w-p30 bg-gray-50">金币</td>
+                            <td>
                                 <input type="text" class="form-control"/>
                             </td>
                         </tr>
                         <tr>
-                            <td class="bg-gray-50">易伤</td>
-                            <td>
-                                <input type="text" class="form-control"/>
-                            </td>
-                            <td class="bg-gray-50">抗性</td>
-                            <td>
-                                <input type="text" class="form-control"/>
-                            </td>
+                            <td class="bg-gray-50">银币</td>
+                            <td><input type="text" class="form-control"/></td>
+                        </tr>
+                        <tr>
+                            <td class="bg-gray-50">铜币</td>
+                            <td><input type="text" class="form-control"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table w-p35"> <!-- 负重 -->
+                    <tbody>
+                        <tr>
+                            <td class="w-p30 bg-gray-50">负重</td>
+                            <td id="current_weight_1"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="row"> <!-- 中栏-下栏（武器栏） -->
-                <table id="weapons_table" class="table w-p100">
-                    <tr class="table-heading">
-                        <td class="w-p10">
-                            <div class="m-1">武器</div>
-                        </td>
-                        <td class="w-p20">名称</td>
-                        <td class="w-p30">特性</td>
-                        <td class="w-p10">攻击属性</td>
-                        <td class="w-p10">攻击命中</td>
-                        <td class="w-p10">武器伤害</td>
-                    </tr>
-                    <tr>
-                        <td><select class="form-control"></select></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><select class="form-control"></select></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><select class="form-control"></select></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td><select class="form-control"></select></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+        </div>
+        <div class="container">
+            <div class="col w-p30">
+                <div class="table-title">特性</div>
+                <table class="table">
+                    <tbody>
+                        <tr class="table-heading">
+                            <td class="w-p20">名称</td>
+                            <td class="w-p80">描述</td>
+                        </tr>
+                        <tr><td></td><td></td></tr>
+                    </tbody>
                 </table>
             </div>
-        </div>
-        <div class="w-p35 col space-y-lg"> <!-- 右栏（装备、护甲、法术） -->
-            <table id="gear_table" class="table"> <!-- 装备栏 -->
-                <tr class="table-heading">
-                    <td class="w-p15"><div class="m-1">装备</div></td>
-                    <td class="w-p35">名称</td>
-                    <td class="w-p15">装备</td>
-                    <td class="w-p35">名称</td>
-                </tr>
-                <tr>
-                    <td class="bg-gray-50">头部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                    <td class="bg-gray-50">颈部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="bg-gray-50">胸部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                    <td class="bg-gray-50">肩部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="bg-gray-50">腰部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                    <td class="bg-gray-50">背部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="bg-gray-50">手部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                    <td class="bg-gray-50">腕部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="bg-gray-50">腿部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                    <td class="bg-gray-50">脚部</td>
-                    <td>
-                        <input type="text" class="form-control"/>
-                    </td>
-                </tr>
-            </table>
-            <table id="armor_table" class="table"> <!-- 护甲栏 -->
-                <tr>
-                    <td class="w-p15"></td>
-                    <td class="w-p35"></td>
-                    <td class="w-p15 bg-gray-50">盾牌</td>
-                    <td class="w-p35"></td>
-                </tr>
-            </table>
-            <table class="table"> <!-- 法术栏 -->
-                <tbody>
-                    <tr class="table-heading">
-                        <td class="w-p40">法术名称</td>
-                        <td class="w-p20">法术伤害</td>
-                        <td class="w-p20">法术命中</td>
-                        <td class="w-p20">伤害骰</td>
-                    </tr>
-                    <tr>
-                        <td class="bg-gray-50">
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-gray-50">
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                        <td>
-                            <button type="button" class="btn dice">0</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table id="coins_in_main" class="table w-p35"> <!-- 财富 -->
-                <tbody>
-                    <tr>
-                        <td class="w-p30 bg-gray-50">金币</td>
-                        <td>
-                            <input type="text" class="form-control"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="bg-gray-50">银币</td>
-                        <td><input type="text" class="form-control"/></td>
-                    </tr>
-                    <tr>
-                        <td class="bg-gray-50">铜币</td>
-                        <td><input type="text" class="form-control"/></td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table w-p35"> <!-- 负重 -->
-                <tbody>
-                    <tr>
-                        <td class="w-p50 bg-gray-50">当前负重</td>
-                        <td id="current_weight_1"></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
     <div id="scroll_backpack" class="container" style="display: none;">
         <div class="w-p60 col scroll">
-            <div class="table-title">背包</div>
+            <div class="table-title">背包<button class="btn-add">+</button></div>
             <table id="backpack_table" class="table">
                 <tbody>
                     <tr class="table-heading">
@@ -848,16 +843,13 @@
                         <td class="w-p25">类型</td>
                         <td class="w-p25">特性</td>
                         <td class="w-p10">价值</td>
-                        <td class="w-p10">重量</td>
+                        <td class="w-p10">重量/磅</td>
                         <td class="w-p10">数量</td>
-                    </tr>
-                    <tr>
-                        <td colspan="6"><button type="button" class="btn">添加</button></td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="p-2"></div>
+            <div class="div-space"></div>
 
             <div class="table-title">仓库</div>
             <table id="storage_table" class="table">
@@ -865,19 +857,19 @@
                     <tr class="table-heading">
                         <td class="w-p20">名称</td>
                         <td class="w-p25">类型</td>
-                        <td class="w-p30">特性</td>
+                        <td class="w-p25">特性</td>
                         <td class="w-p10">价值</td>
-                        <td class="w-p10">重量</td>
-                        <td class="w-p5">数量</td>
+                        <td class="w-p10">重量/磅</td>
+                        <td class="w-p10">数量</td>
                     </tr>
                     <tr>
-                        <td colspan="6"><button type="button" class="btn">添加</button></td>
+                        <td colspan="6"><button class="btn">添加</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="w-p40 col space-y-lg">
-            <div id="backpack_item_board" class="board scroll w-p100 h-86">
+        <div class="w-p40 col space-y">
+            <div id="backpack_item_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -902,7 +894,7 @@
             <table class="table w-p35">
                 <tbody>
                     <tr>
-                        <td class="w-p50 bg-gray-50">当前负重</td>
+                        <td class="w-p30 bg-gray-50">负重</td>
                         <td id="current_weight_2"></td>
                     </tr>
                 </tbody>
@@ -911,63 +903,77 @@
     </div>
 
     <div id="scroll_spellcasting" class="container" style="display: none;">
-        <div class="w-p60 col scroll">
-            <div class="table-title">施法</div>
-            <table class="table">
+        <div class="w-p60 col">
+            <table id="spell_slot" class="table">
                 <tbody>
-                    <tr class="table-heading">
-                        <td class="w-p20">名称</td>
-                        <td class="w-p10">环阶</td>
-                        <td class="w-p30">学派</td>
-                        <td class="w-p20">施法时间</td>
-                        <td class="w-p20">射程</td>
-                    </tr>
-                    <tr class="table-item">
-                        <td>侦测毒素或疾病</td>
-                        <td>1环</td>
-                        <td>预言</td>
-                        <td>附赠动作</td>
-                        <td>自身 (100尺 直线)</td>
+                    <tr>
+                        <td class="w-p10 bg-gray-50">环阶</td>
+                        <td class="w-p10">1</td>
+                        <td class="w-p10">2</td>
+                        <td class="w-p10">3</td>
+                        <td class="w-p10">4</td>
+                        <td class="w-p10">5</td>
+                        <td class="w-p10">6</td>
+                        <td class="w-p10">7</td>
+                        <td class="w-p10">8</td>
+                        <td class="w-p10">9</td>
                     </tr>
                     <tr>
-                        <td colspan="5"><button type="button" class="btn">添加</button></td>
+                        <td class="bg-gray-50">法术位</td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
+                        <td><button class="btn slot">0 / 0</button></td>
                     </tr>
                 </tbody>
             </table>
+            
+            <div class="div-space"></div>
+
+            <div class="scroll">
+                <div class="table-title">施法</div>
+                <table id="spellcasting_table" class="table">
+                    <tbody>
+                        <tr class="table-heading">
+                            <td class="w-p25">名称</td>
+                            <td class="w-p15">环阶</td>
+                            <td class="w-p15">学派</td>
+                            <td class="w-p20">施法时间</td>
+                            <td class="w-p30">射程</td>
+                            <td class="w-p15">来源</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><button class="btn">添加</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="w-p40 col space-y-lg">
-            <div class="board scroll w-p100 h-86">
-                <div class="board-heading">水面行走  Water Walk</div>
-                <div class="board-abstract">
-                    3环 变化系 (仪式)<br>
-                    <span class="board-item">施法时间：</span>1 个动作<br>
-                    <span class="board-item">射程：</span>30 尺<br>
-                    <span class="board-item">构材：</span>声音、姿势、材料 (一块软木塞)<br>
-                    <span class="board-item">持续时间：</span>1 小时<br>
-                </div>
-                <div class="board-details">
-                    <p>此法术将给予在任何液体表面上行走的能力—像是水、酸液、泥浆、雪、流沙、或岩浆—就如同它们是无害的固体表面一样（走过熔岩的生物仍可能会因为高温而受到伤害）。射程内最多十个你所能看见的生物将在法术持续期间获得这个能力。</p>
-                    <p>若你以一个被液体淹没的生物为目标，此法术将以每轮60尺的速率将目标带到液体表面。</p>
-                    <p>
-                        <span class="board-item">升环施法效应. </span>
-                        当你使用4环或更高的法术位施放此法术时，你使用的法术位每比原本高一环，伤害便会再增加1d6。
-                    </p>
-                </div>
+        <div class="w-p40 col space-y">
+            <div id="spellcasting_spell_board" class="board scroll w-p100">
+                <div class="board-heading"></div>
+                <div class="board-abstract"></div>
+                <div class="board-details"></div>
             </div>
             <table class="table w-p35">
                 <tbody>
-                    <tr>
+                    <tr id="spellcasting_ability_in_spellcasting">
                         <td class="w-p60 bg-gray-50">关键施法属性</td>
                         <td>智力</td>
                     </tr>
-                    <tr>
+                    <tr id="difficulty_class_in_spellcasting">
                         <td class="w-p60 bg-gray-50">法术豁免等级</td>
                         <td>15</td>
                     </tr>
-                    <tr>
+                    <tr id="attack_bonus_in_spellcasting">
                         <td class="w-p60 bg-gray-50">法术命中加值</td>
-                        <td>+7</td>
+                        <td><button class="btn dice">0</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -990,8 +996,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="w-p40 col space-y-lg">
-            <div id="items_item_board" class="board scroll w-p100 h-86">
+        <div class="w-p40 col space-y">
+            <div id="items_item_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -1012,46 +1018,23 @@
                         <td class="w-p30">射程</td>
                         <td class="w-p15">来源</td>
                     </tr>
-                    <tr class="table-item">
-                        <td>侦测毒素或疾病</td>
-                        <td>1环</td>
-                        <td>预言</td>
-                        <td>附赠动作</td>
-                        <td>自身 (100尺 直线)</td>
-                    </tr>
                     <tr>
-                        <td colspan="6"><button type="button" class="btn">添加</button></td>
+                        <td colspan="6"><button class="btn">添加</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="w-p40 col space-y-lg">
-            <div id="spells_spell_board" class="board scroll w-p100 h-86">
+        <div class="w-p40 col space-y">
+            <div id="spells_spell_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
             </div>
-            <table class="table w-p35">
-                <tbody>
-                    <tr>
-                        <td class="w-p60 bg-gray-50">关键施法属性</td>
-                        <td>智力</td>
-                    </tr>
-                    <tr>
-                        <td class="w-p60 bg-gray-50">法术豁免等级</td>
-                        <td>15</td>
-                    </tr>
-                    <tr>
-                        <td class="w-p60 bg-gray-50">法术命中加值</td>
-                        <td>+7</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
-    <div id="roll_box" style="display: none;"> <!-- 骰盘 -->
+    <div id="roll_box"> <!-- 骰盘 -->
         投骰
         <div id="roll_board" contenteditable="true"></div>
         <input id="roll_input" type="text" class="form-control"/>

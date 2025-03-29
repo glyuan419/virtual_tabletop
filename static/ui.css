@@ -1,10 +1,16 @@
 .nav {
     display: flex;
+    position: fixed;
+    left: 0;
+    top: 0;
     list-style: none;
     height: 56px;
+    width: 100%;
+    background: white;
     margin: 0;
     padding: 12px;
     border-bottom: 1px solid #e4e8ef;
+    z-index: 100;
 }
 
 .nav-heading:hover {
@@ -36,8 +42,9 @@
 
 .container {
     display: flex;
-    height: calc(100% - 56px);
+    height: max(100%, 628px);
     padding: 8px;
+    padding-top: 64px;
 }
 
 .col {
@@ -66,6 +73,12 @@
     }
 }
 
+.space-y > * {
+    &:not(:first-child) {
+        margin-top: 16px;
+    }
+}
+
 .space-y-lg > * {
     &:not(:first-child) {
         margin-top: 18px;
@@ -73,7 +86,9 @@
 }
 
 .scroll {
-    overflow: auto;
+    overflow: overlay;
+    scrollbar-gutter: stable;
+    width: calc(100% + 6px);
 
     &::-webkit-scrollbar {
         height: 6px;
@@ -88,6 +103,7 @@
 }
 
 .table-title {
+    position: relative;
     padding: 4px;
     border: 1px solid #e4e8ef;
     border-bottom: 0;
@@ -132,12 +148,16 @@
 
 .board {
     padding: 12px;
+    height: 374px;
     border: 1px solid #e4e8ef;
+    display: flex;          /* 启用 Flexbox */
+    flex-direction: column
 }
 
 .board-heading {
     font-size: 18px;
     text-align: left;
+    flex-shrink: 0;
 }
 
 .board-abstract {
@@ -146,15 +166,32 @@
     padding: 6px 0 12px 0;
     border-bottom: 1px solid #e4e8ef;
     line-height: 1.5;
+    flex-shrink: 0;
 }
 
-.board-details > p {
+.board-details {
+    flex-grow: 1;
+}
+
+.board-details * {
     font-size: 12px;
     text-align: left;
 }
 
 .board-item {
     font-weight: 700;
+}
+
+.edit-board {
+    margin-top: 12px;
+    padding: 6px;
+    width: 100%;
+    height: calc(100% - 12px);
+    line-height: 1.5;
+    font-size: 13px;
+    overflow: visible;
+    border: none;
+    resize: none;
 }
 
 .table-item {
@@ -168,6 +205,10 @@
     background: #f1f1f1;
 }
 
+.div-space {
+    padding: 8px;
+}
+
 .toast {
     position: fixed;
     top: 20px;
@@ -176,9 +217,31 @@
     z-index: 1000;
     padding: 8px 12px;
     border-radius: 4px;
-    background: #333;
+    background: #5a5a5a;
     color: white;
     cursor: pointer;
+}
+
+.btn-add {
+    position: absolute;
+    right: 0;
+    top: 0;
+    justify-content: center;
+    height: 25px;
+    width: 24px;
+    border: none;
+    border-left: 1px solid #e4e8ef;
+    background: transparent;
+
+    &:hover {
+        background: #e8e9eb;
+        outline: 1px solid transparent;
+        cursor: pointer;
+    }
+    &:active {
+        outline: 3px solid #7a7f89;
+        transition-duration: 0.8s;
+    }
 }
 
 .btn {
@@ -237,6 +300,20 @@
     border: 1px solid #e4e8ef;
 }
 
+#scroll_main {
+    overflow-y: scroll;
+    height: max(100%, 628px);
+    scroll-snap-type: y mandatory;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+#scroll_main .container {
+    scroll-snap-align: start;
+}
+
 #death_saving {
     height: 45px;
 }
@@ -261,11 +338,20 @@
     accent-color: #F44336;
 }
 
+#spell_slot * {
+    height: 24px;
+    font-size: 12px;
+}
+
+#spell_slot tr:first-child {
+    background: #e4e8ef;
+}
+
 #roll_box {
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 0;
-    width: 256px;
+    width: 294px;
     padding: 12px;
     border-left: 1px solid #e4e8ef;
     border-top: 1px solid #e4e8ef;
@@ -274,7 +360,7 @@
 }
 
 #roll_board {
-    height: 128px;
+    height: 92px;
     margin: 12px 0 12px 0;
     padding: 4px;
     border: 1px solid #e4e8ef;

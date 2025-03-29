@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         load_coins();
 
         load_spells();
+        load_spellcasting();
 
         load_main();
     })
@@ -56,6 +57,7 @@ nav_item_list.forEach(label => {
 });
 
 document.addEventListener('keydown', (event) => {
+    if (document.activeElement.tagName != 'BODY') return;
     let btn_ref = {
         '': 'background', 'i':'main', 'b':'backpack', 's':'spellcasting', 'm':'maps',
         '':'items', '':'spells'
@@ -76,9 +78,14 @@ long_rest.addEventListener('click', () => {
     saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
     saved_data.abstract['inspiration'] = '';
 
-    death_saving.querySelectorAll('input').forEach(box => box.checked = false);
-
     load_abstract();
+    death_saving.querySelectorAll('input').forEach(box => box.checked = false);
+    for (let i=0; i<9; i++) {
+        let label = spell_slot.rows[1].cells[i+1].children[0].innerText;
+        saved_data.spell_slots[i] = label.split(' ')[2];
+        
+    }
+    load_spellcasting_info();
 
     fetch(window.location.origin+'/api/update/'+pc_id, {
         method: 'POST',
@@ -90,7 +97,7 @@ long_rest.addEventListener('click', () => {
 /**
  * 绑定投骰按钮和骰盘显示器
  */
-scroll_main.querySelectorAll('.dice').forEach(dice => {
+document.querySelectorAll('.dice').forEach(dice => {
     Object.defineProperty(dice, 'innerText', {
         set(value) {
             if (typeof value === 'number') {
@@ -196,7 +203,7 @@ items_table.rows[0].addEventListener('click', (event) => {
 });
 
 /**
- * 绑定法术栏的排序按钮
+ * 绑定法术参照界面法术表格的排序按钮
  */
 spells_table.rows[0].addEventListener('click', (event) => {
     let hding_ref = {
@@ -221,9 +228,81 @@ spells_table.rows[0].addEventListener('click', (event) => {
 });
 
 /**
+ * 绑定施法表格的排序按钮
+ */
+spellcasting_table.rows[0].addEventListener('click', (event) => {
+    let hding_ref = {
+        '名称': 'name',
+        '环阶': 'level',
+        '学派': 'school',
+        '射程': 'range',
+        '来源': 'source'
+    }
+    saved_data.spells.sort((x1, x2) => {
+        let ret = 0;
+        let y1 = saved_spells.find(element => element.name == x1);
+        let y2 = saved_spells.find(element => element.name == x2);
+        if (y1[hding_ref[event.target.innerText]] == y2[hding_ref[event.target.innerText]])
+            ret = 0;
+        if (y1[hding_ref[event.target.innerText]] < y2[hding_ref[event.target.innerText]])
+            ret = -1;
+        else ret = 1;
+        
+        return event.ctrlKey ? -1*ret : ret;
+    });
+
+    load_spellcasting();
+
+    fetch(window.location.origin+'/api/update/'+pc_id, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(saved_data)
+    }).catch(err => alert('Fetch 错误: ' + err));
+});
+
+/**
+ * 绑定法术位追踪器按钮
+ */
+document.querySelectorAll('.slot').forEach(slot => {
+    slot.addEventListener('click', () => {
+        let n = Number(slot.innerText.split(' ')[0]);
+        if (n > 0) {
+            let label = slot.innerText;
+            saved_data.spell_slots[slot.parentElement.cellIndex-1] -= 1;
+            load_spellcasting_info();
+        
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        } else {
+            show_toast('法术位用光了', 1000);
+        }
+    });
+});
+
+/**
+ * 绑定添加自定义物品按钮
+ */
+scroll_backpack.querySelectorAll('.btn-add').forEach(ele => {
+    ele.addEventListener('click', () => {
+        saved_data.backpack.push({
+            "name": "自定义  Custom Thing",
+            "label": "自定义",
+            "weight": "0",
+            "amount": "1"
+        });
+        load_backpack();
+        backpack_table.rows[backpack_table.rows.length-1].click()
+    });
+});
+
+/**
  * Input, Select 内容改变后保存并上传
  */
-document.body.querySelectorAll('input, select').forEach(element => {
+document.querySelectorAll('input, select').forEach(element => {
+    if (element.id == 'character_selector') return;
     if (element.id == 'roll_input') return;
     element.addEventListener('change', () => {
         let character_selector = document.getElementById('character_selector');
