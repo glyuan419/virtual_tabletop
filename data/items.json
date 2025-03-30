@@ -3,7 +3,61 @@
         "name": "自定义  Custom Thing",
         "source": "自定义",
         "type": ["其它"],
-        "properties": [],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "装备  Gear",
+        "source": "自定义",
+        "type": ["装备"],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "法术卷轴  Spell Scroll",
+        "source": "自定义",
+        "type": ["法术卷轴"],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "药水  Potion",
+        "source": "自定义",
+        "type": ["药水"],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "食物和水  Food And Water",
+        "source": "自定义",
+        "type": ["食物和水"],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "冒险装备  Adventure Gear",
+        "source": "自定义",
+        "type": ["冒险装备"],
+        "properties": ["自定义"],
+        "weight": 0,
+        "value": 0,
+        "entries": []
+    },
+    {
+        "name": "工具  Kit",
+        "source": "自定义",
+        "type": ["工具"],
+        "properties": ["自定义"],
         "weight": 0,
         "value": 0,
         "entries": []
@@ -975,14 +1029,32 @@
         "name": "法杖  Staff",
         "source": "PHB",
         "type": [
+            "法器",
+            "武器",
+            "近战",
+            "简易"
+        ],
+        "properties": ["可双手"],
+        "dmg": [
+            "钝击",
+            "1d6",
+            "1d8"
+        ],
+        "weight": 4,
+        "value": 500,
+        "entries": ["法杖可以被当作长棍使用。"
+        ]
+    },
+    {
+        "name": "奥术法器  Arcane Focus",
+        "source": "PHB",
+        "type": [
             "法器"
         ],
         "properties": [],
         "weight": 4,
-        "value": 500,
-        "entries": [
-            "{@note 法杖和木质法杖都可以被当作{@item 长棍|phb}使用。}"
-        ]
+        "value": 0,
+        "entries": []
     },
     {
         "name": "镶钉皮甲  Studded Leather Armor",

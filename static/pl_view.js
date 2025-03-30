@@ -108,14 +108,12 @@ document.querySelectorAll('.dice').forEach(dice => {
             this.textContent = this._innerText;
         },
         get() {
-            if (this.textContent == '死亡豁免') return '1d20';
             return this.textContent;
         }
     });
-    dice.addEventListener('click', () => {
+    dice.addEventListener('click', (event) => {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-        roll_board.innerHTML += get_label(dice);
-        roll_board.innerHTML += roll_dice(dice.innerText);
+        roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
         roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
     });
 });
@@ -126,10 +124,44 @@ document.querySelectorAll('.dice').forEach(dice => {
 roll_input.addEventListener('keypress', (e) => {
     if (e.keyCode == '13') {
         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-        roll_board.innerHTML += '输入: ' + roll_dice(roll_input.value);
+        roll_board.innerHTML += roll_dice('输入', roll_input.value);
         roll_input.value = '';
         roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
     }
+});
+
+/**
+* 绑定激励按钮 + 死亡豁免按钮
+*/
+document.querySelectorAll('.silent-dice').forEach(dice => {
+    switch (dice.innerText) {
+        case '死亡豁免':
+            dice.addEventListener('click', () => {
+                if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                roll_board.innerHTML += roll_dice('死亡豁免', '1d20');
+                roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+            });
+            break;
+        case '激励':
+            dice.addEventListener('click', () => {
+                if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
+                    // 匹配 1d20
+                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                    roll_board.innerHTML += roll_dice('激励', inspiration.cells[1].children[0].value);
+                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                } else if ((new RegExp(/^[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
+                    // 匹配 1
+                    assign(inspiration.cells[1].children[0], (
+                        Number(inspiration.cells[1].children[0].value) > 0 ?
+                        Number(inspiration.cells[1].children[0].value)-1 :
+                        0
+                    ));
+                }
+
+            });
+            break;
+    }
+
 });
 
 /**
@@ -267,9 +299,9 @@ document.querySelectorAll('.slot').forEach(slot => {
     slot.addEventListener('click', () => {
         let n = Number(slot.innerText.split(' ')[0]);
         if (n > 0) {
-            let label = slot.innerText;
             saved_data.spell_slots[slot.parentElement.cellIndex-1] -= 1;
             load_spellcasting_info();
+            show_toast('施放 ' + slot.parentElement.cellIndex + ' 环法术', 1000);
         
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
@@ -277,7 +309,7 @@ document.querySelectorAll('.slot').forEach(slot => {
                 body: JSON.stringify(saved_data)
             }).catch(err => alert('Fetch 错误: ' + err));
         } else {
-            show_toast('法术位用光了', 1000);
+            show_toast('无可用法术位', 1000);
         }
     });
 });
@@ -307,12 +339,17 @@ document.querySelectorAll('input, select').forEach(element => {
     element.addEventListener('change', () => {
         let character_selector = document.getElementById('character_selector');
         if (element.tagName == 'SELECT') {
-            if (element.id != '') {
+            if (element.id == 'class_name') {
+                // 职业选择器
                 saved_data.main.class = element.selectedOptions[0].innerText;
                 character_selector.selectedOptions[0].innerText = saved_data.main.race
                     + saved_data.main.class + ': ' + saved_data.main.character_name;
                 document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
+            } else if (element.id == 'subclass_name') {
+                // 子职业选择器
+                saved_data.main.subclass = element.selectedOptions[0].innerText;
             } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
+                // 技能熟练选择器
                 let skls_ref = ['', 
                     'athletics',
                     'acrobatics', 'sleight_of_hand', 'stealth',

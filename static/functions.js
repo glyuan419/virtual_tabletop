@@ -44,7 +44,7 @@ function load_items() {
         row.classList.add('table-item');
         row.insertCell().innerText = saved_items[i].name.split('  ')[0];
         row.insertCell().innerText = saved_items[i].type.join('、');
-        row.insertCell().innerText = saved_items[i].value + ' gp';
+        row.insertCell().innerText = saved_items[i].value!=''?saved_items[i].value + ' gp':'-';
         row.insertCell().innerText = saved_items[i].weight + ' 磅';
         row.insertCell().innerText = saved_items[i].source;
 
@@ -86,10 +86,9 @@ function load_items() {
             }
 
             items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                dice.addEventListener('click', () => {
+                dice.addEventListener('click', (event) => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += get_label(dice);
-                    roll_board.innerHTML += roll_dice(dice.innerText);
+                    roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
                     roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
                 });
             });
@@ -152,16 +151,16 @@ function load_backpack() {
         row.classList.add('table-item');
         row.value = item.name;
         let label = row.insertCell()
-        label.innerHTML = '<input type="text" class="form-control"/>';
+        label.innerHTML = '<input/>';
         assign(label.children[0], saved_data.backpack[i].label);
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
-        row.insertCell().innerText = item.value + ' gp';
+        row.insertCell().innerText = item.value!=''?item.value + ' gp':'-';
         let weight = row.insertCell();
-        weight.innerHTML = '<input type="text" class="form-control"/>';
+        weight.innerHTML = '<input/>';
         assign(weight.children[0], saved_data.backpack[i].weight);
         let amount = row.insertCell();
-        amount.innerHTML = '<input type="text" class="form-control"/>';
+        amount.innerHTML = '<input/>';
         assign(amount.children[0], saved_data.backpack[i].amount);
 
         row.addEventListener('click', (event) => {
@@ -176,7 +175,32 @@ function load_backpack() {
             row.closest('table').selectedIndex = row.rowIndex;
             row.classList.add('selected');
 
-            if (item.name != '自定义  Custom Thing') {
+            if (item.properties.includes('自定义')) {
+                backpack_item_board.children[0].innerHTML = saved_data.backpack[i].label;
+                backpack_item_board.children[1].innerHTML = '';
+                backpack_item_board.children[2].innerHTML = (
+                    '<textarea class="edit-board"/>'
+                );
+                if ("description" in saved_data.backpack[i]) {
+                    backpack_item_board.children[2].children[0].innerHTML = (
+                        saved_data.backpack[i].description
+                    );
+                }
+
+                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
+                    ele.addEventListener('change', () => {
+                        saved_data.backpack[i].description = (
+                            backpack_item_board.children[2].children[0].value
+                        );
+
+                        fetch(window.location.origin+'/api/update/'+pc_id, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(saved_data)
+                        }).catch(err => alert('Fetch 错误: ' + err));
+                    });
+                });
+            } else {
                 backpack_item_board.children[0].innerHTML = item.name;
                 backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
                 backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
@@ -208,36 +232,10 @@ function load_backpack() {
                 }
 
                 backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                    dice.addEventListener('click', () => {
+                    dice.addEventListener('click', (event) => {
                         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                        roll_board.innerHTML += get_label(dice);
-                        roll_board.innerHTML += roll_dice(dice.innerText);
+                        roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
                         roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-                    });
-                });
-            } else {
-                backpack_item_board.children[0].innerHTML = saved_data.backpack[i].label;
-                backpack_item_board.children[1].innerHTML = '';
-                backpack_item_board.children[2].innerHTML = (
-                    '<textarea class="edit-board"/>'
-                );
-                if ("description" in saved_data.backpack[i]) {
-                    backpack_item_board.children[2].children[0].innerHTML = (
-                        saved_data.backpack[i].description
-                    );
-                }
-
-                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
-                    ele.addEventListener('change', () => {
-                        saved_data.backpack[i].description = (
-                            backpack_item_board.children[2].children[0].value
-                        );
-
-                        fetch(window.location.origin+'/api/update/'+pc_id, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(saved_data)
-                        }).catch(err => alert('Fetch 错误: ' + err));
                     });
                 });
             }
@@ -318,16 +316,16 @@ function load_storage() {
         row.classList.add('table-item');
         row.value = item.name;
         let label = row.insertCell()
-        label.innerHTML = '<input type="text" class="form-control"/>';
+        label.innerHTML = '<input/>';
         assign(label.children[0], saved_data.storage[i].label);
         row.insertCell().innerText = item.type.join('、');
         row.insertCell().innerText = item.properties.join('、');
         row.insertCell().innerText = item.value + ' gp';
         let weight = row.insertCell();
-        weight.innerHTML = '<input type="text" class="form-control"/>';
+        weight.innerHTML = '<input/>';
         assign(weight.children[0], saved_data.storage[i].weight);
         let amount = row.insertCell()
-        amount.innerHTML = '<input type="text" class="form-control"/>';
+        amount.innerHTML = '<input/>';
         assign(amount.children[0], saved_data.storage[i].amount);
 
         row.addEventListener('click', (event) => {
@@ -342,7 +340,32 @@ function load_storage() {
             row.closest('table').selectedIndex = row.rowIndex;
             row.classList.add('selected');
 
-            if (item.name != '自定义  Custom Thing') {
+            if (item.properties.includes('自定义')) {
+                backpack_item_board.children[0].innerHTML = saved_data.storage[i].label;
+                backpack_item_board.children[1].innerHTML = '';
+                backpack_item_board.children[2].innerHTML = (
+                    '<textarea class="edit-board"/>'
+                );
+                if ("description" in saved_data.storage[i]) {
+                    backpack_item_board.children[2].children[0].innerHTML = (
+                        saved_data.storage[i].description
+                    );
+                }
+
+                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
+                    ele.addEventListener('change', () => {
+                        saved_data.storage[i].description = (
+                            backpack_item_board.children[2].children[0].value
+                        );
+
+                        fetch(window.location.origin+'/api/update/'+pc_id, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(saved_data)
+                        }).catch(err => alert('Fetch 错误: ' + err));
+                    });
+                });
+            } else {
                 backpack_item_board.children[0].innerHTML = item.name;
                 backpack_item_board.children[1].innerHTML = item.type.join('、') + '<br/>';
                 backpack_item_board.children[1].innerHTML += item.value + ' gp、' + item.weight + ' 磅';
@@ -374,36 +397,10 @@ function load_storage() {
                 }
 
                 backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-                    dice.addEventListener('click', () => {
+                    dice.addEventListener('click', (event) => {
                         if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                        roll_board.innerHTML += get_label(dice);
-                        roll_board.innerHTML += roll_dice(dice.innerText);
+                        roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
                         roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-                    });
-                });
-            } else {
-                backpack_item_board.children[0].innerHTML = saved_data.storage[i].label;
-                backpack_item_board.children[1].innerHTML = '';
-                backpack_item_board.children[2].innerHTML = (
-                    '<textarea class="edit-board"/>'
-                );
-                if ("description" in saved_data.storage[i]) {
-                    backpack_item_board.children[2].children[0].innerHTML = (
-                        saved_data.storage[i].description
-                    );
-                }
-
-                backpack_item_board.querySelectorAll('.edit-board').forEach(ele => {
-                    ele.addEventListener('change', () => {
-                        saved_data.storage[i].description = (
-                            backpack_item_board.children[2].children[0].value
-                        );
-
-                        fetch(window.location.origin+'/api/update/'+pc_id, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(saved_data)
-                        }).catch(err => alert('Fetch 错误: ' + err));
                     });
                 });
             }
@@ -540,15 +537,6 @@ function load_spells() {
                 '<p><span class="board-item">子职业: </span>' + subclass_list.join('、') + '</p>' :
                 ''
             );
-
-        //     items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
-        //         dice.addEventListener('click', () => {
-        //             if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-        //             roll_board.innerHTML += get_label(dice);
-        //             roll_board.innerHTML += roll_dice(dice.innerText);
-        //             roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-        //         });
-        //     });
 
             if (event.ctrlKey) {
                 saved_data.spells.push(saved_spells[i].name);
@@ -687,9 +675,35 @@ function load_main() {
  */
 function load_info() {
     assign(character_name, saved_data.main.character_name);
+    assign(sex, saved_data.main.sex);
     assign(race, saved_data.main.race);
+
     assign(class_name, saved_data.main.class);
+    // 加载子职业选择器
+    let subcs_ref = {
+        '奇械师': ['炼金师', '装甲师', '魔炮师', '战铸师'],
+        '野蛮人': ['狂战士', '图腾勇士', '祖先守卫', '狂野魔法', '野兽', '战狂', '狂热者', '风暴先驱'],
+        '吟游诗人': ['逸闻学院', '勇气学院', '雄辩学院', '创造学院', '剑舞学院', '迷惑学院', ' 低语学院', '灵魂学院'],
+        '牧师': ['知识领域', '生命领域', '光明领域', '自然领域', '风暴领域', '诡术领域', '战争领域', '死亡领域', '秩序领域', '和平领域', '暮光领域', '奥秘领域', '锻造领域', '坟墓领域'],
+        '德鲁伊': ['大地结社', '月亮结社', '孢子结社', '星辰结社', '野火结社', '梦境结社', '牧人结社'],
+        '战士': ['勇士', '战斗大师', '魔能骑士', '魔射手', '骑兵', '武士', '灵能武士', '符文骑士', '紫龙骑士', '回音骑士'],
+        '武僧': ['散打宗', '暗影宗', '四象宗', '醉拳宗', '剑圣宗', '日魂宗', '命流宗', '星我宗', '永亡宗'],
+        '圣武士': ['奉献誓言', '远古誓言', '复仇誓言', '荣耀誓言', '守望誓言', '征服誓言', '救赎誓言', '破誓者'],
+        '游侠': ['兽王', '猎人', '幽域追踪者', '境界行者', '怪物杀手', '妖精漫游者', '集群守卫'],
+        '游荡者': ['刺客', '诡术师', '窃贼', '审讯者', '策士', '斥候', '风流剑客', '鬼魅', '魂刃'],
+        '术士': ['龙族血脉', '狂野魔法', '幽影魔法', '神圣之魂', '暴风术法', '畸变心智' ,'时械之魂'],
+        '契术师': ['至高妖精', '邪魔', '旧日支配者', '天界', '咒剑', '不朽者', '深海意志', '巨灵', '死灵'],
+        '法师': ['防护学派', '咒法学派', '预言学派', '惑控学派', '塑能学派', '幻术学派', '死灵学派', '变化学派', '剑咏', '时间魔法', '重力魔法', '战争魔法', '书士']
+    }
+    subclass_name.add(new Option(''));
+    for (let i in subcs_ref[saved_data.main.class]) {
+        subclass_name.add(new Option(subcs_ref[saved_data.main.class][i]));
+    }
+    assign(subclass_name, saved_data.main.subclass);
+
     assign(class_level, saved_data.main.class_level);
+    assign(alignment, saved_data.main.alignment);
+    assign(background, saved_data.main.background);
     assign(experience_points, saved_data.main.experience_points);
 
     computed_data.proficiency_bonus = parseInt((saved_data.main.class_level-1)/4)+2;
@@ -718,10 +732,10 @@ function load_gear() {
 
     // 载入护甲
     armor_table.rows[0].innerHTML = [
-        '<td class="w-p15 bg-gray-50"><select class="form-control bg-gray-50"></select></td>',
-        '<td class="w-p35"><select class="form-control"></select></td>',
+        '<td class="w-p15 bg-gray-50"><select class="select bg-gray-50"></select></td>',
+        '<td class="w-p35"><select></select></td>',
         '<td class="w-p15 bg-gray-50">盾牌</td>',
-        '<td class="w-p35"><select class="form-control"><option></option></select></td>'
+        '<td class="w-p35"><select><option></option></select></td>'
     ].join('');
 
     computed_data.armor_type = {
@@ -770,7 +784,19 @@ function load_gear() {
     }
     assign(armor_table.rows[0].cells[1].children[0], saved_data.armor[1]);
     assign(armor_table.rows[0].cells[3].children[0], saved_data.armor[2]);
-
+    let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
+    if (
+        item != undefined
+        && (
+            ['全身板甲', '条板甲', '锁子甲', '环甲', '半身板甲', '半身板甲', '鳞甲', '绵甲']
+                .includes(item.name.split('  ')[0])
+        )
+    ) {
+        skills.rows[4].classList.add('selected-red'); // 添加隐匿劣势标记
+    } else {
+        skills.rows[4].classList.remove('selected-red'); // 移除隐匿劣势标记
+    }
+    
     armor_table.querySelectorAll('select').forEach(select => {
         select.addEventListener('change', () => {
             switch (select.parentElement.cellIndex) {
@@ -874,6 +900,37 @@ function load_skills() {
  * 载入摘要
  */
 function load_abstract() {
+    // 先确定载重信息
+    let max_weight = 5 * Number(computed_data.strength);
+    let weight_color = '#000000';
+    let computed_speed = 0; // 移动速度
+    if (computed_data.current_weight > 10*Number(computed_data.strength)) {
+        // 超载：速度减少 20 尺，力量、敏捷、体质相关的属性检定、攻击检定、豁免检定都具有劣势
+        weight_color = '#cc0000';
+        computed_speed = -20;
+        abilities.rows[1].classList.add('selected-red'); // 添加劣势标记
+        abilities.rows[2].classList.add('selected-red'); // 添加劣势标记
+        abilities.rows[3].classList.add('selected-red'); // 添加劣势标记
+    } else if (computed_data.current_weight > 5*Number(computed_data.strength)) {
+        // 重载：速度减少 10 尺
+        weight_color = '#f7a100';
+        computed_speed = -10;
+        abilities.rows[1].classList.remove('selected-red'); // 移除劣势标记
+        abilities.rows[2].classList.remove('selected-red'); // 移除劣势标记
+        abilities.rows[3].classList.remove('selected-red'); // 移除劣势标记
+    } else {
+        computed_speed = 0;
+        abilities.rows[1].classList.remove('selected-red'); // 移除劣势标记
+        abilities.rows[2].classList.remove('selected-red'); // 移除劣势标记
+        abilities.rows[3].classList.remove('selected-red'); // 移除劣势标记
+    }
+    document.querySelectorAll('#current_weight_1, #current_weight_2').forEach(el => {
+        el.style.color = weight_color;
+    });
+        
+    assign(current_weight_1, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
+    assign(current_weight_2, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
+
     assign(initiative.children[1].children[0], saved_data.abstract['initiative_bonus']);
     assign(initiative.children[2].children[0],
         parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.abstract['initiative_bonus'])
@@ -896,13 +953,14 @@ function load_abstract() {
                 + parseInt(sum(computed_data['wisdom'])/2)-5
             );
     } else {
-        tmp_armor_class += Number(data_armors[saved_data.armor[1]][0]);
+        let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
+        tmp_armor_class += Number(data_armors[item.name.split('  ')[0]][0]);
         tmp_armor_class += (
-            data_armors[saved_data.armor[1]][1] == '' ?
+            data_armors[item.name.split('  ')[0]][1] == '' ?
             parseInt(sum(computed_data['dexterity'])/2)-5 :
             Math.min(
                 parseInt(sum(computed_data['dexterity'])/2)-5,
-                Number(data_armors[saved_data.armor[1]][1])
+                Number(data_armors[item.name.split('  ')[0]][1])
             )
         );
     }
@@ -913,27 +971,26 @@ function load_abstract() {
         + (saved_data.armor[2]!='' ? 2 : 0)
     ); // 护甲等级
 
-    let abs_ref = {
-        '野蛮人': ['体质', 'constitution'],
-        '吟游诗人': ['魅力', 'charisma'],
-        '牧师': ['感知', 'wisdom'],
-        '德鲁伊': ['感知', 'wisdom'],
-        '战士': ['智力', 'intelligence'],
-        '武僧': ['感知', 'wisdom'],
-        '圣武士': ['魅力', 'charisma'],
-        '游侠': ['感知', 'wisdom'],
-        '游荡者': ['智力', 'intelligence'],
-        '术士': ['魅力', 'charisma'],
-        '契术师': ['魅力', 'charisma'],
-        '法师': ['智力', 'intelligence']
+    let spds_ref = {
+        '人类': 30,
+        '矮人': 25,
+        '高精灵': 30,
+        '木精灵': 35,
+        '卓尔精灵': 30,
+        '半精灵': 30,
+        '半身人': 25,
+        '半兽人': 30,
+        '提夫林': 30,
+        '龙裔': 30,
+        '侏儒': 25
     };
-    assign(spellcasting_ability.children[1], abs_ref[saved_data.main['class']][0]); // 施法关键属性
-    
-    assign(difficulty_class.children[1], (
-        8 + parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
-        + Number(computed_data.proficiency_bonus)
-    )); // 法术豁免难度等级
-
+    for (let k in spds_ref) {
+        if (saved_data.main.race.slice(0, k.length) == k) {
+            computed_speed += spds_ref[k];
+            break;
+        }
+    }
+    assign(speed.children[1], (computed_speed>0?computed_speed:0) + ' 尺'); // 移动速度
 
     assign(passive_perception.children[1],
         10 + Number(skills.tBodies[0].children[10].children[3].innerText)
@@ -987,22 +1044,6 @@ function load_abstract() {
         saved_data.abstract['vulnerabilities']); // 易伤
     assign(conditions.children[0].children[1].children[3].children[0],
         saved_data.abstract['resistances']); // 抗性
-    
-
-    // 顺便修改载重信息
-    let max_weight = 5 * Number(computed_data.strength);
-    let weight_color = '#000000';
-    if (computed_data.current_weight > 10*Number(computed_data.strength)) {
-        weight_color = '#cc0000';
-    } else if (computed_data.current_weight > 5*Number(computed_data.strength)) {
-        weight_color = '#f7a100';
-    }
-    document.querySelectorAll('#current_weight_1, #current_weight_2').forEach(el => {
-        el.style.color = weight_color;
-    });
-        
-    assign(current_weight_1, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
-    assign(current_weight_2, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
 }
 
 
@@ -1012,10 +1053,10 @@ function load_abstract() {
 function load_weapons() {
     for (let i=1; i<4; i++) {
         weapons_table.rows[i].innerHTML = [
-            '<td><select class="form-control"></select></td>',
-            '<td><select class="form-control"><option></option></select></td>',
+            '<td><select></select></td>',
+            '<td><select><option></option></select></td>',
             '<td></td>',
-            '<td><select class="form-control"></select></td>',
+            '<td><select></select></td>',
             '<td></td>',
             '<td></td>',
         ].join('');
@@ -1096,15 +1137,14 @@ function load_weapons() {
     }
 
     weapons_table.querySelectorAll('.dice').forEach(dice => {
-        dice.addEventListener('click', () => {
+        dice.addEventListener('click', (event) => {
             let label = dice.parentElement.parentElement
                 .children[1].children[0].selectedOptions[0].value;
             if (dice.tagName == 'BUTTON') {
                 label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
             }
             if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += label + ': ';
-            roll_board.innerHTML += roll_dice(dice.innerText);
+            roll_board.innerHTML += roll_dice(label, dice.innerText, (event.ctrlKey?2:1));
             roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
         });
     });
@@ -1156,7 +1196,7 @@ function load_quick_spellcasting() {
     let quick_spellcasting = document.querySelector('#quick_spellcasting');
     for (let i=1; i<4; i++) {
         quick_spellcasting.rows[i].innerHTML = [
-            '<td><select class="form-control"><option></option></select></td>',
+            '<td><select><option></option></select></td>',
             '<td></td>',
             '<td></td>',
             '<td></td>',
@@ -1190,7 +1230,7 @@ function load_quick_spellcasting() {
 
         if (saved_data.quick_spellcasting[i][0] == '') continue;
         const ssel = document.createElement('select');
-        ssel.className = 'form-control';
+        ssel.className = 'select';
         quick_spellcasting.rows[Number(i)+1].cells[1].appendChild(ssel);
         for (let j in spells[saved_data.quick_spellcasting[i][0]]) {
             let opt = new Option(spells[saved_data.quick_spellcasting[i][0]][j].split('  ')[0]);
@@ -1202,7 +1242,7 @@ function load_quick_spellcasting() {
         ));
         
         const dinp = document.createElement('input');
-        dinp.className = 'form-control';
+        dinp.className = 'input';
         assign(dinp, saved_data.quick_spellcasting[i][2])
         if (saved_data.quick_spellcasting[i][1] != '')
             quick_spellcasting.rows[Number(i)+1].cells[2].appendChild(dinp);
@@ -1243,14 +1283,13 @@ function load_quick_spellcasting() {
     }
 
     quick_spellcasting.querySelectorAll('.dice').forEach(dice => {
-        dice.addEventListener('click', () => {
+        dice.addEventListener('click', (event) => {
             let label = (
                 dice.parentElement.parentElement.children[1].children[0].selectedOptions[0].value
                 + ['', '', '', '命中', '伤害'][dice.parentElement.cellIndex]
             );
             if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += label + ': ';
-            roll_board.innerHTML += roll_dice(dice.innerText);
+            roll_board.innerHTML += roll_dice(label, dice.innerText, (event.ctrlKey?2:1));
             roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
         });
     });
@@ -1434,92 +1473,157 @@ function get_label(element) {
     } else {
         return '';
     }
-    return label + ': ';
+    return label;
 }
 
 /**
  * 投骰
  */
-function roll_dice(dice_value) {
+function roll_dice(label, dice_value, num=1) {
+    let dice_parseer = ['', '', ''];
     let dice_result = 0;
-    let dice_info = ' = ';
+    let dice_info = '';
+    let res = '';
 
-    if ((new RegExp(/^[0-9]+$/)).test(dice_value)) { // 1
-        let dice = Math.floor(Math.random() * 20) + 1;
-        dice_result += dice;
-        dice_result += Number(dice_value);
-        if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
-        if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
-        dice_info += '[' + dice + ']+';
-        dice_info += dice_value;
-    } else if ((new RegExp(/^[0-9]+d[0-9]+\+[0-9]+$/)).test(dice_value)) { // 1d20+1
-        let N = Number(dice_value.split('d')[0]);
+    for (let i=0; i<num; i++) {
+        dice_parseer = ['', '', ''];
+        dice_result = 0;
+        dice_info = '';
+        if ((new RegExp(/^[0-9]+$/)).test(dice_value)) { // 1
+            dice_parseer = ['1', '20', '+' + dice_value];
+        } else if ((new RegExp(/^[0-9]+d[0-9]+\+[0-9]+$/)).test(dice_value)) { // 1d20+1
+            dice_parseer = [
+                dice_value.split('d')[0],
+                dice_value.split('d')[1].split('+')[0],
+                '+' + dice_value.split('d')[1].split('+')[1]
+            ];
+        } else if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(dice_value)) { // 1d20
+            dice_parseer = [dice_value.split('d')[0], dice_value.split('d')[1].split('+')[0], ''];
+        } else if ((new RegExp(/^\+[0-9]+$/)).test(dice_value)) { // +1
+            dice_parseer = ['1', '20', dice_value];
+        } else if ((new RegExp(/^-[0-9]+$/)).test(dice_value)) { // -1
+            dice_parseer = ['1', '20', dice_value];
+        } else if ((new RegExp(/^[0-9]+d[0-9]+-[0-9]+$/)).test(dice_value)) { // 1d20-1
+            dice_parseer = [
+                dice_value.split('d')[0],
+                dice_value.split('d')[1].split('-')[0],
+                '-' + dice_value.split('d')[1].split('-')[1]
+            ];
+        } else {
+            alert('这骰的是啥? [' + dice_value + ']');
+        }
+    
+        let N = Number(dice_parseer[0]);
         for (let i=0; i < N; i++) {
-            let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1].split('+')[0])) + 1;
+            let dice = Math.floor(Math.random() * Number(dice_parseer[1])) + 1;
             dice_result += dice;
-            if (Number(dice_value.split('d')[1].split('+')[0])==20 && dice==1) {
+            if (Number(dice_parseer[1])==20 && dice==1) {
                 dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
             }
-            if (Number(dice_value.split('d')[1].split('+')[0])==20 && dice==20) {
+            if (Number(dice_parseer[1])==20 && dice==20) {
                 dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
             }
             dice_info += '[' + dice + ']+';
         }
-        dice_result += Number(dice_value.split('+')[1]);
-        dice_info += Number(dice_value.split('+')[1]);
-    } else if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(dice_value)) { // 1d20
-        let N = Number(dice_value.split('d')[0]);
-        for (let i=0; i < N; i++) {
-            let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1])) + 1;
-            dice_result += dice;
-            if (Number(dice_value.split('d')[1])==20 && dice==1) {
-                dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
-            }
-            if (Number(dice_value.split('d')[1])==20 && dice==20) {
-                dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
-            }
-            dice_info += '[' + dice + ']+';
-        }
-        dice_info = dice_info.slice(0, -1);
-    } else if ((new RegExp(/^\+[0-9]+$/)).test(dice_value)) { // +1
-        let dice = Math.floor(Math.random() * 20) + 1;
-        dice_result += dice;
-        dice_result += Number(dice_value);
-        if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
-        if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
-        dice_info += '[' + dice + ']';
-        dice_info += dice_value;
-    } else if ((new RegExp(/^-[0-9]+$/)).test(dice_value)) { // -1
-        let dice = Math.floor(Math.random() * 20) + 1;
-        dice_result += dice;
-        dice_result += Number(dice_value);
-        if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
-        if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
-        dice_info += '[' + dice + ']';
-        dice_info += dice_value;
-    } else if ((new RegExp(/^[0-9]+d[0-9]+-[0-9]+$/)).test(dice_value)) {
-        let N = Number(dice_value.split('d')[0]);
-        for (let i=0; i < N; i++) {
-            let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1].split('-')[0])) + 1;
-            dice_result += dice;
-            if (Number(dice_value.split('d')[1].split('-')[0])==20 && dice==1) {
-                dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
-            }
-            if (Number(dice_value.split('d')[1].split('-')[0])==20 && dice==20) {
-                dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
-            }
-            dice_info += '[' + dice + ']+';
-        }
-        dice_result -= Number(dice_value.split('-')[1]);
-        console.log(dice_info, dice_value)
-        dice_info = dice_info.slice(0, -1);
-        dice_info += '-' + dice_value.split('-')[1];
-    } else {
-        alert('这骰的是啥? [' + dice_value + ']');
+        dice_result += Number(dice_parseer[2]);
+        dice_info = dice_info.slice(0,-1) + dice_parseer[2];
+        res += label + ': <span style=\'color: #3b82f6;\'>' + dice_result + '</span> = ' + dice_info;
+        res += '<br/>'
     }
     
-    return '<span style=\'color: #3b82f6;\'>' + dice_result + '</span>' + dice_info;
+    return (
+        '<div style="border-bottom: 1px solid #e4e8ef; display: inline-block; width: 100%; margin-bottom: 1px;">'
+        + res
+        + '</div>'
+    );
 }
+
+// function roll_dice(label, dice_value) {
+//     let dice_result = 0;
+//     let dice_info = ' = ';
+
+//     if ((new RegExp(/^[0-9]+$/)).test(dice_value)) { // 1
+//         let dice = Math.floor(Math.random() * 20) + 1;
+//         dice_result += dice;
+//         dice_result += Number(dice_value);
+//         if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//         if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//         dice_info += '[' + dice + ']+';
+//         dice_info += dice_value;
+//     } else if ((new RegExp(/^[0-9]+d[0-9]+\+[0-9]+$/)).test(dice_value)) { // 1d20+1
+//         let N = Number(dice_value.split('d')[0]);
+//         for (let i=0; i < N; i++) {
+//             let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1].split('+')[0])) + 1;
+//             dice_result += dice;
+//             if (Number(dice_value.split('d')[1].split('+')[0])==20 && dice==1) {
+//                 dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//             }
+//             if (Number(dice_value.split('d')[1].split('+')[0])==20 && dice==20) {
+//                 dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//             }
+//             dice_info += '[' + dice + ']+';
+//         }
+//         dice_result += Number(dice_value.split('+')[1]);
+//         dice_info += Number(dice_value.split('+')[1]);
+//     } else if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(dice_value)) { // 1d20
+//         let N = Number(dice_value.split('d')[0]);
+//         for (let i=0; i < N; i++) {
+//             let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1])) + 1;
+//             dice_result += dice;
+//             if (Number(dice_value.split('d')[1])==20 && dice==1) {
+//                 dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//             }
+//             if (Number(dice_value.split('d')[1])==20 && dice==20) {
+//                 dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//             }
+//             dice_info += '[' + dice + ']+';
+//         }
+//         dice_info = dice_info.slice(0, -1);
+//     } else if ((new RegExp(/^\+[0-9]+$/)).test(dice_value)) { // +1
+//         let dice = Math.floor(Math.random() * 20) + 1;
+//         dice_result += dice;
+//         dice_result += Number(dice_value);
+//         if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//         if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//         dice_info += '[' + dice + ']';
+//         dice_info += dice_value;
+//     } else if ((new RegExp(/^-[0-9]+$/)).test(dice_value)) { // -1
+//         let dice = Math.floor(Math.random() * 20) + 1;
+//         dice_result += dice;
+//         dice_result += Number(dice_value);
+//         if (dice==1) dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//         if (dice==20) dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//         dice_info += '[' + dice + ']';
+//         dice_info += dice_value;
+//     } else if ((new RegExp(/^[0-9]+d[0-9]+-[0-9]+$/)).test(dice_value)) {
+//         let N = Number(dice_value.split('d')[0]);
+//         for (let i=0; i < N; i++) {
+//             let dice = Math.floor(Math.random() * Number(dice_value.split('d')[1].split('-')[0])) + 1;
+//             dice_result += dice;
+//             if (Number(dice_value.split('d')[1].split('-')[0])==20 && dice==1) {
+//                 dice = '<span style=\'color: #ef4444;\'>' + dice + '</span>';
+//             }
+//             if (Number(dice_value.split('d')[1].split('-')[0])==20 && dice==20) {
+//                 dice = '<span style=\'color: #22c55e;\'>' + dice + '</span>';
+//             }
+//             dice_info += '[' + dice + ']+';
+//         }
+//         dice_result -= Number(dice_value.split('-')[1]);
+//         console.log(dice_info, dice_value)
+//         dice_info = dice_info.slice(0, -1);
+//         dice_info += '-' + dice_value.split('-')[1];
+//     } else {
+//         alert('这骰的是啥? [' + dice_value + ']');
+//     }
+
+    
+    
+//     return (
+//         '<div style="border-bottom: 1px solid #e4e8ef; display: inline-block; width: 100%; margin-bottom: 1px;">'
+//         + label + ': <span style=\'color: #3b82f6;\'>' + dice_result + '</span>' + dice_info
+//         + '</div>'
+//     );
+// }
 
 /**
  * 展示浮动消息

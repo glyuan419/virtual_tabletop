@@ -9,3 +9,14 @@ html, body {
     margin: 0;
 }
 
+input, select {
+    appearance: none;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: 1px solid transparent;
+
+    &:focus {
+        outline: 1px solid #3b82f6;
+    }
+}

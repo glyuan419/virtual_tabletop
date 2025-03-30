@@ -1,4 +1,8 @@
 let data_properties = {
+    "自定义": {
+        "source": "自定义",
+        "entries": []
+    },
     "弹药": {
         "source": "PHB",
         "entries": [

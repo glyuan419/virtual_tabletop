@@ -12,6 +12,9 @@ import logging, ngrok
 # listener = ngrok.werkzeug_develop()
 # bash-> NGROK_AUTHTOKEN=2umvdb5udVAnlJShSMBQ0vcJjxs_2agDiY5mC8LUgmgp4o2qr ./run.py
 
+# powershell(admin)-> netsh interface portproxy add v4tov4 listenport=5000 listenaddress=0.0.0.0 connectport=5000 connectaddress=172.23.41.228
+# ^from iconfig
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -82,4 +85,4 @@ def dm_view():
     return 'DM is resting!'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

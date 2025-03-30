@@ -1,10 +1,13 @@
 {
     "main": {
         "character_name": "",
+        "sex": "",
         "race": "",
-        "class": "",
         "subclass": "",
+        "class": "",
         "class_level": "",
+        "alignment": "",
+        "background": "",
         "experience_points": ""
     },
     "abilities": {
