@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     .then(() => {
         load_items();
         load_backpack();
-        load_storage();
         load_coins();
 
         load_spells();
