@@ -85,13 +85,12 @@ function bind_nav() {
  */
 function bind_long_rest_button() {
     query('long_rest_button').addEventListener('click', () => {
-        saved_data.abstract['hit_point'][0] = saved_data.abstract['hit_point'][1];
-        saved_data.abstract['hit_point'][2] = '0';
-        saved_data.abstract['hit_dice'] = saved_data.metadata.level;
-        saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
-        saved_data.abstract['inspiration'] = '';
-    
-        load_abstract();
+        saved_data.combat_stats['hit_point'][0] = saved_data.combat_stats['hit_point'][1];
+        saved_data.combat_stats['hit_point'][2] = '0';
+        saved_data.combat_stats['hit_dice'] = saved_data.metadata.level;
+        saved_data.combat_stats['special_value'][1] = saved_data.combat_stats['special_value'][2];
+        saved_data.combat_stats['inspiration'] = '';
+        load_combat_stats();
 
         death_saving.querySelectorAll('input').forEach(box => box.checked = false);
         for (let i=0; i<9; i++) {
@@ -405,13 +404,13 @@ document.querySelectorAll('input, select').forEach(element => {
             } else if (element.parentElement.parentElement.id != '') {
                 // 摘要栏
                 switch (element.parentElement.parentElement.id) {
-                    case 'initiative': saved_data.abstract['initiative_bonus'] = element.value; break;
-                    case 'armor_class': saved_data.abstract['armor_class_bonus'] = element.value; break;
-                    case 'hit_point': saved_data.abstract['hit_point'][element.parentElement.cellIndex-1] = element.value; break;
-                    case 'hit_dice': saved_data.abstract['hit_dice'] = element.value; break;
-                    case 'special_value': saved_data.abstract['special_value'][element.parentElement.cellIndex] = element.value; break;
-                    case 'temporary_hit_point': saved_data.abstract['hit_point'][2] = element.value; break;
-                    case 'inspiration': saved_data.abstract['inspiration'] = element.value; break;
+                    case 'initiative': saved_data.combat_stats['initiative_bonus'] = element.value; break;
+                    case 'armor_class': saved_data.combat_stats['armor_class_bonus'] = element.value; break;
+                    case 'hit_point': saved_data.combat_stats['hit_point'][element.parentElement.cellIndex-1] = element.value; break;
+                    case 'hit_dice': saved_data.combat_stats['hit_dice'] = element.value; break;
+                    case 'special_value': saved_data.combat_stats['special_value'][element.parentElement.cellIndex] = element.value; break;
+                    case 'temporary_hit_point': saved_data.combat_stats['hit_point'][2] = element.value; break;
+                    case 'inspiration': saved_data.combat_stats['inspiration'] = element.value; break;
                 }
             } else if (element.parentElement.parentElement.parentElement.parentElement.id != '') {
                 // 属性栏、技能栏、状态栏、钱币栏、装备栏
@@ -435,7 +434,7 @@ document.querySelectorAll('input, select').forEach(element => {
                     case 'conditions':
                         let cons_ref = {'状态': 'conditions', '免疫': 'immunizations', '易伤': 'vulnerabilities', '抗性': 'resistances'};
                         let label = cons_ref[element.parentElement.previousElementSibling.innerText];
-                        saved_data.abstract[label] = element.value;
+                        saved_data.combat_stats[label] = element.value;
                         break;
                     case 'coins_in_main':
                         let coins1_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];

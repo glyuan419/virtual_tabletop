@@ -526,7 +526,7 @@ function load_profile() {
         load_gear();
         load_abilities();
         load_skills();
-        load_abstract();
+        load_combat_stats();
     
         load_weapons();
         load_quick_spellcasting();
@@ -575,7 +575,7 @@ function load_summery() {
     assign('experience_points', saved_data.metadata.experience_points);
 
     computed_data.proficiency_bonus = parseInt((saved_data.metadata.level-1)/4)+2;
-    assign('proficiency_bonus', computed_data.proficiency_bonus);
+    assign('proficiency_bonus', '+' + computed_data.proficiency_bonus);
 }
 
 /**
@@ -600,9 +600,9 @@ function load_gear() {
 
     // 载入护甲
     armor_table.rows[0].innerHTML = [
-        '<td class="w-p15 bg-gray-50"><select class="select bg-gray-50"></select></td>',
+        '<td class="w-p15 primary-color"><select class="select primary-color"></select></td>',
         '<td class="w-p35"><select></select></td>',
-        '<td class="w-p15 bg-gray-50">盾牌</td>',
+        '<td class="w-p15 primary-color">盾牌</td>',
         '<td class="w-p35"><select><option></option></select></td>'
     ].join('');
 
@@ -765,7 +765,7 @@ function load_skills() {
 /**
  * 载入摘要
  */
-function load_abstract() {
+function load_combat_stats() {
     // 先确定载重信息
     let max_weight = 5 * Number(computed_data.strength);
     let weight_color = '#000000';
@@ -797,9 +797,9 @@ function load_abstract() {
     assign(current_weight_1, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
     assign(current_weight_2, computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅');
 
-    assign(initiative.children[1].children[0], saved_data.abstract['initiative_bonus']);
+    assign(initiative.children[1].children[0], saved_data.combat_stats['initiative_bonus']);
     assign(initiative.children[2].children[0],
-        parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.abstract['initiative_bonus'])
+        parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.combat_stats['initiative_bonus'])
     ); // 先攻
 
     let tmp_armor_class = 0;
@@ -830,10 +830,10 @@ function load_abstract() {
             )
         );
     }
-    assign(armor_class.children[1].children[0], saved_data.abstract['armor_class_bonus']);
+    assign(armor_class.children[1].children[0], saved_data.combat_stats['armor_class_bonus']);
     assign(armor_class.children[2], 
         tmp_armor_class
-        + Number(saved_data.abstract['armor_class_bonus'])
+        + Number(saved_data.combat_stats['armor_class_bonus'])
         + (saved_data.armor[2]!='' ? 2 : 0)
     ); // 护甲等级
 
@@ -862,16 +862,16 @@ function load_abstract() {
         10 + Number(skills.tBodies[0].children[10].children[3].innerText)
     ); // 被动察觉
 
-    assign(hit_point.children[1].children[0], saved_data.abstract['hit_point'][0]); // 当前生命值
-    assign(hit_point.children[2].children[0], saved_data.abstract['hit_point'][1]); // 最大生命值
-    assign(temporary_hit_point.children[1].children[0], saved_data.abstract['hit_point'][2]); // 临时生命值
+    assign(hit_point.children[1].children[0], saved_data.combat_stats['hit_point'][0]); // 当前生命值
+    assign(hit_point.children[2].children[0], saved_data.combat_stats['hit_point'][1]); // 最大生命值
+    assign(temporary_hit_point.children[1].children[0], saved_data.combat_stats['hit_point'][2]); // 临时生命值
     let color = '';
     if (
-        Number(saved_data.abstract['hit_point'][0]) == Number(saved_data.abstract['hit_point'][1])
+        Number(saved_data.combat_stats['hit_point'][0]) == Number(saved_data.combat_stats['hit_point'][1])
     ) {color = '#00bb20';} else if (
-        Number(saved_data.abstract['hit_point'][0]) > Number(saved_data.abstract['hit_point'][1])/2
+        Number(saved_data.combat_stats['hit_point'][0]) > Number(saved_data.combat_stats['hit_point'][1])/2
     ) {color = '#c5ca00';} else if (
-        Number(saved_data.abstract['hit_point'][0]) > 0
+        Number(saved_data.combat_stats['hit_point'][0]) > 0
     ) {color = '#f7a100';} else {color = '#cc0000';}
     profile_panel.querySelectorAll('#hit_point input').forEach(el => {
         el.style.color = color;
@@ -892,24 +892,24 @@ function load_abstract() {
         '契术师': '1d8',
         '法师': '1d6'
     };
-    assign(hit_dice.children[1].children[0], saved_data.abstract['hit_dice']); // 剩余生命骰数量
+    assign(hit_dice.children[1].children[0], saved_data.combat_stats['hit_dice']); // 剩余生命骰数量
     assign(hit_dice.children[2], saved_data.metadata['level']); // 最大生命骰数量
     assign(hit_dice_value.children[1].children[0], hd_ref[saved_data.metadata['class']]); // 生命骰数值
 
-    assign(special_value.children[0].children[0], saved_data.abstract['special_value'][0]); // 特殊能力名称
-    assign(special_value.children[1].children[0], saved_data.abstract['special_value'][1]); // 特殊能力剩余数量
-    assign(special_value.children[2].children[0], saved_data.abstract['special_value'][2]); // 特殊能力最大数量
+    assign(special_value.children[0].children[0], saved_data.combat_stats['special_value'][0]); // 特殊能力名称
+    assign(special_value.children[1].children[0], saved_data.combat_stats['special_value'][1]); // 特殊能力剩余数量
+    assign(special_value.children[2].children[0], saved_data.combat_stats['special_value'][2]); // 特殊能力最大数量
     
-    assign(inspiration.children[1].children[0], saved_data.abstract['inspiration']); // 激励
+    assign(inspiration.children[1].children[0], saved_data.combat_stats['inspiration']); // 激励
 
     assign(conditions.children[0].children[0].children[1].children[0],
-        saved_data.abstract['conditions']); // 状态
+        saved_data.combat_stats['conditions']); // 状态
     assign(conditions.children[0].children[0].children[3].children[0],
-        saved_data.abstract['immunizations']); // 免疫
+        saved_data.combat_stats['immunizations']); // 免疫
     assign(conditions.children[0].children[1].children[1].children[0],
-        saved_data.abstract['vulnerabilities']); // 易伤
+        saved_data.combat_stats['vulnerabilities']); // 易伤
     assign(conditions.children[0].children[1].children[3].children[0],
-        saved_data.abstract['resistances']); // 抗性
+        saved_data.combat_stats['resistances']); // 抗性
 }
 
 

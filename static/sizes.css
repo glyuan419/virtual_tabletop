@@ -13,7 +13,6 @@
 .w-p80 {width: 80%;}
 .w-p100 {width: 100%;}
 
-.bg-gray-50 {background: #f1f6fe;}
-.bg-primary-50 {background: #f8fafc;}
-.bg-white {background-color: #ffffff;}
+.primary-color {background: #f1f6fe;}
+.secondary-color {background: #f8fafc;}
 
