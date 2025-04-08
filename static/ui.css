@@ -102,6 +102,12 @@
     }
 }
 
+.title {
+    flex-direction: row;
+    align-content: center;
+    height: 32px;
+}
+
 .table-title {
     position: relative;
     padding: 4px;
@@ -130,6 +136,10 @@
     font-size: 12px;
     background: #e4e8ef;
     cursor: pointer;
+}
+
+.border {
+    border: 1px solid #e4e8ef;
 }
 
 .selected {
@@ -164,7 +174,7 @@
     padding: 12px;
     height: 374px;
     border: 1px solid #e4e8ef;
-    display: flex;          /* 启用 Flexbox */
+    display: flex;
     flex-direction: column
 }
 
@@ -304,7 +314,7 @@
     display: none;
 }
 
-#long_rest {
+#long_rest_button {
     border: 1px solid #e4e8ef;
 }
 

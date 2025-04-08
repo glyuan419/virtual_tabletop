@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    eval('btn_'+actived_scroll).classList.add('active');
-    eval('scroll_'+actived_scroll).style.display = '';
-
     Promise.all([
         fetch(window.location.origin+'/api/query/pc_list')
             .then(response => response.json())
@@ -31,67 +28,89 @@ document.addEventListener('DOMContentLoaded', async () => {
         load_main();
     })
     .catch(err => alert('Fetch 错误: ' + err));
+
+    bind_nav();
+    bind_long_rest_button();
 });
 
 /**
- * 绑定导航栏菜单按钮
+ * 绑定导航栏菜单
  */
-let nav_item_list = ['background', 'main', 'backpack', 'spellcasting', 'maps', 'items', 'spells']
-nav_item_list.forEach(label => {
-    eval('btn_'+label).addEventListener('click', () => {
-        const url = window.location;
-        const path = url.pathname.split('/');
-        path.pop();
-        path.push(label);
-        history.pushState('', '', url.origin+path.join('/')+url.search);
-    
-        nav_item_list.forEach(x => {
-            eval('scroll_'+x).style.display = 'none';
-            eval('btn_'+x).classList.remove('active');
+function bind_nav() {
+    query('nav_' + actived_panel).classList.add('active');
+    query(actived_panel + '_panel').style.display = '';
+
+    const nav_shortcut_key = {
+        'background': 'b',
+        'features': 'f',
+        'profile': 'p',
+        'inventory': 'b',
+        'spellcasting': 's',
+        // 'maps': '',
+        'items': '',
+        'spells': ''
+    }
+
+    Object.keys(nav_shortcut_key).forEach(nav_name => {
+        query('nav_' + nav_name).addEventListener('click', () => {
+            const url = window.location;
+            const path = url.pathname.split('/');
+            path.pop();
+            path.push(nav_name);
+            history.pushState('', '', url.origin+path.join('/') + url.search);
+        
+            Object.keys(nav_shortcut_key).forEach(nav_name_2 => {
+                query(nav_name_2 + '_panel').style.display = 'none';
+                query('nav_' + nav_name_2).classList.remove('active');
+            });
+
+            query(nav_name + '_panel').style.display = '';
+            query('nav_' + nav_name).classList.add('active');
         });
-
-        eval('scroll_'+label).style.display = '';
-        eval('btn_'+label).classList.add('active');
     });
-});
 
-document.addEventListener('keydown', (event) => {
-    if (document.activeElement.tagName != 'BODY') return;
-    let btn_ref = {
-        '': 'background', 'i':'main', 'b':'backpack', 's':'spellcasting', 'm':'maps',
-        '':'items', '':'spells'
-    }
-    if (Object.keys(btn_ref).includes(event.key.toLowerCase())) {
-        event.preventDefault();
-        eval('btn_' + btn_ref[event.key.toLowerCase()]).click();
-    }
-  });
+    document.addEventListener('keydown', (event) => {
+        if (['INPUT', 'TEXTAREA', 'DIV'].includes(document.activeElement.tagName)) return;
+
+        Object.keys(nav_shortcut_key).forEach(nav_name => {
+            if (nav_shortcut_key[nav_name] === event.key.toLowerCase()) {
+                event.preventDefault();
+                query('nav_' + nav_name).click();
+            }
+        });
+    });
+}
 
 /**
  * 绑定长休按钮
  */
-long_rest.addEventListener('click', () => {
-    saved_data.abstract['hit_point'][0] = saved_data.abstract['hit_point'][1];
-    saved_data.abstract['hit_point'][2] = '0';
-    saved_data.abstract['hit_dice'] = saved_data.main.class_level;
-    saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
-    saved_data.abstract['inspiration'] = '';
+function bind_long_rest_button() {
+    query('long_rest_button').addEventListener('click', () => {
+        saved_data.abstract['hit_point'][0] = saved_data.abstract['hit_point'][1];
+        saved_data.abstract['hit_point'][2] = '0';
+        saved_data.abstract['hit_dice'] = saved_data.main.class_level;
+        saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
+        saved_data.abstract['inspiration'] = '';
+    
+        load_abstract();
 
-    load_abstract();
-    death_saving.querySelectorAll('input').forEach(box => box.checked = false);
-    for (let i=0; i<9; i++) {
-        let label = spell_slot.rows[1].cells[i+1].children[0].innerText;
-        saved_data.spell_slots[i] = label.split(' ')[2];
-        
-    }
-    load_spellcasting_info();
+        death_saving.querySelectorAll('input').forEach(box => box.checked = false);
+        for (let i=0; i<9; i++) {
+            let label = spell_slot.rows[1].cells[i+1].children[0].innerText;
+            saved_data.spell_slots[i] = label.split(' ')[2];
+            
+        }
 
-    fetch(window.location.origin+'/api/update/'+pc_id, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(saved_data)
-    }).catch(err => alert('Fetch 错误: ' + err));
-});
+        load_spellcasting_info();
+
+        // 重构：使用可以复用的更新函数
+        fetch(window.location.origin+'/api/update/'+pc_id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(saved_data)
+        }).catch(err => alert('Fetch 错误: ' + err));
+    });
+}
 
 /**
  * 绑定投骰按钮和骰盘显示器
@@ -192,7 +211,7 @@ items_table.rows[0].addEventListener('click', (event) => {
  * 绑定背包栏、仓库栏的排序按钮
  */
 ['backpack', 'storage'].forEach(name => {
-    eval(name + '_table').rows[0].addEventListener('click', (event) => {
+    query(name + '_table').rows[0].addEventListener('click', (event) => {
         let hding_ref = {
             '类型': 'type',
             '特性': 'properties',
@@ -223,7 +242,7 @@ items_table.rows[0].addEventListener('click', (event) => {
             
             return event.ctrlKey ? -1*ret : ret;
         });
-        eval('load_' + name + '()');
+        query('load_' + name + '()');
 
         fetch(window.location.origin+'/api/update/'+pc_id, {
             method: 'POST',
@@ -316,18 +335,18 @@ document.querySelectorAll('.slot').forEach(slot => {
 /**
  * 绑定添加自定义物品按钮
  */
-scroll_backpack.querySelectorAll('.btn-add').forEach(ele => {
-    ele.addEventListener('click', () => {
-        saved_data.backpack.push({
-            "name": "自定义  Custom Thing",
-            "label": "自定义",
-            "weight": "0",
-            "amount": "1"
-        });
-        load_backpack();
-        backpack_table.rows[backpack_table.rows.length-1].click()
-    });
-});
+// scroll_backpack.querySelectorAll('.btn-add').forEach(ele => {
+//     ele.addEventListener('click', () => {
+//         saved_data.backpack.push({
+//             "name": "自定义  Custom Thing",
+//             "label": "自定义",
+//             "weight": "0",
+//             "amount": "1"
+//         });
+//         load_backpack();
+//         backpack_table.rows[backpack_table.rows.length-1].click()
+//     });
+// });
 
 /**
  * Input, Select 内容改变后保存并上传

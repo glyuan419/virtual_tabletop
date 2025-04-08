@@ -20,3 +20,22 @@ input, select {
         outline: 1px solid #3b82f6;
     }
 }
+
+textarea {
+    appearance: none;
+    height: 100%;
+    width: 100% !important;
+    border: none;
+    outline: 1px solid transparent;
+    padding: 6px;
+    line-height: 1.5;
+    font-size: 13px;
+    overflow: visible;
+    border: none;
+    resize: none;
+    text-align: left;
+
+    &:focus {
+        outline: 1px solid #3b82f6;
+    }
+}

@@ -27,18 +27,18 @@ def home():
             res.append([file_name.split('.')[0], data['race']+data['class'], data['character_name']])
     return render_template('select_pc.html', data=str(res))
 
-@app.route('/template/main')
+@app.route('/template/profile')
 def create_new_pc():
     with open(f'savefiles/template.json', 'r') as f:
         res = f.read()
     pc_id = md5(str(time()).encode()).hexdigest()[:16]
     with open(f'savefiles/{pc_id}.json', 'w') as f:
         f.write(res)
-    return redirect(f'/{pc_id}/main')
+    return redirect(f'/{pc_id}/profile')
 
-@app.route('/<pc_id>/<scroll>')
-def pl_view(pc_id, scroll):
-    return render_template('pl_view.html', pc_id=pc_id, actived_scroll=scroll)
+@app.route('/<pc_id>/<panel>')
+def pl_view(pc_id, panel):
+    return render_template('pl_view.html', pc_id=pc_id, actived_panel=panel)
 
 
 

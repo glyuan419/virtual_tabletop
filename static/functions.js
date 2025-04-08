@@ -875,7 +875,7 @@ function load_abstract() {
     ) {color = '#c5ca00';} else if (
         Number(saved_data.abstract['hit_point'][0]) > 0
     ) {color = '#f7a100';} else {color = '#cc0000';}
-    scroll_main.querySelectorAll('#hit_point input').forEach(el => {
+    profile_panel.querySelectorAll('#hit_point input').forEach(el => {
         el.style.color = color;
         el.style['font-size'] = '16px';
     });
@@ -1415,4 +1415,10 @@ function show_toast(message, duration = 3000) {
     document.body.appendChild(toast);
     toast.addEventListener('click', () => toast.remove());
     setTimeout(() => toast.remove(), duration);
+}
+
+function query(id) {
+    ret = document.getElementById(id);
+    if (ret === null) alert('使用了未知的 ID 【' + id + '】!');
+    return ret;
 }
