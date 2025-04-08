@@ -25,9 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         load_spells();
         load_spellcasting();
 
-        load_main();
+        load_profile();
     })
-    .catch(err => alert('Fetch 错误: ' + err));
 
     bind_nav();
     bind_long_rest_button();
@@ -88,7 +87,7 @@ function bind_long_rest_button() {
     query('long_rest_button').addEventListener('click', () => {
         saved_data.abstract['hit_point'][0] = saved_data.abstract['hit_point'][1];
         saved_data.abstract['hit_point'][2] = '0';
-        saved_data.abstract['hit_dice'] = saved_data.main.class_level;
+        saved_data.abstract['hit_dice'] = saved_data.metadata.level;
         saved_data.abstract['special_value'][1] = saved_data.abstract['special_value'][2];
         saved_data.abstract['inspiration'] = '';
     
@@ -357,42 +356,52 @@ document.querySelectorAll('input, select').forEach(element => {
     element.addEventListener('change', () => {
         let character_selector = document.getElementById('character_selector');
         if (element.tagName == 'SELECT') {
-            if (element.id == 'class_name') {
+            if (element.id == 'class') {
                 // 职业选择器
-                saved_data.main.class = element.selectedOptions[0].innerText;
-                character_selector.selectedOptions[0].innerText = saved_data.main.race
-                    + saved_data.main.class + ': ' + saved_data.main.character_name;
-                document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
-            } else if (element.id == 'subclass_name') {
+                saved_data.metadata.class = element.selectedOptions[0].innerText;
+                character_selector.selectedOptions[0].innerText = (
+                    saved_data.characteristics.race
+                    + saved_data.metadata.class + ': '
+                    + saved_data.metadata.character_name
+                );
+                document.title = (
+                    saved_data.characteristics.race
+                    + saved_data.metadata.class + ': '
+                    + saved_data.metadata.character_name
+                );
+            } else if (element.id == 'subclass') {
                 // 子职业选择器
-                saved_data.main.subclass = element.selectedOptions[0].innerText;
+                saved_data.metadata.subclass = element.selectedOptions[0].innerText;
             } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
                 // 技能熟练选择器
-                let skls_ref = ['', 
+                const skill_ref = ['', 
                     'athletics',
                     'acrobatics', 'sleight_of_hand', 'stealth',
                     'investigation', 'arcana', 'history', 'nature', 'religion',
                     'perception', 'insight', 'animal_handling', 'medicine', 'survival',
                     'persuasion', 'deception', 'intimidation', 'performance'
                 ];
-                let skill = skls_ref[element.parentElement.parentElement.rowIndex];
-                saved_data.skill_proficiency = saved_data.skill_proficiency.filter(x => x!=skill);
-                saved_data.double_skill_proficiency = saved_data.double_skill_proficiency.filter(x => x!=skill);
-                saved_data.half_skill_proficiency = saved_data.half_skill_proficiency.filter(x => x!=skill);
-                
-                switch (element.selectedOptions[0].innerText) {
-                    case 'O': saved_data.skill_proficiency.push(skill); break;
-                    case 'D': saved_data.double_skill_proficiency.push(skill); break;
-                    case 'H': saved_data.half_skill_proficiency.push(skill); break;
-                }
+                const skill = skill_ref[element.parentElement.parentElement.rowIndex];
+                saved_data.skills[skill][0] = element.selectedOptions[0].innerText;
             }
         } else if (element.tagName == 'INPUT') {
-            if (element.id != '') {
+            if (['character_name', 'level', 'experience_points'].includes(element.id)) {
                 // 主要信息栏
-                saved_data.main[element.id] = element.value;
-                character_selector.selectedOptions[0].innerText = saved_data.main.race
-                    + saved_data.main.class + ': ' + saved_data.main.character_name;
-                document.title = saved_data.main.race + saved_data.main.class + ': ' + saved_data.main.character_name;
+                saved_data.metadata[element.id] = element.value;
+                character_selector.selectedOptions[0].innerText = (
+                    saved_data.metadata.race
+                    + saved_data.metadata.class + ': '
+                    + saved_data.metadata.character_name
+                );
+                document.title = (
+                    saved_data.characteristics.race
+                    + saved_data.metadata.class + ': '
+                    + saved_data.metadata.character_name
+                );
+            } else if (['race', 'sex'].includes(element.id)) {
+                saved_data.characteristics[element.id] = element.value;
+            } else if (['background', 'alignment'].includes(element.id)) {
+                saved_data.background[element.id] = element.value;
             } else if (element.parentElement.parentElement.id != '') {
                 // 摘要栏
                 switch (element.parentElement.parentElement.id) {
@@ -408,15 +417,15 @@ document.querySelectorAll('input, select').forEach(element => {
                 // 属性栏、技能栏、状态栏、钱币栏、装备栏
                 switch (element.parentElement.parentElement.parentElement.parentElement.id) {
                     case 'skills':
-                        let skls_ref = ['', 
+                        const skill_ref = ['', 
                             'athletics',
                             'acrobatics', 'sleight_of_hand', 'stealth',
                             'investigation', 'arcana', 'history', 'nature', 'religion',
                             'perception', 'insight', 'animal_handling', 'medicine', 'survival',
                             'persuasion', 'deception', 'intimidation', 'performance'
                         ];
-                        let skill = skls_ref[element.parentElement.parentElement.rowIndex];
-                        saved_data.skill_bonus[skill] = element.value;
+                        const skill = skill_ref[element.parentElement.parentElement.rowIndex];
+                        saved_data.skills[skill][1] = element.value;
                         break;
                     case 'abilities':
                         let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
@@ -449,7 +458,7 @@ document.querySelectorAll('input, select').forEach(element => {
             }
         }
     
-        load_main();
+        load_profile();
 
         fetch(window.location.origin+'/api/update/'+pc_id, {
             method: 'POST',

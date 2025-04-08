@@ -548,7 +548,7 @@ function load_summery() {
 
     assign('class', saved_data.metadata.class);
     // 加载子职业选择器
-    let subclass_ref = {
+    const subclass_ref = {
         '奇械师': ['炼金师', '装甲师', '魔炮师', '战铸师'],
         '野蛮人': ['狂战士', '图腾勇士', '祖先守卫', '狂野魔法', '野兽', '战狂', '狂热者', '风暴先驱'],
         '吟游诗人': ['逸闻学院', '勇气学院', '雄辩学院', '创造学院', '剑舞学院', '迷惑学院', ' 低语学院', '灵魂学院'],
@@ -733,33 +733,31 @@ function load_abilities() {
  * 载入技能
  */
 function load_skills() {
-    let skls_ref = ['', 
+    const skill_ref = ['', 
         'athletics',
         'acrobatics', 'sleight_of_hand', 'stealth',
         'investigation', 'arcana', 'history', 'nature', 'religion',
         'perception', 'insight', 'animal_handling', 'medicine', 'survival',
         'persuasion', 'deception', 'intimidation', 'performance'
     ];
-    let abs_ref = ['', 
+    const ability_ref = ['', 
         'strength', 
         'dexterity', 'dexterity', 'dexterity', 
         'intelligence', 'intelligence', 'intelligence', 'intelligence', 'intelligence', 
         'wisdom', 'wisdom', 'wisdom', 'wisdom', 'wisdom', 
         'charisma', 'charisma', 'charisma', 'charisma'
     ];
-    let rows = skills.tBodies[0].children;
+    const rows = query('skills').rows;
     for (i=1; i<rows.length; i++) {
-        let proficiency = 0;
-        if (saved_data.skill_proficiency.includes(skls_ref[i])) proficiency = 1;
-        if (saved_data.double_skill_proficiency.includes(skls_ref[i])) proficiency = 2;
-        if (saved_data.half_skill_proficiency.includes(skls_ref[i])) proficiency = 3;
-
-        assign(rows[i].children[0].children[0], ['X', 'O', 'D', 'H'][proficiency]) // 熟练
-        assign(rows[i].children[2].children[0], saved_data.skill_bonus[skls_ref[i]]); // 修正
+        assign(rows[i].children[0].children[0], saved_data.skills[skill_ref[i]][0]) // 熟练
+        assign(rows[i].children[2].children[0], saved_data.skills[skill_ref[i]][1]); // 修正
         assign(rows[i].children[3].children[0],
-            parseInt(sum(computed_data[abs_ref[i]])/2)-5
-            + Number(saved_data.skill_bonus[skls_ref[i]])
-            + parseInt([0, 1, 2, 0.5][proficiency] * Number(computed_data.proficiency_bonus))
+            parseInt(sum(computed_data[ability_ref[i]])/2)-5
+            + Number(saved_data.skills[skill_ref[i]][1])
+            + parseInt(
+                ({'X': 0, 'O': 1, 'D': 2, 'H': 0.5})[saved_data.skills[skill_ref[i]][0]]
+                * Number(computed_data.proficiency_bonus)
+            )
         ); // 总值
     }
 }
@@ -1422,6 +1420,6 @@ function show_toast(message, duration = 3000) {
 
 function query(id) {
     ret = document.getElementById(id);
-    if (ret === null) alert('使用了未知的 ID 【' + id + '】!');
+    if (ret === null) alert('query(): 使用了未知的 ID 【' + id + '】!');
     return ret;
 }

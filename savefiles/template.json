@@ -35,5 +35,35 @@
         "bind": "",
         "flaw": "",
         "backstory": ""
+    },
+
+    "abilities": {
+        "strength": "10",
+        "dexterity": "10",
+        "constitution": "10",
+        "intelligence": "10",
+        "wisdom": "10",
+        "charisma": "10"
+    },
+
+    "skills": {
+        "athletics": ["X", "0"],
+        "acrobatics": ["X", "0"],
+        "sleight_of_hand": ["X", "0"],
+        "stealth": ["X", "0"],
+        "investigation": ["X", "0"],
+        "arcana": ["X", "0"],
+        "history": ["X", "0"],
+        "nature": ["X", "0"],
+        "religion": ["X", "0"],
+        "perception": ["X", "0"],
+        "insight": ["X", "0"],
+        "animal_handling": ["X", "0"],
+        "medicine": ["X", "0"],
+        "survival": ["X", "0"],
+        "persuasion": ["X", "0"],
+        "deception": ["X", "0"],
+        "intimidation": ["X", "0"],
+        "performance": ["X", "0"]
     }
 }
