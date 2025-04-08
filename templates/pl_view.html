@@ -21,8 +21,8 @@
         <li class="nav-item"><button id="nav_spellcasting" class="btn">施法</button></li>
         <!-- <li class="nav-item"><button id="nav_maps" class="btn">地图</button></li> -->
         <li class="nav-divider"></li>
-        <li class="nav-item"><button id="nav_items" class="btn">物品</button></li>
-        <li class="nav-item"><button id="nav_spells" class="btn">法术</button></li>
+        <li class="nav-item"><button id="nav_items" class="btn">物品参照</button></li>
+        <li class="nav-item"><button id="nav_spells" class="btn">法术参照</button></li>
         <li class="nav-divider"></li>
         <li class="nav-space"></li>
         <li class="nav-item"><button id="long_rest_button" class="btn">长休息</button></li>
@@ -474,7 +474,7 @@
             </div>
         </div>
         <div class="w-p50 space-y"> <!-- 中栏 -->
-            <div class="row space-x"> <!-- 中栏-上栏（基本信息） -->
+            <div class="row space-x"> <!-- 中栏-上栏（概要栏） -->
                 <table class="table w-p30">
                     <tbody>
                         <tr>
@@ -485,8 +485,8 @@
                     </tbody>
                     <tbody>
                         <tr>
-                            <td><input id="sex" placeholder="性别"/></td>
-                            <td colspan="2"><input id="race" placeholder="种族"/></td>
+                            <td><input id="sex_in_profile" placeholder="性别"/></td>
+                            <td colspan="2"><input id="race_in_profile" placeholder="种族"/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -494,10 +494,10 @@
                     <tbody>
                         <tr>
                             <td class="w-p45">
-                                <select id="subclass_name"></select>
+                                <select id="subclass"></select>
                             </td>
                             <td class="w-p40">
-                                <select id="class_name">
+                                <select id="class">
                                     <option></option>
                                     <option>野蛮人</option>
                                     <option>吟游诗人</option>
@@ -514,12 +514,12 @@
                                 </select>
                             </td>
                             <td class="w-p15">
-                                <input id="class_level" placeholder="等级"/>
+                                <input id="level" placeholder="等级"/>
                             </td>
                         </tr>
                         <tr>
-                            <td><input id="alignment" placeholder="阵营"/></td>
-                            <td colspan="2"><input id="background" placeholder="背景"/></td>
+                            <td><input id="alignment_in_profile" placeholder="阵营"/></td>
+                            <td colspan="2"><input id="background_in_profile" placeholder="背景"/></td>
                         </tr>
                     </tbody>
                 </table>

@@ -4,12 +4,12 @@
  * 根据传入的角色列表 data 设定角色选择器
  */
 function load_character_selector(data) {
-    let character_selector = document.getElementById('character_selector');
+    const character_selector = query('character_selector');
     for (let i in data) {
         let label = data[i][1]+': '+data[i][2]
         if (data[i][0] == 'template') {
             label = '创建新角色';
-        } else if (data[i][1]=='' && data[i][2]==0) {
+        } else if (data[i][1]=='' && data[i][2]=='') {
             label = '正在创建';
         }
 
@@ -24,7 +24,7 @@ function load_character_selector(data) {
 
     character_selector.addEventListener('change', () => {
         window.location.href = (
-            [window.location.origin, character_selector.selectedOptions[0].value, 'main'].join('/')
+            [window.location.origin, character_selector.selectedOptions[0].value, 'profile'].join('/')
         );
     });
 }
@@ -103,7 +103,7 @@ function load_items() {
                     }
                 );
                 load_backpack();
-                load_main();
+                load_profile();
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
@@ -264,7 +264,7 @@ function load_backpack() {
                     }
                     
                     load_backpack();
-                    load_main();
+                    load_profile();
 
                     // 重构：使用可以复用的更新函数
                     fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -279,7 +279,7 @@ function load_backpack() {
             label.addEventListener('change', () => {
                 this_item.label = label.children[0].value;
                 load_backpack();
-                load_main();
+                load_profile();
 
                 // 重构：使用可以复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -293,7 +293,7 @@ function load_backpack() {
             weight.addEventListener('change', () => {
                 this_item.weight = weight.children[0].value;
                 load_backpack();
-                load_main();
+                load_profile();
 
                 // 重构：使用可以复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -308,12 +308,12 @@ function load_backpack() {
                 if (amount.children[0].value == '0' || amount.children[0].value == '') {
                     saved_data[table_name].splice(i, 1);
                     load_backpack();
-                    load_main();
+                    load_profile();
                     show_toast('已丢弃【' + label.children[0].value + '】', 3000);
                 } else {
                     this_item.amount = amount.children[0].value;
                     load_backpack();
-                    load_main();
+                    load_profile();
                 }
                 
                 // 重构：使用可以复用的更新函数
@@ -410,7 +410,7 @@ function load_spells() {
             if (event.ctrlKey) {
                 saved_data.spells.push(saved_spells[i].name);
                 load_spellcasting();
-                load_main();
+                load_profile();
                 show_toast('已记忆法术【' + saved_spells[i].name.split('  ')[0] + '】', 3000);
 
                 fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -496,7 +496,7 @@ function load_spellcasting() {
             if (event.ctrlKey) {
                 saved_data.spells.splice(i, 1);
                 load_spellcasting();
-                load_main();
+                load_profile();
                 show_toast('已遗忘法术【' + spell.name.split('  ')[0] + '】', 3000);
 
                 fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -510,19 +510,19 @@ function load_spellcasting() {
 }
 
 /**
- * 加载主界面
+ * 加载角色面板
  * 
- * 依次加载主要信息、装备、属性、技能、摘要
+ * 依次加载概要栏、战斗栏、装备栏、属性栏、快捷施法栏
  * 并计算需要的数值
  */
-function load_main() {
+function load_profile() {
     if (
-        saved_data.main.race != ''
-        && saved_data.main.character_name != ''
-        && saved_data.main.class != ''
-        && saved_data.main.class_level != ''
+        saved_data.metadata.race != ''
+        && saved_data.metadata.character_name != ''
+        && saved_data.metadata.class != ''
+        && saved_data.metadata.level != ''
     ) {
-        load_info();
+        load_summery();
         load_gear();
         load_abilities();
         load_skills();
@@ -534,21 +534,21 @@ function load_main() {
         // 顺便加载施法界面的施法信息
         load_spellcasting_info();
     } else {
-        load_info();
+        load_summery();
     }
 }
 
 /**
- * 加载主要信息
+ * 加载概要栏
  */
-function load_info() {
-    assign(character_name, saved_data.main.character_name);
-    assign(sex, saved_data.main.sex);
-    assign(race, saved_data.main.race);
+function load_summery() {
+    assign('character_name', saved_data.metadata.character_name);
+    assign('sex_in_profile', saved_data.characteristics.sex);
+    assign('race_in_profile', saved_data.characteristics.race);
 
-    assign(class_name, saved_data.main.class);
+    assign('class', saved_data.metadata.class);
     // 加载子职业选择器
-    let subcs_ref = {
+    let subclass_ref = {
         '奇械师': ['炼金师', '装甲师', '魔炮师', '战铸师'],
         '野蛮人': ['狂战士', '图腾勇士', '祖先守卫', '狂野魔法', '野兽', '战狂', '狂热者', '风暴先驱'],
         '吟游诗人': ['逸闻学院', '勇气学院', '雄辩学院', '创造学院', '剑舞学院', '迷惑学院', ' 低语学院', '灵魂学院'],
@@ -563,19 +563,19 @@ function load_info() {
         '契术师': ['至高妖精', '邪魔', '旧日支配者', '天界', '咒剑', '不朽者', '深海意志', '巨灵', '死灵'],
         '法师': ['防护学派', '咒法学派', '预言学派', '惑控学派', '塑能学派', '幻术学派', '死灵学派', '变化学派', '剑咏', '时间魔法', '重力魔法', '战争魔法', '书士']
     }
-    subclass_name.add(new Option(''));
-    for (let i in subcs_ref[saved_data.main.class]) {
-        subclass_name.add(new Option(subcs_ref[saved_data.main.class][i]));
+    query('subclass').add(new Option(''));
+    for (let i in subclass_ref[saved_data.metadata.class]) {
+        query('subclass').add(new Option(subclass_ref[saved_data.metadata.class][i]));
     }
-    assign(subclass_name, saved_data.main.subclass);
+    assign('subclass', saved_data.metadata.subclass);
 
-    assign(class_level, saved_data.main.class_level);
-    assign(alignment, saved_data.main.alignment);
-    assign(background, saved_data.main.background);
-    assign(experience_points, saved_data.main.experience_points);
+    assign('level', saved_data.metadata.level);
+    assign('alignment_in_profile', saved_data.background.alignment);
+    assign('background_in_profile', saved_data.background.background);
+    assign('experience_points', saved_data.metadata.experience_points);
 
-    computed_data.proficiency_bonus = parseInt((saved_data.main.class_level-1)/4)+2;
-    assign(proficiency_bonus, computed_data.proficiency_bonus);
+    computed_data.proficiency_bonus = parseInt((saved_data.metadata.level-1)/4)+2;
+    assign('proficiency_bonus', computed_data.proficiency_bonus);
 }
 
 /**
@@ -612,8 +612,8 @@ function load_gear() {
         '中甲': [],
         '重甲': []
     };
-    if (saved_data.main.class == '野蛮人') computed_data.armor_type['无甲'].push('野蛮人无甲防御');
-    if (saved_data.main.class == '武僧') computed_data.armor_type['无甲'].push('武僧无甲防御');
+    if (saved_data.metadata.class == '野蛮人') computed_data.armor_type['无甲'].push('野蛮人无甲防御');
+    if (saved_data.metadata.class == '武僧') computed_data.armor_type['无甲'].push('武僧无甲防御');
     for (let i in saved_data.backpack) {
         let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
         if (item.type.includes('盾牌')) {
@@ -685,7 +685,7 @@ function load_gear() {
                     saved_data.armor[2] = select.selectedOptions[0].innerText;
                     break;
             }
-            load_main();
+            load_profile();
 
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
@@ -718,7 +718,7 @@ function load_abilities() {
     let rows = abilities.tBodies[0].children;
     for (i=1; i<rows.length; i++) {
         let value = sum(computed_data[abs_ref[i]]);
-        let proficiency = prof_ref[saved_data.main.class].includes(abs_ref[i]);
+        let proficiency = prof_ref[saved_data.metadata.class].includes(abs_ref[i]);
 
         assign(rows[i].children[0], proficiency?'O':'X') // 熟练
         assign(rows[i].children[2].children[0], value); // 属性值
@@ -853,7 +853,7 @@ function load_abstract() {
         '侏儒': 25
     };
     for (let k in spds_ref) {
-        if (saved_data.main.race.slice(0, k.length) == k) {
+        if (saved_data.characteristics.race.slice(0, k.length) == k) {
             computed_speed += spds_ref[k];
             break;
         }
@@ -895,8 +895,8 @@ function load_abstract() {
         '法师': '1d6'
     };
     assign(hit_dice.children[1].children[0], saved_data.abstract['hit_dice']); // 剩余生命骰数量
-    assign(hit_dice.children[2], saved_data.main['class_level']); // 最大生命骰数量
-    assign(hit_dice_value.children[1].children[0], hd_ref[saved_data.main['class']]); // 生命骰数值
+    assign(hit_dice.children[2], saved_data.metadata['level']); // 最大生命骰数量
+    assign(hit_dice_value.children[1].children[0], hd_ref[saved_data.metadata['class']]); // 生命骰数值
 
     assign(special_value.children[0].children[0], saved_data.abstract['special_value'][0]); // 特殊能力名称
     assign(special_value.children[1].children[0], saved_data.abstract['special_value'][1]); // 特殊能力剩余数量
@@ -1045,7 +1045,7 @@ function load_weapons() {
                     );
                     break;
             }
-            load_main();
+            load_profile();
 
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
@@ -1131,7 +1131,7 @@ function load_quick_spellcasting() {
         const adice = document.createElement('button');
         adice.className = 'btn dice';
         assign(adice, '1d20+' + (
-            parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+            parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
             + Number(computed_data.proficiency_bonus)
         ));
         if (saved_data.quick_spellcasting[i][1] != '')
@@ -1191,7 +1191,7 @@ function load_quick_spellcasting() {
                     break;
             }
             
-            load_main();
+            load_profile();
 
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
@@ -1207,7 +1207,7 @@ function load_quick_spellcasting() {
                 input.parentElement.parentElement.rowIndex-1
             ][2] = input.value;
 
-            load_main();
+            load_profile();
 
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
@@ -1246,11 +1246,11 @@ function load_spellcasting_info() {
         '20': ['4', '3', '3', '3', '3', '2', '2', '1', '1']
     }
     let level = 0;
-    if (['吟游诗人', '牧师', '德鲁伊', '术士', '法师'].includes(saved_data.main.class)) {
-        level = saved_data.main.class_level;
-    } else if (['圣武士', '游侠'].includes(saved_data.main.class)) {
-        level = parseInt(Number(saved_data.main.class_level)/2 + 0.9);
-        if (saved_data.main.class_level == '1') level = 0;
+    if (['吟游诗人', '牧师', '德鲁伊', '术士', '法师'].includes(saved_data.metadata.class)) {
+        level = saved_data.metadata.level;
+    } else if (['圣武士', '游侠'].includes(saved_data.metadata.class)) {
+        level = parseInt(Number(saved_data.metadata.level)/2 + 0.9);
+        if (saved_data.metadata.level == '1') level = 0;
     }
     for (let i=0; i<9; i++) {
         let label = saved_data.spell_slots[i] + ' / ' + sls_ref[level][i];
@@ -1273,14 +1273,14 @@ function load_spellcasting_info() {
     };
 
     assign(spellcasting_ability_in_spellcasting.children[1], (
-        abs_ref[saved_data.main['class']][0]
+        abs_ref[saved_data.metadata['class']][0]
     )); // 施法关键属性
     assign(difficulty_class_in_spellcasting.children[1], (
-        8 + parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+        8 + parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
         + Number(computed_data.proficiency_bonus)
     )); // 法术豁免难度等级
     assign(attack_bonus_in_spellcasting.children[1].children[0], (
-        parseInt(sum(computed_data[abs_ref[saved_data.main['class']][1]])/2)-5
+        parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
         + Number(computed_data.proficiency_bonus)
     )); // 法术命中加值
 }
@@ -1288,7 +1288,10 @@ function load_spellcasting_info() {
 /**
  * 为元素 element 设置值 value
  */
-function assign(element, value) {
+function assign(id, value) {
+    // 重构：不直接传入元素
+    let element = id;
+    if (typeof id === 'string') element = query(id);
     switch (element.tagName) {
         case 'INPUT': element.value = value; break;
         case 'BUTTON': element.innerText = value; break;

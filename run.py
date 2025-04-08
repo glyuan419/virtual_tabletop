@@ -23,8 +23,12 @@ def home():
     for file_name in listdir('savefiles/'):
         if file_name.split('.')[-1] != 'json': abort(500)
         with open(f'savefiles/{file_name}', 'r') as f:
-            data = loads(f.read())['main']
-            res.append([file_name.split('.')[0], data['race']+data['class'], data['character_name']])
+            data = loads(f.read())
+            res.append([
+                file_name.split('.')[0],
+                data['characteristics']['race'] + data['metadata']['class'],
+                data['metadata']['character_name']
+            ])
     return render_template('select_pc.html', data=str(res))
 
 @app.route('/template/profile')
@@ -41,22 +45,25 @@ def pl_view(pc_id, panel):
     return render_template('pl_view.html', pc_id=pc_id, actived_panel=panel)
 
 
-
-@app.route('/api/query/<pc_id>')
-def api_query(pc_id):
-    if not exists(f'savefiles/{pc_id}.json'): return ['不存在的角色']
-    with open(f'savefiles/{pc_id}.json', 'r') as f:
-        res = f.read()
-    return res
-
 @app.route('/api/query/pc_list')
 def api_query_pc_list():
     res = []
     for file_name in listdir('savefiles/'):
         if file_name.split('.')[-1] != 'json': abort(500)
         with open(f'savefiles/{file_name}', 'r') as f:
-            data = loads(f.read())['main']
-            res.append([file_name.split('.')[0], data['race']+data['class'], data['character_name']])
+            data = loads(f.read())
+            res.append([
+                file_name.split('.')[0],
+                data['characteristics']['race'] + data['metadata']['class'],
+                data['metadata']['character_name']
+            ])
+    return res
+
+@app.route('/api/query/<pc_id>')
+def api_query(pc_id):
+    if not exists(f'savefiles/{pc_id}.json'): return ['不存在的角色']
+    with open(f'savefiles/{pc_id}.json', 'r') as f:
+        res = f.read()
     return res
 
 @app.route('/api/update/<pc_id>', methods=["POST"])

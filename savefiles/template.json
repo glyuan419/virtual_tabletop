@@ -3,5 +3,37 @@
         "character_name": "",
         "race": "",
         "class": ""
+    },
+
+    "metadata": {
+        "character_name": "",
+        "class": "",
+        "subclass": "",
+        "level": "",
+        "experience_points": ""
+    },
+
+    "characteristics": {
+        "race": "",
+        "sex": "",
+        "age": "",
+        "height": "",
+        "weight": "",
+        "hair": "",
+        "skin": "",
+        "eyes": "",
+        "appearance": ""
+    },
+
+    "background": {
+        "background": "",
+        "alignment": "",
+        "faith": "",
+        "personakity_1": "",
+        "personakity_2": "",
+        "ideal": "",
+        "bind": "",
+        "flaw": "",
+        "backstory": ""
     }
 }
