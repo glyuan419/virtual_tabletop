@@ -30,6 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     bind_nav();
     bind_long_rest_button();
+
+    bind_things_in_profile();
+    bind_things_in_items();
+    bind_things_in_spells();
+
+    bind_dice_box();
 });
 
 /**
@@ -101,7 +107,7 @@ function bind_long_rest_button() {
 
         load_spellcasting_info();
 
-        // 重构：使用可以复用的更新函数
+        // 重构：使用可复用的更新函数
         fetch(window.location.origin+'/api/update/'+pc_id, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -111,99 +117,92 @@ function bind_long_rest_button() {
 }
 
 /**
- * 绑定投骰按钮和骰盘显示器
+ * 绑定骰盘
  */
-document.querySelectorAll('.dice').forEach(dice => {
-    Object.defineProperty(dice, 'innerText', {
-        set(value) {
-            if (typeof value === 'number') {
-                this._innerText = value >= 0 ? '+'+value.toString() : value.toString();
-            } else {
-                this._innerText = value;
+function bind_dice_box() {
+    document.querySelectorAll('.dice').forEach(dice => {
+        Object.defineProperty(dice, 'innerText', {
+            set(value) {
+                if (typeof value === 'number') {
+                    this._innerText = value >= 0 ? '+'+value.toString() : value.toString();
+                } else {
+                    this._innerText = value;
+                }
+                this.textContent = this._innerText;
+            },
+            get() {
+                return this.textContent;
             }
-            this.textContent = this._innerText;
-        },
-        get() {
-            return this.textContent;
+        });
+        dice.addEventListener('click', (event) => {
+            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+            roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
+            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+        });
+    });
+    
+    /**
+     * 绑定骰盘输入框
+     */
+    roll_input.addEventListener('keypress', (e) => {
+        if (e.keyCode == '13') {
+            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+            roll_board.innerHTML += roll_dice('输入', roll_input.value);
+            roll_input.value = '';
+            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
         }
     });
-    dice.addEventListener('click', (event) => {
-        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-        roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
-        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-    });
-});
+}
 
 /**
- * 绑定骰盘输入框
+ * 绑定角色面板界面的事件
  */
-roll_input.addEventListener('keypress', (e) => {
-    if (e.keyCode == '13') {
-        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-        roll_board.innerHTML += roll_dice('输入', roll_input.value);
-        roll_input.value = '';
-        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-    }
-});
-
-/**
-* 绑定激励按钮 + 死亡豁免按钮
-*/
-document.querySelectorAll('.silent-dice').forEach(dice => {
-    switch (dice.innerText) {
-        case '死亡豁免':
-            dice.addEventListener('click', () => {
-                if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                roll_board.innerHTML += roll_dice('死亡豁免', '1d20');
-                roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-            });
-            break;
-        case '激励':
-            dice.addEventListener('click', () => {
-                if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
-                    // 匹配 1d20
+function bind_things_in_profile() {
+    // 绑定激励按钮 + 死亡豁免按钮
+    query('profile_panel').querySelectorAll('.silent-dice').forEach(dice => {
+        switch (dice.innerText) {
+            case '死亡豁免':
+                // 重构：使用可复用的骰盘显示函数
+                dice.addEventListener('click', () => {
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += roll_dice('激励', inspiration.cells[1].children[0].value);
+                    roll_board.innerHTML += roll_dice('死亡豁免', '1d20');
                     roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-                } else if ((new RegExp(/^[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
-                    // 匹配 1
-                    assign(inspiration.cells[1].children[0], (
-                        Number(inspiration.cells[1].children[0].value) > 0 ?
-                        Number(inspiration.cells[1].children[0].value)-1 :
-                        0
-                    ));
-                }
+                });
+                break;
+            case '激励':
+                dice.addEventListener('click', () => {
+                    if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
+                        // 匹配 1d20
+                        // 重构：使用可复用的骰盘显示函数
+                        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
+                        roll_board.innerHTML += roll_dice('激励', inspiration.cells[1].children[0].value);
+                        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
 
-            });
-            break;
-    }
+                        saved_data.combat_stats.inspiration = '';
+                    } else if ((new RegExp(/^[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
+                        // 匹配 1
+                        saved_data.combat_stats.inspiration = (
+                            Number(saved_data.combat_stats.inspiration) > 1 ?
+                            Number(saved_data.combat_stats.inspiration)-1 :
+                            ''
+                        );
+                    } else {
+                        saved_data.combat_stats.inspiration = '';
+                    };
+                    load_combat_stats();
 
-});
-
-/**
- * 绑定物品栏的排序按钮
- */
-items_table.rows[0].addEventListener('click', (event) => {
-    let hding_ref = {
-        '名称': 'name',
-        '类型': 'type',
-        '价值': 'value',
-        '重量': 'weight',
-        '来源': 'source'
-    }
-    saved_items.sort((x1, x2) => {
-        let ret = 0;
-        if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
-            ret = 0;
-        if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
-            ret = -1;
-        else ret = 1;
-        
-        return event.ctrlKey ? -1*ret : ret;
+                    // 重构：使用可复用的更新函数
+                    fetch(window.location.origin+'/api/update/'+pc_id, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(saved_data)
+                    }).catch(err => alert('Fetch 错误: ' + err));
+    
+                });
+                break;
+        }
     });
-
-    load_items();
-});
+}
 
 /**
  * 绑定背包栏、仓库栏的排序按钮
@@ -251,29 +250,63 @@ items_table.rows[0].addEventListener('click', (event) => {
 });
 
 /**
- * 绑定法术参照界面法术表格的排序按钮
+ * 绑定物品参照界面的事件
  */
-spells_table.rows[0].addEventListener('click', (event) => {
-    let hding_ref = {
+function bind_things_in_items() {
+    // 列表排序
+    const heading_ref = {
+        '名称': 'name',
+        '类型': 'type',
+        '价值': 'value',
+        '重量': 'weight',
+        '来源': 'source'
+    };
+    query('item_table').rows[0].addEventListener('click', (event) => {
+        const heading = heading_ref[event.target.innerText];
+        saved_items.sort((x1, x2) => {
+            let flag = 0;
+            const y1 = isNaN(parseFloat(x1[heading])) ? x1[heading] : parseFloat(x1[heading]);
+            const y2 = isNaN(parseFloat(x2[heading])) ? x2[heading] : parseFloat(x2[heading]);
+            if (y1 === y2) flag = 0;
+            else if (y1 < y2) flag = -1;
+            else if (y1 > y2) flag = 1;
+            
+            return event.ctrlKey ? -1*flag : flag;
+        });
+    
+        load_items();
+    });
+}
+
+/**
+ * 绑定法术参照界面的事件
+ */
+function bind_things_in_spells() {
+    // 列表排序
+    const heading_ref = {
         '名称': 'name',
         '环阶': 'level',
         '学派': 'school',
+        '施法时间': 'time',
         '射程': 'range',
         '来源': 'source'
-    }
-    saved_spells.sort((x1, x2) => {
-        let ret = 0;
-        if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
-            ret = 0;
-        if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
-            ret = -1;
-        else ret = 1;
-        
-        return event.ctrlKey ? -1*ret : ret;
+    };
+    query('spell_table').rows[0].addEventListener('click', (event) => {
+        const heading = heading_ref[event.target.innerText];
+        saved_spells.sort((x1, x2) => {
+            let flag = 0;
+            const y1 = isNaN(parseFloat(x1[heading])) ? x1[heading] : parseFloat(x1[heading]);
+            const y2 = isNaN(parseFloat(x2[heading])) ? x2[heading] : parseFloat(x2[heading]);
+            if (y1 === y2) flag = 0;
+            else if (y1 < y2) flag = -1;
+            else if (y1 > y2) flag = 1;
+            
+            return event.ctrlKey ? -1*flag : flag;
+        });
+    
+        load_spells();
     });
-
-    load_spells();
-});
+}
 
 /**
  * 绑定施法表格的排序按钮
@@ -329,22 +362,6 @@ document.querySelectorAll('.slot').forEach(slot => {
         }
     });
 });
-
-/**
- * 绑定添加自定义物品按钮
- */
-// scroll_backpack.querySelectorAll('.btn-add').forEach(ele => {
-//     ele.addEventListener('click', () => {
-//         saved_data.backpack.push({
-//             "name": "自定义  Custom Thing",
-//             "label": "自定义",
-//             "weight": "0",
-//             "amount": "1"
-//         });
-//         load_backpack();
-//         backpack_table.rows[backpack_table.rows.length-1].click()
-//     });
-// });
 
 /**
  * Input, Select 内容改变后保存并上传

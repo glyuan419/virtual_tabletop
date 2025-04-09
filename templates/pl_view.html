@@ -1090,7 +1090,7 @@
 
     <div id="items_panel" class="container" style="display: none;">
         <div class="w-p60 col scroll">
-            <table id="items_table" class="table">
+            <table id="item_table" class="table">
                 <tbody>
                     <tr class="table-heading">
                         <td class="w-p25">名称</td>
@@ -1103,7 +1103,7 @@
             </table>
         </div>
         <div class="w-p40 col space-y">
-            <div id="items_item_board" class="board scroll w-p100">
+            <div id="item_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -1114,7 +1114,7 @@
     <div id="spells_panel" class="container" style="display: none;">
         <div class="w-p60 col scroll">
             <div class="table-title">施法</div>
-            <table id="spells_table" class="table">
+            <table id="spell_table" class="table">
                 <tbody>
                     <tr class="table-heading">
                         <td class="w-p25">名称</td>
@@ -1124,15 +1124,12 @@
                         <td class="w-p30">射程</td>
                         <td class="w-p15">来源</td>
                     </tr>
-                    <tr>
-                        <td colspan="6"><button class="btn">添加</button></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="w-p40 col space-y">
-            <div id="spells_spell_board" class="board scroll w-p100">
+            <div id="spell_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -1141,7 +1138,7 @@
     </div>
 
     <div id="roll_box"> <!-- 骰盘 -->
-        投骰
+        骰盘
         <div id="roll_board" contenteditable="true"></div>
         <input id="roll_input"/>
     </div>

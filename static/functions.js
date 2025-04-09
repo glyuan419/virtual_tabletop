@@ -30,81 +30,90 @@ function load_character_selector(data) {
 }
 
 /**
- * 加载物品栏
- * 
- * 将 saved_items 内的条目依次插入表格 items_table
+ * 加载物品参照界面
  */
 function load_items() {
-    while (items_table.rows.length > 1) {
-        items_table.deleteRow(1);
-    }
+    const table = query('item_table');
+
+    // 清空列表
+    while (table.rows.length > 1) table.deleteRow(1);
 
     for (let i=0; i<saved_items.length; i++) {
-        const row = items_table.insertRow();
+        const row = table.insertRow();
         row.classList.add('table-item');
-        row.insertCell().innerText = saved_items[i].name.split('  ')[0];
-        row.insertCell().innerText = saved_items[i].type.join('、');
-        row.insertCell().innerText = saved_items[i].value!=''?saved_items[i].value + ' gp':'-';
-        row.insertCell().innerText = saved_items[i].weight + ' 磅';
-        row.insertCell().innerText = saved_items[i].source;
+
+        assign(row.insertCell(), saved_items[i].name.split('  ')[0]);
+        assign(row.insertCell(), saved_items[i].type.join('、'));
+        assign(row.insertCell(), saved_items[i].value !== '0' ? saved_items[i].value + ' 金币' : '-');
+        assign(row.insertCell(), saved_items[i].weight !== '0' ? saved_items[i].weight + ' 磅' : '-');
+        assign(row.insertCell(), saved_items[i].source);
 
         row.addEventListener('click', (event) => {
-            let table = row.closest('table');
-            if (table.selectedIndex != undefined) 
-                table.rows[table.selectedIndex].classList.remove('selected');
-            table.selectedIndex = row.rowIndex;
+            // 标记选中的条目
+            table.querySelectorAll('.selected').forEach(ele => ele.classList.remove('selected'));
             row.classList.add('selected');
 
-            items_item_board.children[0].innerHTML = saved_items[i].name;
-            items_item_board.children[1].innerHTML = saved_items[i].type.join('、') + '<br/>';
-            items_item_board.children[1].innerHTML += saved_items[i].value + ' gp、' + saved_items[i].weight + ' 磅';
-            items_item_board.children[1].innerHTML += (
-                (saved_items[i].type.includes('武器'))
-                ?('<br/><span class="dice">' + saved_items[i].dmg[1] + '</span> ' + saved_items[i].dmg[0])
-                :('')
+            // 在右栏显示详情
+            const board = query('item_board');
+            assign(board.children[0], saved_items[i].name);
+            
+            let abstract = "";
+            abstract += saved_items[i].type.join('、');
+            if (saved_items[i].value !== '0' && saved_items[i].weight !== '0') abstract += (
+                '<br/>' + saved_items[i].value + ' 金币、' + saved_items[i].weight + ' 磅'
             );
-            let tmp_properties = [];
-            if (saved_items[i].properties.includes('可双手'))
-                tmp_properties.push('可双手 (<span class="dice">' + saved_items[i].dmg[2] + '</span>)');
-            if (saved_items[i].properties.includes('弹药'))
-                tmp_properties.push('弹药 (' + saved_items[i].range + ' ft.)');
-            if (saved_items[i].properties.includes('投掷'))
-                tmp_properties.push('投掷 (' + saved_items[i].range + ' ft.)');
-            items_item_board.children[1].innerHTML += (
-                tmp_properties.length==0 ? '' : ' - ' + tmp_properties.join('、')
+            if (saved_items[i].type.includes('武器')) abstract += (
+                '<br/>' + '<span class="dice">' + saved_items[i].dmg[1] + '</span> '
+                + saved_items[i].dmg[0]
             );
-            items_item_board.children[2].innerHTML = '';
-            for (let j=0; j<saved_items[i].entries.length; j++) {
-                items_item_board.children[2].innerHTML += '<p>' + saved_items[i].entries[j] + '</p>';
-            }
-            for (let j=0; j<saved_items[i].properties.length; j++) {
-                let element = '<p>'
-                    + '<span class="board-item">' + saved_items[i].properties[j] + '. </span>'
-                    + data_properties[saved_items[i].properties[j]].entries.join('<br/><br/>')
-                    + '</p>';
-                    items_item_board.children[2].innerHTML += element;
-            }
+            if (saved_items[i].properties.includes('可双手')) abstract += (
+                ' - 可双手 (<span class="dice">' + saved_items[i].dmg[2] + '</span>)'
+            );
+            if (saved_items[i].properties.includes('弹药')) abstract += (
+                ' - 弹药 (' + saved_items[i].range + ' 尺)'
+            );
+            if (saved_items[i].properties.includes('投掷')) abstract += (
+                ' - 投掷 (' + saved_items[i].range + ' 尺)'
+            );
+            assign(board.children[1], abstract);
 
-            items_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
+            let details = '';
+            for (let j=0; j<saved_items[i].entries.length; j++) details += (
+                '<p>' + saved_items[i].entries[j] + '</p>'
+            );
+            for (let j=0; j<saved_items[i].properties.length; j++) details += (
+                '<p>'
+                + '<span class="board-item">' + saved_items[i].properties[j] + '. </span>'
+                + property_ref[saved_items[i].properties[j]].entries.join('<br/><br/>')
+                + '</p>'
+            );
+            assign(board.children[2], details);            
+
+            board.children[1].querySelectorAll('.dice').forEach(dice => {
                 dice.addEventListener('click', (event) => {
+                    // 重构：使用可复用的投骰函数
                     if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                     roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
                     roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
                 });
             });
 
+            // Ctrl + 左键: 将该物品添加到背包中
+            // 重构：使用右键菜单
             if (event.ctrlKey) {
-                saved_data.backpack.push(
-                    {
-                        name: saved_items[i].name,
-                        label: saved_items[i].name.split('  ')[0],
-                        weight: saved_items[i].weight,
-                        amount: '1'
-                    }
-                );
+                saved_data.backpack.push({
+                    name: saved_items[i].name,
+                    label: saved_items[i].name.split('  ')[0],
+                    weight: saved_items[i].weight,
+                    amount: '1'
+                });
+
                 load_backpack();
                 load_profile();
+
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
+
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -112,17 +121,21 @@ function load_items() {
                 }).catch(err => alert('Fetch 错误: ' + err));
             }
 
+            // Shift + 左键: 将该物品添加到仓库中
+            // 重构：使用右键菜单
             if (event.shiftKey) {
-                saved_data.storage.push(
-                    {
-                        name: saved_items[i].name,
-                        label: saved_items[i].name.split('  ')[0],
-                        weight: saved_items[i].weight,
-                        amount: '1'
-                    }
-                );
+                saved_data.storage.push({
+                    name: saved_items[i].name,
+                    label: saved_items[i].name.split('  ')[0],
+                    weight: saved_items[i].weight,
+                    amount: '1'
+                });
+
                 load_backpack();
+
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至仓库', 3000);
+
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -195,7 +208,7 @@ function load_backpack() {
                             backpack_item_board.children[2].children[0].value
                         );
 
-                        // 重构：使用可以复用的更新函数
+                        // 重构：使用可复用的更新函数
                         fetch(window.location.origin+'/api/update/'+pc_id, {
                             method: 'POST',
                             headers: {'Content-Type': 'application/json'},
@@ -234,7 +247,7 @@ function load_backpack() {
                         let element = (
                             '<p>'
                             + '<span class="board-item">' + property + '. </span>'
-                            + data_properties[property].entries.join('<br/><br/>')
+                            + property_ref[property].entries.join('<br/><br/>')
                             + '</p>'
                         );
                         backpack_item_board.children[2].innerHTML += element;
@@ -242,7 +255,7 @@ function load_backpack() {
 
                     backpack_item_board.children[1].querySelectorAll('.dice').forEach(dice => {
                         dice.addEventListener('click', (event) => {
-                            // 重构：使用可以复用的投骰函数
+                            // 重构：使用可复用的投骰函数
                             if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
                             roll_board.innerHTML += (
                                 roll_dice(get_label(dice), dice.innerText, (event.ctrlKey ? 2 : 1))
@@ -266,7 +279,7 @@ function load_backpack() {
                     load_backpack();
                     load_profile();
 
-                    // 重构：使用可以复用的更新函数
+                    // 重构：使用可复用的更新函数
                     fetch(window.location.origin+'/api/update/'+pc_id, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -281,7 +294,7 @@ function load_backpack() {
                 load_backpack();
                 load_profile();
 
-                // 重构：使用可以复用的更新函数
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -295,7 +308,7 @@ function load_backpack() {
                 load_backpack();
                 load_profile();
 
-                // 重构：使用可以复用的更新函数
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -316,7 +329,7 @@ function load_backpack() {
                     load_profile();
                 }
                 
-                // 重构：使用可以复用的更新函数
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -340,79 +353,96 @@ function load_coins() {
 }
 
 /**
- * 加载法术栏
+ * 加载法术参照界面
  */
 function load_spells() {
-    while (spells_table.rows.length > 1) {
-        spells_table.deleteRow(1);
-    }
+    const table = query('spell_table');
+
+    // 清空列表
+    while (table.rows.length > 1) table.deleteRow(1);
 
     for (let i=0; i<saved_spells.length; i++) {
-        const row = spells_table.insertRow();
+        const row = table.insertRow();
         row.classList.add('table-item');
-        row.insertCell().innerText = saved_spells[i].name.split('  ')[0];
-        row.insertCell().innerText = saved_spells[i].level + ' 环';
-        row.insertCell().innerText = saved_spells[i].school;
-        row.insertCell().innerText = saved_spells[i].time.join(' ');
-        row.insertCell().innerText = saved_spells[i].range.join(' ');
-        row.insertCell().innerText = saved_spells[i].source;
+
+        assign(row.insertCell(), saved_spells[i].name.split('  ')[0]);
+        assign(row.insertCell(), saved_spells[i].level + ' 环');
+        assign(row.insertCell(), saved_spells[i].school);
+        assign(row.insertCell(), saved_spells[i].time.join(' '));
+        assign(row.insertCell(), saved_spells[i].range.join(' '));
+        assign(row.insertCell(), saved_spells[i].source);
 
         row.addEventListener('click', (event) => {
-            let table = row.closest('table');
-            if (table.selectedIndex != undefined) 
-                table.rows[table.selectedIndex].classList.remove('selected');
-            table.selectedIndex = row.rowIndex;
+            // 标记选中的条目
+            table.querySelectorAll('.selected').forEach(ele => ele.classList.remove('selected'));
             row.classList.add('selected');
 
-            spells_spell_board.children[0].innerHTML = saved_spells[i].name;
-            spells_spell_board.children[1].innerHTML = saved_spells[i].level + '环 ';
-            spells_spell_board.children[1].innerHTML += saved_spells[i].school + '<br/>';
-            spells_spell_board.children[1].innerHTML += (
-                '<span class="board-item">施法时间: </span>' + saved_spells[i].time.join(' ') + '<br>'
+            // 在右栏显示详情
+            const board = query('spell_board');
+            assign(board.children[0], saved_spells[i].name);
+
+            let abstract = "";
+            abstract += saved_spells[i].level + '环 ' + saved_spells[i].school;
+            abstract += (
+                '<br/><span class="board-item">施法时间: </span>'
+                + saved_spells[i].time.join(' ')
             );
-            spells_spell_board.children[1].innerHTML += (
-                '<span class="board-item">射程: </span>' + saved_spells[i].range.join(' ') + '<br>'
+            abstract += (
+                '<br/><span class="board-item">射程: </span>'
+                + saved_spells[i].range.join(' ')
             );
-            spells_spell_board.children[1].innerHTML += (
-                '<span class="board-item">构材: </span>' + saved_spells[i].components.join('、') + '<br>'
+            abstract += (
+                '<br/><span class="board-item">构材: </span>'
+                + saved_spells[i].components.join('、')
             );
-            spells_spell_board.children[1].innerHTML += (
-                '<span class="board-item">持续时间: </span>' + saved_spells[i].duration.join(' ') + '<br>'
+            abstract += (
+                '<br/><span class="board-item">持续时间: </span>'
+                + saved_spells[i].duration.join(' ')
             );
-            spells_spell_board.children[2].innerHTML = '';
-            for (let j=0; j<saved_spells[i].entries.length; j++) {
-                spells_spell_board.children[2].innerHTML += '<p>' + saved_spells[i].entries[j] + '</p>';
-            }
-            for (let j=0; j<saved_spells[i].higher_level.length; j++) {
-                spells_spell_board.children[2].innerHTML += (
-                    '<p><span class="board-item">升环施法效应. </span>'
-                    + saved_spells[i].higher_level[j]
-                    + '</p>'
-                );
-            }
-            spells_spell_board.children[2].innerHTML += (
-                '<p><span class="board-item">职业: </span>'
-                + saved_spells[i].classes.join('、') + '</p>'
+            assign(board.children[1], abstract);
+
+            let details = '';
+            for (let j=0; j<saved_spells[i].entries.length; j++) details += (
+                '<p>' + saved_spells[i].entries[j] + '</p>'
             );
-            let subclass_list = [];
-            for (let j of Object.keys(saved_spells[i].subclasses)) {
-                let subclass = saved_spells[i].subclasses[j];
-                for (let k in subclass) {
-                    subclass_list.push(subclass[k] + ' ' + j);
+            for (let j=0; j<saved_spells[i].length; j++) details += (
+                '<p>'
+                + '<span class="board-item">升环施法效应. </span>'
+                + saved_spells[i].higher_level[j]
+                + '</p>'
+            );
+            details += (
+                '<p>'
+                + '<span class="board-item">职业: </span>'
+                + saved_spells[i].classes.join('、')
+                + '</p>'
+            );
+            const subclass_list = [];
+            for (let x of Object.keys(saved_spells[i].subclasses)) {
+                let subclass = saved_spells[i].subclasses[x];
+                for (let y of subclass) {
+                    subclass_list.push(y + ' ' + x);
                 }
             }
-            spells_spell_board.children[2].innerHTML += (
-                subclass_list.length > 0 ?
-                '<p><span class="board-item">子职业: </span>' + subclass_list.join('、') + '</p>' :
-                ''
+            if (subclass_list.length > 0) details += (
+                '<p>'
+                + '<span class="board-item">子职业: </span>'
+                + subclass_list.join('、')
+                + '</p>'
             );
+            assign(board.children[2], details);
 
+            // Ctrl + 左键: 学习该法术
+            // 重构：使用右键菜单
             if (event.ctrlKey) {
                 saved_data.spells.push(saved_spells[i].name);
+
                 load_spellcasting();
                 load_profile();
+
                 show_toast('已记忆法术【' + saved_spells[i].name.split('  ')[0] + '】', 3000);
 
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -820,13 +850,13 @@ function load_combat_stats() {
             );
     } else {
         let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
-        tmp_armor_class += Number(data_armors[item.name.split('  ')[0]][0]);
+        tmp_armor_class += Number(armor_ref[item.name.split('  ')[0]][0]);
         tmp_armor_class += (
-            data_armors[item.name.split('  ')[0]][1] == '' ?
+            armor_ref[item.name.split('  ')[0]][1] == '' ?
             parseInt(sum(computed_data['dexterity'])/2)-5 :
             Math.min(
                 parseInt(sum(computed_data['dexterity'])/2)-5,
-                Number(data_armors[item.name.split('  ')[0]][1])
+                Number(armor_ref[item.name.split('  ')[0]][1])
             )
         );
     }

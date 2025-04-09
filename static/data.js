@@ -1,4 +1,4 @@
-let data_properties = {
+let property_ref = {
     "自定义": {
         "source": "自定义",
         "entries": []
@@ -76,7 +76,7 @@ let data_properties = {
     }
 };
 
-let data_armors = {
+let armor_ref = {
     "标签": ["基础护甲等级", "敏捷调整值", "隐匿"],
     "绵甲": ["11", "", "劣势"],
     "皮甲": ["11", "", ""],

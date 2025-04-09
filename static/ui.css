@@ -178,15 +178,17 @@
     flex-direction: column
 }
 
+.board * {
+    text-align: left;
+}
+
 .board-heading {
     font-size: 18px;
-    text-align: left;
     flex-shrink: 0;
 }
 
 .board-abstract {
     font-size: 12px;
-    text-align: left;
     padding: 6px 0 12px 0;
     border-bottom: 1px solid #e4e8ef;
     line-height: 1.5;
@@ -195,11 +197,7 @@
 
 .board-details {
     flex-grow: 1;
-}
-
-.board-details * {
     font-size: 12px;
-    text-align: left;
 }
 
 .board-item {
