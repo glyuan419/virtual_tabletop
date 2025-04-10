@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 查看所有端口代理
 powershell.exe -Command "netsh interface portproxy show all"
 
 # 将主机的 5000 端口转发到 WSL 的 5000 端口（用管理员身份启动 powershell）

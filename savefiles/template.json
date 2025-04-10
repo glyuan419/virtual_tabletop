@@ -78,5 +78,8 @@
         "deception": ["X", "0"],
         "intimidation": ["X", "0"],
         "performance": ["X", "0"]
-    }
+    },
+    "backpack": [],
+    "storage": [],
+    "currency": ["0", "0", "0"]
 }

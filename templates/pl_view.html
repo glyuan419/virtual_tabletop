@@ -829,7 +829,7 @@
                 </table>
             </div>
         </div>
-        <div class="w-p35 col space-y"> <!-- 右栏（装备、护甲、法术） -->
+        <div class="w-p35 col space-y"> <!-- 右栏（装备栏、护甲栏、快捷施法栏） -->
             <table id="gear_table" class="table"> <!-- 装备栏 -->
                 <tr class="table-heading">
                     <td class="w-p15"><div class="m-1">装备</div></td>
@@ -896,7 +896,7 @@
                     <td class="w-p35"></td>
                 </tr>
             </table>
-            <table id="quick_spellcasting" class="table"> <!-- 法术栏 -->
+            <table id="quick_spellcasting" class="table"> <!-- 快捷施法栏 -->
                 <tbody>
                     <tr class="table-heading">
                         <td class="w-p10">环阶</td>
@@ -910,7 +910,7 @@
                     <tr><td></td></tr>
                 </tbody>
             </table>
-            <table id="coins_in_main" class="table w-p35"> <!-- 财富 -->
+            <table id="coins_in_profile" class="table w-p35"> <!-- 货币 -->
                 <tbody>
                     <tr>
                         <td class="w-p30 primary-color">金币</td>
@@ -932,7 +932,7 @@
                 <tbody>
                     <tr>
                         <td class="w-p30 primary-color">负重</td>
-                        <td id="current_weight_1"></td>
+                        <td id="current_weight_in_profile"></td>
                     </tr>
                 </tbody>
             </table>
@@ -948,9 +948,9 @@
                         <td class="w-p20">名称</td>
                         <td class="w-p25">类型</td>
                         <td class="w-p25">特性</td>
-                        <td class="w-p10">价值</td>
+                        <td class="w-p15">价值</td>
                         <td class="w-p10">重量/磅</td>
-                        <td class="w-p10">数量</td>
+                        <td class="w-p5">数量</td>
                     </tr>
                 </tbody>
             </table>
@@ -964,9 +964,9 @@
                         <td class="w-p20">名称</td>
                         <td class="w-p25">类型</td>
                         <td class="w-p25">特性</td>
-                        <td class="w-p10">价值</td>
+                        <td class="w-p15">价值</td>
                         <td class="w-p10">重量/磅</td>
-                        <td class="w-p10">数量</td>
+                        <td class="w-p5">数量</td>
                     </tr>
                     <tr>
                         <td colspan="6"><button class="btn">添加</button></td>
@@ -975,12 +975,12 @@
             </table>
         </div>
         <div class="w-p40 col space-y">
-            <div id="backpack_item_board" class="board scroll w-p100">
+            <div id="inventory_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
             </div>
-            <table id="coins_in_backpack" class="table w-p35">
+            <table id="coins_in_inventory" class="table w-p35">
                     <tr>
                         <td class="w-p30 primary-color">金币</td>
                         <td>
@@ -1001,7 +1001,7 @@
                 <tbody>
                     <tr>
                         <td class="w-p30 primary-color">负重</td>
-                        <td id="current_weight_2"></td>
+                        <td id="current_weight_in_inventory"></td>
                     </tr>
                 </tbody>
             </table>
@@ -1090,7 +1090,7 @@
 
     <div id="items_panel" class="container" style="display: none;">
         <div class="w-p60 col scroll">
-            <table id="item_table" class="table">
+            <table id="items_table" class="table">
                 <tbody>
                     <tr class="table-heading">
                         <td class="w-p25">名称</td>
@@ -1114,7 +1114,7 @@
     <div id="spells_panel" class="container" style="display: none;">
         <div class="w-p60 col scroll">
             <div class="table-title">施法</div>
-            <table id="spell_table" class="table">
+            <table id="spells_table" class="table">
                 <tbody>
                     <tr class="table-heading">
                         <td class="w-p25">名称</td>

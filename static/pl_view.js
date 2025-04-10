@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     ])
     .then(() => {
         load_items();
-        load_backpack();
-        load_coins();
+        load_inventory();
+        load_currency();
 
         load_spells();
         load_spellcasting();
@@ -261,7 +261,7 @@ function bind_things_in_items() {
         '重量': 'weight',
         '来源': 'source'
     };
-    query('item_table').rows[0].addEventListener('click', (event) => {
+    query('items_table').rows[0].addEventListener('click', (event) => {
         const heading = heading_ref[event.target.innerText];
         saved_items.sort((x1, x2) => {
             let flag = 0;
@@ -291,7 +291,7 @@ function bind_things_in_spells() {
         '射程': 'range',
         '来源': 'source'
     };
-    query('spell_table').rows[0].addEventListener('click', (event) => {
+    query('spells_table').rows[0].addEventListener('click', (event) => {
         const heading = heading_ref[event.target.innerText];
         saved_spells.sort((x1, x2) => {
             let flag = 0;
@@ -430,7 +430,7 @@ document.querySelectorAll('input, select').forEach(element => {
                     case 'inspiration': saved_data.combat_stats['inspiration'] = element.value; break;
                 }
             } else if (element.parentElement.parentElement.parentElement.parentElement.id != '') {
-                // 属性栏、技能栏、状态栏、钱币栏、装备栏
+                // 属性栏、技能栏、状态栏、货币栏、装备栏
                 switch (element.parentElement.parentElement.parentElement.parentElement.id) {
                     case 'skills':
                         const skill_ref = ['', 
@@ -453,17 +453,15 @@ document.querySelectorAll('input, select').forEach(element => {
                         let label = cons_ref[element.parentElement.previousElementSibling.innerText];
                         saved_data.combat_stats[label] = element.value;
                         break;
-                    case 'coins_in_main':
-                        let coins1_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
-                        let pieces1 = coins1_ref[element.parentElement.parentElement.rowIndex];
-                        saved_data.coins[pieces1] = element.value;
-                        load_coins();
+                    case 'coins_in_profile':
+                        const index_1 = element.parentElement.parentElement.rowIndex;
+                        saved_data.currency[index_1] = element.value;
+                        load_currency();
                         break;
-                    case 'coins_in_backpack':
-                        let coins2_ref = ['gold_pieces', 'silver_pieces', 'copper_pieces'];
-                        let pieces2 = coins2_ref[element.parentElement.parentElement.rowIndex];
-                        saved_data.coins[pieces2] = element.value;
-                        load_coins();
+                    case 'coins_in_inventory':
+                        const index_2 = element.parentElement.parentElement.rowIndex;
+                        saved_data.currency[index_2] = element.value;
+                        load_currency();
                         break;
                     case 'gear_table':
                         saved_data.gear[
