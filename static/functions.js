@@ -599,7 +599,7 @@ function load_profile() {
         && saved_data.metadata.level != ''
     ) {
         load_summery();
-        load_gear();
+        load_equipment();
         load_abilities();
         load_skills();
         load_combat_stats();
@@ -657,24 +657,26 @@ function load_summery() {
 /**
  * 载入装备、武器、护甲
  */
-function load_gear() {
+function load_equipment() {
+    // 测试性载入属性值
     for (let x in saved_data.abilities) {
         computed_data[x] = saved_data.abilities[x];
     }
 
     // 载入装备
-    assign(gear_table.rows[1].children[1].children[0], saved_data.gear['头部']);
-    assign(gear_table.rows[2].children[1].children[0], saved_data.gear['胸部']);
-    assign(gear_table.rows[3].children[1].children[0], saved_data.gear['腰部']);
-    assign(gear_table.rows[4].children[1].children[0], saved_data.gear['手部']);
-    assign(gear_table.rows[5].children[1].children[0], saved_data.gear['腿部']);
-    assign(gear_table.rows[1].children[3].children[0], saved_data.gear['颈部']);
-    assign(gear_table.rows[2].children[3].children[0], saved_data.gear['肩部']);
-    assign(gear_table.rows[3].children[3].children[0], saved_data.gear['背部']);
-    assign(gear_table.rows[4].children[3].children[0], saved_data.gear['腕部']);
-    assign(gear_table.rows[5].children[3].children[0], saved_data.gear['脚部']);
+    assign(gear_table.rows[1].children[1].children[0], saved_data.gear[0]);
+    assign(gear_table.rows[1].children[3].children[0], saved_data.gear[1]);
+    assign(gear_table.rows[2].children[3].children[0], saved_data.gear[2]);
+    assign(gear_table.rows[2].children[1].children[0], saved_data.gear[3]);
+    assign(gear_table.rows[3].children[1].children[0], saved_data.gear[4]);
+    assign(gear_table.rows[3].children[3].children[0], saved_data.gear[5]);
+    assign(gear_table.rows[4].children[3].children[0], saved_data.gear[6]);
+    assign(gear_table.rows[4].children[1].children[0], saved_data.gear[7]);
+    assign(gear_table.rows[5].children[1].children[0], saved_data.gear[8]);
+    assign(gear_table.rows[5].children[3].children[0], saved_data.gear[9]);
 
     // 载入护甲
+    const armor_table = query('armor_table');
     armor_table.rows[0].innerHTML = [
         '<td class="w-p15 primary-color"><select class="select primary-color"></select></td>',
         '<td class="w-p35"><select></select></td>',
@@ -682,63 +684,74 @@ function load_gear() {
         '<td class="w-p35"><select><option></option></select></td>'
     ].join('');
 
-    computed_data.armor_type = {
+    computed_data.armor = {
         '无甲': ['', '法师护甲'],
         '轻甲': [],
         '中甲': [],
         '重甲': []
     };
-    if (saved_data.metadata.class == '野蛮人') computed_data.armor_type['无甲'].push('野蛮人无甲防御');
-    if (saved_data.metadata.class == '武僧') computed_data.armor_type['无甲'].push('武僧无甲防御');
+    if (saved_data.metadata.class == '野蛮人') {
+        computed_data.armor['无甲'].push('野蛮人无甲防御');
+    } else if (saved_data.metadata.class == '武僧') {
+        computed_data.armor['无甲'].push('武僧无甲防御');
+    }
     for (let i in saved_data.backpack) {
-        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
+        const item = saved_items.find(ele => ele.name == saved_data.backpack[i].name);
         if (item.type.includes('盾牌')) {
-            armor_table.rows[0].cells[3].children[0].add(new Option(saved_data.backpack[i].label));
+            armor_table.rows[0].cells[3].children[0].add(
+                new Option(saved_data.backpack[i].label)
+            );
         } else if (item.type.includes('轻甲')) {
-            computed_data.armor_type['轻甲'].push(saved_data.backpack[i].label);
+            computed_data.armor['轻甲'].push(saved_data.backpack[i].label);
         } else if (item.type.includes('中甲')) {
-            computed_data.armor_type['中甲'].push(saved_data.backpack[i].label);
+            computed_data.armor['中甲'].push(saved_data.backpack[i].label);
         } else if (item.type.includes('重甲')) {
-            computed_data.armor_type['重甲'].push(saved_data.backpack[i].label);
+            computed_data.armor['重甲'].push(saved_data.backpack[i].label);
         }
     }
-    armor_table.rows[0].cells[0].children[0].add(new Option('无甲'));
-    if (computed_data.armor_type['轻甲'].length != 0)
-        armor_table.rows[0].cells[0].children[0].add(new Option('轻甲'));
-    if (computed_data.armor_type['中甲'].length != 0)
-        armor_table.rows[0].cells[0].children[0].add(new Option('中甲'));
-    if (computed_data.armor_type['重甲'].length != 0)
-        armor_table.rows[0].cells[0].children[0].add(new Option('重甲'));
+    for (let armor_type of Object.keys(computed_data.armor)) {
+        if (computed_data.armor[armor_type].length != 0) {
+            armor_table.rows[0].cells[0].children[0].add(new Option(armor_type));
+        }
+    }
 
     if (
         saved_data.armor[0] != '无甲' &&
-        saved_data.backpack.find(element => element.label == saved_data.armor[1]) == undefined
+        saved_data.backpack.find(
+            ele => ele.label === saved_data.armor[1]
+        ) === undefined
     ) {
         saved_data.armor[0] = '无甲';
         saved_data.armor[1] = '';
     }
-    if (saved_data.backpack.find(element => element.label == saved_data.armor[2]) == undefined) {
+    if (
+        saved_data.backpack.find(ele => ele.label === saved_data.armor[2])
+        === undefined
+    ) {
         saved_data.armor[2] = '';
     }
+
     assign(armor_table.rows[0].cells[0].children[0], saved_data.armor[0]);
+
     armor_table.rows[0].cells[1].children[0].innerHTML = '';
-    for (let i in computed_data.armor_type[saved_data.armor[0]]) {
-        armor_table.rows[0].cells[1].children[0]
-            .add(new Option(computed_data.armor_type[saved_data.armor[0]][i]));
+    for (let i in computed_data.armor[saved_data.armor[0]]) {
+        armor_table.rows[0].cells[1].children[0].add(
+            new Option(computed_data.armor[saved_data.armor[0]][i])
+        );
     }
     assign(armor_table.rows[0].cells[1].children[0], saved_data.armor[1]);
     assign(armor_table.rows[0].cells[3].children[0], saved_data.armor[2]);
-    let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
+
+    const item = saved_data.backpack.find(ele => ele.label === saved_data.armor[1]);
     if (
-        item != undefined
-        && (
-            ['全身板甲', '条板甲', '锁子甲', '环甲', '半身板甲', '半身板甲', '鳞甲', '绵甲']
-                .includes(item.name.split('  ')[0])
-        )
+        item !== undefined
+        && [
+            '全身板甲', '条板甲', '锁子甲', '环甲', '半身板甲', '半身板甲', '鳞甲', '绵甲'
+        ].includes(item.name.split('  ')[0])
     ) {
-        skills.rows[4].classList.add('selected-red'); // 添加隐匿劣势标记
+        query('skills').rows[4].classList.add('selected-red'); // 添加隐匿劣势标记
     } else {
-        skills.rows[4].classList.remove('selected-red'); // 移除隐匿劣势标记
+        query('skills').rows[4].classList.remove('selected-red'); // 移除隐匿劣势标记
     }
     
     armor_table.querySelectorAll('select').forEach(select => {
@@ -746,11 +759,12 @@ function load_gear() {
             switch (select.parentElement.cellIndex) {
                 case 0:
                     saved_data.armor[0] = select.selectedOptions[0].innerText;
-                    saved_data.armor[1] = computed_data.armor_type[saved_data.armor[0]][0];
-                    armor_table.rows[0].cells[1].children[0].innerHTML = '';
-                    for (let i in computed_data.armor_type[saved_data.armor[0]]) {
-                        armor_table.rows[0].cells[1].children[0]
-                            .add(new Option(computed_data.armor_type[saved_data.armor[0]][i]));
+                    saved_data.armor[1] = computed_data.armor[saved_data.armor[0]][0];
+                    
+                    for (let i in computed_data.armor[saved_data.armor[0]]) {
+                        armor_table.rows[0].cells[1].children[0].add(
+                            new Option(computed_data.armor[saved_data.armor[0]][i])
+                        );
                     }
                     assign(armor_table.rows[0].cells[1].children[0], saved_data.armor[1]);
                     break;
@@ -761,8 +775,10 @@ function load_gear() {
                     saved_data.armor[2] = select.selectedOptions[0].innerText;
                     break;
             }
+
             load_profile();
 
+            // 重构：使用可复用的更新函数
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},

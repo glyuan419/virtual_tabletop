@@ -84,5 +84,7 @@
     "currency": ["0", "0", "0"],
     "spells": [],
     "spell_slots": ["0", "0", "0", "0", "0", "0", "0", "0", "0"],
-    "weapons": []
+    "gear": ["", "", "", "", "", "", "", "", "", ""],
+    "weapons": [],
+    "quick_spellcasting": []
 }

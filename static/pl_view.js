@@ -493,9 +493,10 @@ document.querySelectorAll('input, select').forEach(element => {
                         load_currency();
                         break;
                     case 'gear_table':
-                        saved_data.gear[
-                            element.parentElement.previousElementSibling.innerText
-                        ] = element.value;
+                        const gear_ref = [[0, 1], [3, 2], [4, 5], [7, 6], [8, 9]];
+                        const r = element.closest('tr').rowIndex - 1;
+                        const c = parseInt(element.closest('td').cellIndex / 2);
+                        saved_data.gear[gear_ref[r][c]] = element.value;
                         break;
                 }
             }
