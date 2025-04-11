@@ -863,8 +863,8 @@ function load_skills() {
  * 载入摘要
  */
 function load_combat_stats() {
-    // 先确定载重信息
-    let max_weight = 5 * Number(computed_data.strength);
+    // 先确定负重信息
+    const max_weight = 5 * Number(computed_data.strength);
     let weight_color = '#000000';
     let computed_speed = 0; // 移动速度
     if (computed_data.current_weight > 10*Number(computed_data.strength)) {
@@ -882,49 +882,60 @@ function load_combat_stats() {
         abilities.rows[2].classList.remove('selected-red'); // 移除劣势标记
         abilities.rows[3].classList.remove('selected-red'); // 移除劣势标记
     } else {
-        computed_speed = 0;
+        computed_speed = -0;
         abilities.rows[1].classList.remove('selected-red'); // 移除劣势标记
         abilities.rows[2].classList.remove('selected-red'); // 移除劣势标记
         abilities.rows[3].classList.remove('selected-red'); // 移除劣势标记
     }
-    document.querySelectorAll('#current_weight_in_profile, #current_weight_in_inventory').forEach(el => {
-        el.style.color = weight_color;
-    });
-        
+    query('current_weight_in_profile').style.color = weight_color;
+    query('current_weight_in_inventory').style.color = weight_color;
+    
+    // 负重
     assign(
-        current_weight_in_profile,
+        query('current_weight_in_profile'),
         computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅'
     );
     assign(
-        current_weight_in_inventory,
+        query('current_weight_in_inventory'),
         computed_data.current_weight + ' 磅 / ' + max_weight + ' 磅'
     );
+    
+    // 先攻
+    assign(
+        query('initiative').children[1].children[0],
+        saved_data.combat_stats['initiative_bonus']
+    );
+    assign(
+        query('initiative').children[2].children[0],
+        (
+            parseInt(Number(computed_data['dexterity'])/2) - 5
+            + Number(saved_data.combat_stats['initiative_bonus'])
+        )
+    );
 
-    assign(initiative.children[1].children[0], saved_data.combat_stats['initiative_bonus']);
-    assign(initiative.children[2].children[0],
-        parseInt(Number(computed_data['dexterity'])/2)-5 + Number(saved_data.combat_stats['initiative_bonus'])
-    ); // 先攻
-
-    let tmp_armor_class = 0;
-    if (saved_data.armor[0] == '无甲') {
-        if (saved_data.armor[1] == '')
-            tmp_armor_class += (10 + parseInt(Number(computed_data['dexterity'])/2)-5);
-        if (saved_data.armor[1] == '法师护甲')
-            tmp_armor_class += (13 + parseInt(Number(computed_data['dexterity'])/2)-5);
-        if (saved_data.armor[1] == '野蛮人无甲防御')
-            tmp_armor_class += (
-                10 + parseInt(Number(computed_data['dexterity'])/2)-5
-                + parseInt(Number(computed_data['constitution'])/2)-5
-            );
-        if (saved_data.armor[1] == '武僧无甲防御')
-            tmp_armor_class += (
+    // 护甲等级
+    let armor_class = 0;
+    if (saved_data.armor[0] === '无甲') {
+        if (saved_data.armor[1] === '') armor_class += (
+            10 + parseInt(Number(computed_data['dexterity'])/2)-5
+        );
+        if (saved_data.armor[1] === '法师护甲') armor_class += (
+            13 + parseInt(Number(computed_data['dexterity'])/2)-5
+        );
+        if (saved_data.armor[1] === '野蛮人无甲防御') armor_class += (
+            10 + parseInt(Number(computed_data['dexterity'])/2)-5
+            + parseInt(Number(computed_data['constitution'])/2)-5
+        );
+            
+        if (saved_data.armor[1] === '武僧无甲防御')
+            armor_class += (
                 10 + parseInt(Number(computed_data['dexterity'])/2)-5
                 + parseInt(Number(computed_data['wisdom'])/2)-5
             );
     } else {
-        let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
-        tmp_armor_class += Number(armor_ref[item.name.split('  ')[0]][0]);
-        tmp_armor_class += (
+        const item = saved_data.backpack.find(ele => ele.label === saved_data.armor[1]);
+        armor_class += Number(armor_ref[item.name.split('  ')[0]][0]);
+        armor_class += (
             armor_ref[item.name.split('  ')[0]][1] == '' ?
             parseInt(Number(computed_data['dexterity'])/2)-5 :
             Math.min(
@@ -933,14 +944,18 @@ function load_combat_stats() {
             )
         );
     }
-    assign(armor_class.children[1].children[0], saved_data.combat_stats['armor_class_bonus']);
-    assign(armor_class.children[2], 
-        tmp_armor_class
+    assign(
+        query('armor_class').children[1].children[0],
+        saved_data.combat_stats['armor_class_bonus']
+    );
+    assign(
+        query('armor_class').children[2],
+        armor_class
         + Number(saved_data.combat_stats['armor_class_bonus'])
         + (saved_data.armor[2]!='' ? 2 : 0)
-    ); // 护甲等级
+    );
 
-    let spds_ref = {
+    const speed_ref = {
         '人类': 30,
         '矮人': 25,
         '高精灵': 30,
@@ -953,35 +968,55 @@ function load_combat_stats() {
         '龙裔': 30,
         '侏儒': 25
     };
-    for (let k in spds_ref) {
-        if (saved_data.characteristics.race.slice(0, k.length) == k) {
-            computed_speed += spds_ref[k];
+    for (let k in speed_ref) {
+        if (saved_data.characteristics.race.slice(0, k.length) === k) {
+            computed_speed += speed_ref[k];
             break;
         }
     }
-    assign(speed.children[1], (computed_speed>0?computed_speed:0) + ' 尺'); // 移动速度
+    // 移动速度
+    assign(speed.children[1], (computed_speed>0?computed_speed:0) + ' 尺');
 
     assign(passive_perception.children[1],
         10 + Number(skills.tBodies[0].children[10].children[3].innerText)
     ); // 被动察觉
 
-    assign(hit_point.children[1].children[0], saved_data.combat_stats['hit_point'][0]); // 当前生命值
-    assign(hit_point.children[2].children[0], saved_data.combat_stats['hit_point'][1]); // 最大生命值
-    assign(temporary_hit_point.children[1].children[0], saved_data.combat_stats['hit_point'][2]); // 临时生命值
+    assign(
+        hit_point.children[1].children[0],
+        saved_data.combat_stats['hit_point'][0]
+    ); // 当前生命值
+    assign(
+        hit_point.children[2].children[0],
+        saved_data.combat_stats['hit_point'][1]
+    ); // 最大生命值
+    assign(
+        temporary_hit_point.children[1].children[0],
+        saved_data.combat_stats['hit_point'][2]
+    ); // 临时生命值
     let color = '';
     if (
-        Number(saved_data.combat_stats['hit_point'][0]) == Number(saved_data.combat_stats['hit_point'][1])
-    ) {color = '#00bb20';} else if (
-        Number(saved_data.combat_stats['hit_point'][0]) > Number(saved_data.combat_stats['hit_point'][1])/2
-    ) {color = '#c5ca00';} else if (
+        Number(saved_data.combat_stats['hit_point'][0])
+        === Number(saved_data.combat_stats['hit_point'][1])
+    ) {
+        color = '#00bb20';
+    } else if (
+        Number(saved_data.combat_stats['hit_point'][0])
+        > Number(saved_data.combat_stats['hit_point'][1]) / 2
+    ) {
+        color = '#c5ca00';
+    } else if (
         Number(saved_data.combat_stats['hit_point'][0]) > 0
-    ) {color = '#f7a100';} else {color = '#cc0000';}
-    profile_panel.querySelectorAll('#hit_point input').forEach(el => {
-        el.style.color = color;
-        el.style['font-size'] = '16px';
+    ) {
+        color = '#f7a100';
+    } else {
+        color = '#cc0000';
+    }
+    profile_panel.querySelectorAll('#hit_point input').forEach(ele => {
+        ele.style.color = color;
+        ele.style['font-size'] = '16px';
     });
 
-    let hd_ref = {
+    const hit_dice_ref = {
         '野蛮人': '1d12',
         '吟游诗人': '1d8',
         '牧师': '1d8',
@@ -995,26 +1030,54 @@ function load_combat_stats() {
         '契术师': '1d8',
         '法师': '1d6'
     };
-    assign(hit_dice.children[1].children[0], saved_data.combat_stats['hit_dice']); // 剩余生命骰数量
-    assign(hit_dice.children[2], saved_data.metadata['level']); // 最大生命骰数量
-    assign(hit_dice_value.children[1].children[0], hd_ref[saved_data.metadata['class']]); // 生命骰数值
+    assign(
+        hit_dice.children[1].children[0],
+        saved_data.combat_stats['hit_dice']
+    ); // 剩余生命骰数量
+    assign(
+        hit_dice.children[2],
+        saved_data.metadata['level']
+    ); // 最大生命骰数量
+    assign(
+        hit_dice_value.children[1].children[0],
+        hit_dice_ref[saved_data.metadata['class']]
+    ); // 生命骰数值
 
-    assign(special_value.children[0].children[0], saved_data.combat_stats['special_value'][0]); // 特殊能力名称
-    assign(special_value.children[1].children[0], saved_data.combat_stats['special_value'][1]); // 特殊能力剩余数量
-    assign(special_value.children[2].children[0], saved_data.combat_stats['special_value'][2]); // 特殊能力最大数量
+    assign(
+        special_value.children[0].children[0],
+        saved_data.combat_stats['special_value'][0]
+    ); // 特殊能力名称
+    assign(
+        special_value.children[1].children[0],
+        saved_data.combat_stats['special_value'][1]
+    ); // 特殊能力剩余数量
+    assign(
+        special_value.children[2].children[0],
+        saved_data.combat_stats['special_value'][2]
+    ); // 特殊能力最大数量
     
-    assign(inspiration.children[1].children[0], saved_data.combat_stats['inspiration']); // 激励
+    assign(
+        inspiration.children[1].children[0],
+        saved_data.combat_stats['inspiration']
+    ); // 激励
 
-    assign(conditions.children[0].children[0].children[1].children[0],
-        saved_data.combat_stats['conditions']); // 状态
-    assign(conditions.children[0].children[0].children[3].children[0],
-        saved_data.combat_stats['immunizations']); // 免疫
-    assign(conditions.children[0].children[1].children[1].children[0],
-        saved_data.combat_stats['vulnerabilities']); // 易伤
-    assign(conditions.children[0].children[1].children[3].children[0],
-        saved_data.combat_stats['resistances']); // 抗性
+    assign(
+        conditions.children[0].children[0].children[1].children[0],
+        saved_data.combat_stats['conditions']
+    ); // 状态
+    assign(
+        conditions.children[0].children[0].children[3].children[0],
+        saved_data.combat_stats['immunizations']
+    ); // 免疫
+    assign(
+        conditions.children[0].children[1].children[1].children[0],
+        saved_data.combat_stats['vulnerabilities']
+    ); // 易伤
+    assign(
+        conditions.children[0].children[1].children[3].children[0],
+        saved_data.combat_stats['resistances']
+    ); // 抗性
 }
-
 
 /**
  * 载入武器
