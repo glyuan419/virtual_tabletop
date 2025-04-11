@@ -31,6 +31,10 @@
         "backstory": ""
     },
 
+    "proficiencies": [],
+    "language": ["语言", "通用语"],
+    "features": [],
+
     "combat_stats": {
         "initiative_bonus": "0",
         "armor_class_bonus": "0",
@@ -73,13 +77,17 @@
         "intimidation": ["X", "0"],
         "performance": ["X", "0"]
     },
+
     "backpack": [],
     "storage": [],
     "currency": ["0", "0", "0"],
+
     "spells": [],
     "spell_slots": ["0", "0", "0", "0", "0", "0", "0", "0", "0"],
+
     "gear": ["", "", "", "", "", "", "", "", "", ""],
     "armor": ["无甲", "", ""],
     "weapons": [],
+
     "quick_spellcasting": []
 }

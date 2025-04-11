@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     bind_nav();
     bind_long_rest_button();
 
-    bind_background();
-    bind_features();
+    bind_events_in_background();
+    bind_events_in_features();
     bind_events_in_profile();
     bind_events_in_inventory();
     bind_events_in_spellcasting();
@@ -159,7 +159,7 @@ function bind_dice_box() {
 /**
  * 绑定背景界面的事件
  */
-function bind_background() {
+function bind_events_in_background() {
     query('background_panel').querySelectorAll('input, textarea').forEach(ele => {
         ele.addEventListener('change', () => {
             if (['race_in_background', 'sex_in_background'].includes(ele.id)) {
@@ -202,8 +202,57 @@ function bind_background() {
 /**
  * 绑定特性界面的事件
  */
-function bind_features() {
+function bind_events_in_features() {
+    // 绑定添加按钮
+    ['proficiencies', 'language', 'features'].forEach(table_name => {
+        const button = query(table_name + '_table')
+            .previousElementSibling.querySelector('.btn-add');
+        button.addEventListener('click', () => {
+            if (table_name === 'proficiencies') {
+                saved_data[table_name].push(['', '']);
+            } else if (table_name === 'language') {
+                saved_data[table_name].push(['语言', '']);
+            } else if (table_name === 'features') {
+                saved_data[table_name].push(['', '', '']);
+            }
     
+            load_features();
+    
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        });
+
+        query(table_name + '_table').rows[0].addEventListener('click', (event) => {
+            const heading_ref = {
+                '类型': '0',
+                '名称': '1'
+            }
+            
+            const heading = heading_ref[event.target.innerText];
+            saved_data[table_name].sort((x1, x2) => {
+                let flag = 0;
+
+                if (x1[heading] === x2[heading]) flag = 0;
+                else if (x1[heading] < x2[heading]) flag = -1;
+                else if (x1[heading] > x2[heading]) flag = 1;
+                
+                return event.ctrlKey ? -1*flag : flag;
+            });
+
+            load_features();
+
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        });
+    });
 }
 
 /**
@@ -448,22 +497,22 @@ function bind_events_in_inventory() {
         }).catch(err => alert('Fetch 错误: ' + err));
     });
 
-        // 更新货币栏的修改
-        query('inventory_panel').querySelectorAll('input').forEach(ele => {
-            ele.addEventListener('change', () => {
-                const index = ele.closest('tr').rowIndex;
-                saved_data.currency[index] = ele.value;
-            
-                load_profile();
+    // 更新货币栏的修改
+    query('inventory_panel').querySelectorAll('input').forEach(ele => {
+        ele.addEventListener('change', () => {
+            const index = ele.closest('tr').rowIndex;
+            saved_data.currency[index] = ele.value;
         
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err)); 
-            });
+            load_profile();
+    
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
         });
+    });
 }
 
 /**

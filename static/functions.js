@@ -47,7 +47,7 @@ function load_page_info() {
 }
 
 /**
- * 加值背景
+ * 加载背景
  */
 function load_background() {
     assign(query('race_in_background'), saved_data.characteristics.race);
@@ -72,10 +72,108 @@ function load_background() {
 }
 
 /**
- * 加值特性
+ * 加载特性
  */
 function load_features() {
-    
+    ['proficiencies', 'language', 'features'].forEach(table_name => {
+        const table = query(table_name + '_table');
+        
+        // 清空列表
+        while (table.rows.length > 1) table.deleteRow(1);
+
+        for (let i in saved_data[table_name]) {
+            const term = saved_data[table_name][i];
+
+            const row = table.insertRow();
+            row.classList.add('table-item');
+
+            let type = null;
+            let name = null;
+            if (table_name === 'proficiencies') {
+                type = row.insertCell();
+                assign(type, '<input value="' + term[0] + '"/>');
+                name = row.insertCell();
+                assign(name, '<input value="' + term[1] + '"/>');
+            } else if (table_name === 'language') {
+                name = row.insertCell();
+                assign(name, '<input value="' + term[1] + '"/>');
+            } else if (table_name === 'features') {
+                type = row.insertCell();
+                assign(type, '<input value="' + term[0] + '"/>');
+                name = row.insertCell();
+                assign(name, '<input value="' + term[1] + '"/>');
+            }
+            
+            row.addEventListener('click', (event) => {
+                if (table_name === 'features') {
+                    // 标记选中的条目
+                    table.querySelectorAll('.selected').forEach(
+                        ele => ele.classList.remove('selected')
+                    );
+                    row.classList.add('selected');
+
+                    // 在右栏显示详情
+                    const board = query('features_board');
+                    assign(board.children[0], term[1]);
+                    assign(board.children[1], term[0]);
+                    assign(
+                        board.children[2],
+                        '<textarea class="edit-board"></textarea>'
+                    );
+                    assign(board.children[2].children[0], term[2]);
+
+                    board.querySelector('.edit-board').addEventListener('change', () => {
+                        saved_data[table_name][i][2] = board.children[2].children[0].value;
+
+                        // 重构：使用可复用的更新函数
+                        fetch(window.location.origin+'/api/update/'+pc_id, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(saved_data)
+                        }).catch(err => alert('Fetch 错误: ' + err));
+                    });
+                }
+
+                if (event.ctrlKey) {
+                    saved_data[table_name].splice(i, 1);
+
+                    if (table_name === 'proficiencies') {
+                        show_toast('使用【' + term[1] + '】变得生疏', 3000);
+                    } else if (table_name === 'language') {
+                        show_toast('已遗忘【' + term + '】', 3000);
+                    } else if (table_name === 'features') {
+                        show_toast('已失去【' + term[1] + '】' + term[0], 3000);
+                    }
+                    
+                    load_features();
+
+                    // 重构：使用可复用的更新函数
+                    fetch(window.location.origin+'/api/update/'+pc_id, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(saved_data)
+                    }).catch(err => alert('Fetch 错误: ' + err));
+                }
+            });
+            
+            const input_ref = [type, name];
+            for (let i in input_ref) {
+                if (input_ref[i] === null) continue;
+
+                input_ref[i].addEventListener('change', () => {
+                    term[i] = input_ref[i].children[0].value;
+                    // load_features();
+                    
+                    // 重构：使用可复用的更新函数
+                    fetch(window.location.origin+'/api/update/'+pc_id, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(saved_data)
+                    }).catch(err => alert('Fetch 错误: ' + err));
+                })
+            }
+        }
+    });
 }
 
 /**
@@ -103,7 +201,7 @@ function load_items() {
             row.classList.add('selected');
 
             // 在右栏显示详情
-            const board = query('item_board');
+            const board = query('items_board');
             assign(board.children[0], saved_items[i].name);
             
             let abstract = "";
@@ -248,7 +346,7 @@ function load_inventory() {
                 if (item.properties.includes('自定义')) {
                     assign(board.children[0], this_item.label);
                     assign(board.children[1], '');
-                    assign(board.children[2], '<textarea class="edit-board"/>');
+                    assign(board.children[2], '<textarea class="edit-board"></textarea>');
                     
                     if ("description" in this_item) {
                         assign(board.children[2].children[0], this_item.description);
@@ -354,7 +452,6 @@ function load_inventory() {
                     load_inventory();
                     load_profile();
 
-    
                     // 重构：使用可复用的更新函数
                     fetch(window.location.origin+'/api/update/'+pc_id, {
                         method: 'POST',
@@ -409,7 +506,7 @@ function load_spells() {
             row.classList.add('selected');
 
             // 在右栏显示详情
-            const board = query('spell_board');
+            const board = query('spells_board');
             assign(board.children[0], saved_spells[i].name);
 
             let abstract = "";

@@ -115,35 +115,39 @@
     <div id="features_panel" class="container" style="display: none;">
         <div class="w-p60 row space-x">
             <div class="w-p30">
-                <div class="table-title primary-color">熟练项<button class="btn-add">+</button></div>
-                <table class="table">
+                <div class="table-title">熟练项<button class="btn-add">+</button></div>
+                <table id="proficiencies_table" class="table">
                     <tbody>
-                        <tr><td></td></tr>
+                        <tr class="table-heading">
+                            <td class="w-p40">类型</td>
+                            <td class="w-p60">名称</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="div-space"></div>
-                <div class="table-title primary-color">语言<button class="btn-add">+</button></div>
-                <table class="table">
+                <div class="table-title">语言<button class="btn-add">+</button></div>
+                <table id="language_table" class="table">
                     <tbody>
-                        <tr><td></td></tr>
+                        <tr class="table-heading">
+                            <td>名称</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
             <div class="w-p70">
                 <div class="table-title">特性 / 专长 / 能力<button class="btn-add">+</button></div>
-                <table class="table">
+                <table id="features_table" class="table">
                     <tbody>
                         <tr class="table-heading">
-                            <td class="w-p60">名称</td>
                             <td class="w-p40">类型</td>
+                            <td class="w-p60">名称</td>
                         </tr>
-                        <tr><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="w-p40 col space-y">
-            <div id="features_item_board" class="board scroll w-p100">
+            <div id="features_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -1100,7 +1104,7 @@
             </table>
         </div>
         <div class="w-p40 col space-y">
-            <div id="item_board" class="board scroll w-p100">
+            <div id="items_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
@@ -1126,7 +1130,7 @@
         </div>
 
         <div class="w-p40 col space-y">
-            <div id="spell_board" class="board scroll w-p100">
+            <div id="spells_board" class="board scroll w-p100">
                 <div class="board-heading"></div>
                 <div class="board-abstract"></div>
                 <div class="board-details"></div>
