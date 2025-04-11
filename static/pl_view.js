@@ -18,7 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             .then(json => saved_spells = json)
             .catch(err => alert('Fetch 错误: ' + err))
     ])
-    .then(() => {
+    .then(() => {    
+        load_background();
+        load_features();
+
         load_items();
         load_inventory();
         load_currency();
@@ -32,6 +35,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     bind_nav();
     bind_long_rest_button();
 
+    bind_background();
+    bind_features();
     bind_events_in_profile();
     bind_events_in_inventory();
     bind_events_in_spellcasting();
@@ -152,6 +157,56 @@ function bind_dice_box() {
 }
 
 /**
+ * 绑定背景界面的事件
+ */
+function bind_background() {
+    query('background_panel').querySelectorAll('input, textarea').forEach(ele => {
+        ele.addEventListener('change', () => {
+            if (['race_in_background', 'sex_in_background'].includes(ele.id)) {
+                // 种族、性别
+                saved_data.characteristics[ele.id.split('_')[0]] = ele.value;
+                load_page_info();
+                load_profile();
+            } else if (
+                ['background_in_background', 'alignment_in_background'].includes(ele.id)
+            ) {
+                // 背景、阵营
+                saved_data.background[ele.id.split('_')[0]] = ele.value;
+            } else if (
+                [
+                    "age", "height", "weight",
+                    "hair", "skin", "eyes", "appearance"
+                ].includes(ele.id)
+            ) {
+                saved_data.characteristics[ele.id] = ele.value;
+                log(saved_data.characteristics[ele.id], ele.value)
+            } else if (
+                [
+                    "faith", "personality_1", "personality_2",
+                    "ideal", "bind", "flaw", "backstory"
+                ].includes(ele.id)
+            ) {
+                saved_data.background[ele.id] = ele.value;
+            }
+    
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+}
+
+/**
+ * 绑定特性界面的事件
+ */
+function bind_features() {
+    
+}
+
+/**
  * 绑定角色面板界面的事件
  */
 function bind_events_in_profile() {
@@ -204,9 +259,12 @@ function bind_events_in_profile() {
             } else if (['race_in_profile', 'sex_in_profile'].includes(ele.id)) {
                 // 种族、性别
                 saved_data.characteristics[ele.id.split('_')[0]] = ele.value;
+                load_page_info();
+                load_background();
             } else if (['background_in_profile', 'alignment_in_profile'].includes(ele.id)) {
                 // 背景、阵营
                 saved_data.background[ele.id.split('_')[0]] = ele.value;
+                load_background()
             } else if (ele.closest('tr').id === 'initiative') {
                 // 先攻
                 saved_data.combat_stats['initiative_bonus'] = ele.value;

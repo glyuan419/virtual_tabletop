@@ -47,6 +47,38 @@ function load_page_info() {
 }
 
 /**
+ * 加值背景
+ */
+function load_background() {
+    assign(query('race_in_background'), saved_data.characteristics.race);
+    assign(query('sex_in_background'), saved_data.characteristics.sex);
+    assign(query('age'), saved_data.characteristics.age);
+    assign(query('height'), saved_data.characteristics.height);
+    assign(query('weight'), saved_data.characteristics.weight);
+    assign(query('hair'), saved_data.characteristics.hair);
+    assign(query('skin'), saved_data.characteristics.skin);
+    assign(query('eyes'), saved_data.characteristics.eyes);
+    assign(query('appearance'), saved_data.characteristics.appearance);
+
+    assign(query('background_in_background'), saved_data.background.background);
+    assign(query('alignment_in_background'), saved_data.background.alignment);
+    assign(query('faith'), saved_data.background.faith);
+    assign(query('personality_1'), saved_data.background.personality_1);
+    assign(query('personality_2'), saved_data.background.personality_2);
+    assign(query('ideal'), saved_data.background.ideal);
+    assign(query('bind'), saved_data.background.bind);
+    assign(query('flaw'), saved_data.background.flaw);
+    assign(query('backstory'), saved_data.background.backstory);
+}
+
+/**
+ * 加值特性
+ */
+function load_features() {
+    
+}
+
+/**
  * 加载物品参照界面
  */
 function load_items() {
@@ -1578,8 +1610,30 @@ function show_toast(message, duration = 3000) {
     setTimeout(() => toast.remove(), duration);
 }
 
+/**
+ * 查找名为 id 的元素
+ */
 function query(id) {
     ret = document.getElementById(id);
     if (ret === null) alert('query(): 使用了未知的 ID 【' + id + '】!');
     return ret;
+}
+
+/**
+ * 下载数据 data
+ */
+function download(data, filename = 'data.json') {
+    const jsonData = JSON.stringify(data, null, 4);
+    
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }

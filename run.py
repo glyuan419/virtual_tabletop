@@ -6,11 +6,6 @@ from os import listdir
 from json import loads
 from hashlib import md5
 from time import time
-import logging, ngrok
-
-# logging.basicConfig(level=logging.INFO)
-# listener = ngrok.werkzeug_develop()
-# bash-> NGROK_AUTHTOKEN=2umvdb5udVAnlJShSMBQ0vcJjxs_2agDiY5mC8LUgmgp4o2qr ./run.py
 
 # powershell(admin)-> netsh interface portproxy add v4tov4 listenport=5000 listenaddress=0.0.0.0 connectport=5000 connectaddress=172.23.41.228
 # ^from iconfig
