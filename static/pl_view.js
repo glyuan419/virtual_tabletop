@@ -122,7 +122,7 @@ function bind_long_rest_button() {
  * 绑定骰盘
  */
 function bind_dice_box() {
-    document.querySelectorAll('.dice').forEach(dice => {
+    document.querySelectorAll('button.dice').forEach(dice => {
         Object.defineProperty(dice, 'innerText', {
             set(value) {
                 if (typeof value === 'number') {
@@ -137,21 +137,16 @@ function bind_dice_box() {
             }
         });
         dice.addEventListener('click', (event) => {
-            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
-            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+            show_dice(dice, roll_dice(dice.innerText, (event.ctrlKey?2:1)));
         });
     });
     
-    /**
-     * 绑定骰盘输入框
-     */
+    // 绑定骰盘输入框
     roll_input.addEventListener('keypress', (e) => {
         if (e.keyCode == '13') {
-            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += roll_dice('输入', roll_input.value);
+            if (roll_input.value === '') return;
+            show_dice('输入', roll_dice(roll_input.value));
             roll_input.value = '';
-            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
         }
     });
 }
@@ -164,22 +159,15 @@ function bind_events_in_profile() {
     query('profile_panel').querySelectorAll('.silent-dice').forEach(dice => {
         switch (dice.innerText) {
             case '死亡豁免':
-                // 重构：使用可复用的骰盘显示函数
                 dice.addEventListener('click', () => {
-                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += roll_dice('死亡豁免', '1d20');
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                    show_dice('死亡豁免', roll_dice('1d20'));
                 });
                 break;
             case '激励':
                 dice.addEventListener('click', () => {
                     if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
                         // 匹配 1d20
-                        // 重构：使用可复用的骰盘显示函数
-                        if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                        roll_board.innerHTML += roll_dice('激励', inspiration.cells[1].children[0].value);
-                        roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
-
+                        show_dice('激励', roll_dice(inspiration.cells[1].children[0].value));
                         saved_data.combat_stats.inspiration = '';
                     } else if ((new RegExp(/^[0-9]+$/)).test(inspiration.cells[1].children[0].value)) {
                         // 匹配 1
@@ -190,7 +178,8 @@ function bind_events_in_profile() {
                         );
                     } else {
                         saved_data.combat_stats.inspiration = '';
-                    };
+                    }
+                    
                     load_combat_stats();
 
                     // 重构：使用可复用的更新函数
@@ -401,7 +390,6 @@ function bind_events_in_spells() {
         load_spells();
     });
 }
-
 
 
 /**

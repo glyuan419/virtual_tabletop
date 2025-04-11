@@ -91,10 +91,10 @@ function load_items() {
 
             board.children[1].querySelectorAll('.dice').forEach(dice => {
                 dice.addEventListener('click', (event) => {
-                    // 重构：使用可复用的投骰函数
-                    if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                    roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
-                    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                    show_dice(
+                        saved_items[i].name.split('  ')[0],
+                        roll_dice(dice.innerText, (event.ctrlKey?2:1))
+                    );
                 });
             });
 
@@ -252,10 +252,10 @@ function load_inventory() {
 
                     board.querySelectorAll('.dice').forEach(dice => {
                         dice.addEventListener('click', (event) => {
-                            // 重构：使用可复用的投骰函数
-                            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-                            roll_board.innerHTML += roll_dice(get_label(dice), dice.innerText, (event.ctrlKey?2:1));
-                            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+                            show_dice(
+                                this_item.name.split('  ')[0],
+                                roll_dice(dice.innerText, (event.ctrlKey?2:1))
+                            )
                         });
                     });
                 }
@@ -1096,9 +1096,7 @@ function load_weapons() {
             if (dice.tagName == 'BUTTON') {
                 label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
             }
-            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += roll_dice(label, dice.innerText, (event.ctrlKey?2:1));
-            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+            show_dice(label, roll_dice(dice.innerText, (event.ctrlKey?2:1)));
         });
     });
 
@@ -1240,9 +1238,7 @@ function load_quick_spellcasting() {
                 dice.parentElement.parentElement.children[1].children[0].selectedOptions[0].value
                 + ['', '', '', '命中', '伤害'][dice.parentElement.cellIndex]
             );
-            if (roll_board.innerHTML != '') roll_board.innerHTML += '<br\>';
-            roll_board.innerHTML += roll_dice(label, dice.innerText, (event.ctrlKey?2:1));
-            roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
+            show_dice(label, roll_dice(dice.innerText, (event.ctrlKey?2:1)));
         });
     });
 
@@ -1371,31 +1367,13 @@ function assign(id, value) {
 }
 
 /**
- * 生成骰子元素 element 的显示标签
- */
-function get_label(element) {
-    let label = '';
-    if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
-        label += element.parentElement.parentElement.children[1].innerText;
-    } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'abilities') {
-        label += element.parentElement.parentElement.children[1].innerText;
-        if (element.parentElement.cellIndex == 4) label += '豁免';
-    } else if (element.parentElement.parentElement.id != '') {
-        label += element.parentElement.parentElement.children[0].innerText.split(' ')[0];
-    } else {
-        return '';
-    }
-    return label;
-}
-
-/**
  * 投骰
  */
-function roll_dice(label, dice_value, num=1) {
+function roll_dice(dice_value, num=1) {
     let dice_parseer = ['', '', ''];
     let dice_result = 0;
     let dice_info = '';
-    let res = '';
+    let res = [];
 
     for (let i=0; i<num; i++) {
         dice_parseer = ['', '', ''];
@@ -1439,15 +1417,38 @@ function roll_dice(label, dice_value, num=1) {
         }
         dice_result += Number(dice_parseer[2]);
         dice_info = dice_info.slice(0,-1) + dice_parseer[2];
-        res += label + ': <span style=\'color: #3b82f6;\'>' + dice_result + '</span> = ' + dice_info;
-        res += '<br/>'
+        res.push('<span style=\'color: #3b82f6;\'>' + dice_result + '</span> = ' + dice_info);
     }
-    
-    return (
+
+    return res;
+}
+
+/**
+ * 展示投骰结果
+ */
+function show_dice(dice, dice_result) {
+    let label = '';
+    if (typeof dice === 'string') {
+        label = dice;
+    } else if (dice.closest('table').id === 'skills') {
+        label = dice.closest('tr').cells[1].innerText;
+    } else if (dice.closest('table').id === 'abilities') {
+        label = dice.closest('tr').cells[1].innerText;
+        if (dice.closest('td').cellIndex === 4) label += '豁免';
+    } else if (dice.closest('tr').id !== '') {
+        label = dice.closest('tr').cells[0].innerText.split(' ')[0];
+    } else {
+        label = '';
+    }
+
+    const roll_board = query('roll_board');
+    if (roll_board.innerHTML !== '') roll_board.innerHTML += '<br\>';
+    roll_board.innerHTML += (
         '<div style="border-bottom: 1px solid #e4e8ef; display: inline-block; width: 100%; margin-bottom: 1px;">'
-        + res
+        + label + ': ' + dice_result.join('<br/>' + label + ': ')
         + '</div>'
     );
+    roll_board.scroll({top: roll_board.scrollHeight, left: 0, behavior: 'smooth'});
 }
 
 /**
