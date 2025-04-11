@@ -1,3 +1,4 @@
+var log = console.log; // asinose
 document.addEventListener('DOMContentLoaded', async () => {
     Promise.all([
         fetch(window.location.origin+'/api/query/pc_list')
@@ -101,12 +102,11 @@ function bind_long_rest_button() {
         load_combat_stats();
 
         death_saving.querySelectorAll('input').forEach(box => box.checked = false);
-        for (let i=0; i<9; i++) {
-            let label = spell_slot.rows[1].cells[i+1].children[0].innerText;
-            saved_data.spell_slots[i] = label.split(' ')[2];
-            
-        }
 
+        for (let i=0; i<9; i++) {
+            const label = spell_slot.rows[1].cells[i+1].children[0].innerText;
+            saved_data.spell_slots[i] = label.split(' ')[2];   
+        }
         load_spell_slots();
 
         // 重构：使用可复用的更新函数

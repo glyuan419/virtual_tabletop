@@ -491,9 +491,9 @@ function load_spellcasting() {
 
             let details = '';
             for (let j=0; j<spell.entries.length; j++) details += (
-                '<p>' + saved_spells[i].entries[j] + '</p>'
+                '<p>' + spell.entries[j] + '</p>'
             );
-            for (let j=0; j<spell.length; j++) details += (
+            for (let j=0; j<spell.higher_level.length; j++) details += (
                 '<p>'
                 + '<span class="board-item">升环施法效应. </span>'
                 + spell.higher_level[j]
@@ -1157,9 +1157,11 @@ function load_weapons() {
  * 载入快速施法
  */
 function load_quick_spellcasting() {
-    let quick_spellcasting = document.querySelector('#quick_spellcasting');
+    const quick_spellcasting_table = query('quick_spellcasting_table');
+
+    // 情况快捷施法栏显示
     for (let i=1; i<4; i++) {
-        quick_spellcasting.rows[i].innerHTML = [
+        quick_spellcasting_table.rows[i].innerHTML = [
             '<td><select><option></option></select></td>',
             '<td></td>',
             '<td></td>',
@@ -1168,126 +1170,128 @@ function load_quick_spellcasting() {
         ].join('');
     }
 
-    let spells = {'0': [], '1': [], '2': [], '3': [], '4': [],
+    // 收集已经习得的法术
+    const spells = {'0': [], '1': [], '2': [], '3': [], '4': [],
         '5': [], '6': [], '7': [], '8': [], '9': []};
-    for (let i in saved_data.spells) {
-        let spell = saved_spells.find(element => element.name == saved_data.spells[i]);
-        spells[spell.level].push(spell.name);
-    }
-    for (let i in Object.keys(spells)) {
-        if (spells[i].length == 0) continue;
-        quick_spellcasting.rows[1].cells[0].children[0].add(new Option(i + ' 环'));
-        quick_spellcasting.rows[2].cells[0].children[0].add(new Option(i + ' 环'));
-        quick_spellcasting.rows[3].cells[0].children[0].add(new Option(i + ' 环'));
+    for (let spell_name of saved_data.spells) {
+        let spell = saved_spells.find(ele => ele.name === spell_name);
+        spells[spell.level].push(spell_name);
     }
 
-    for (let i in saved_data.quick_spellcasting) {
-        if (!saved_data.spells.includes(saved_data.quick_spellcasting[i][1])) {
-            saved_data.quick_spellcasting[i] = ['', '', '']
-        }
+    for (let x of Object.keys(spells)) {
+        if (spells[x].length === 0) continue;
+        quick_spellcasting_table.rows[1].cells[0].children[0].add(new Option(x + ' 环'));
+        quick_spellcasting_table.rows[2].cells[0].children[0].add(new Option(x + ' 环'));
+        quick_spellcasting_table.rows[3].cells[0].children[0].add(new Option(x + ' 环'));
+    }
 
-        assign(quick_spellcasting.rows[Number(i)+1].cells[0].children[0], (
-            saved_data.quick_spellcasting[i][0] == '' ?
-            '' :
-            saved_data.quick_spellcasting[i][0] + ' 环'
-        ));
+    for (let i=0; i<saved_data.quick_spellcasting.length; i++) {
+        const spell = saved_data.quick_spellcasting[i];
 
-        if (saved_data.quick_spellcasting[i][0] == '') continue;
-        const ssel = document.createElement('select');
-        ssel.className = 'select';
-        quick_spellcasting.rows[Number(i)+1].cells[1].appendChild(ssel);
-        for (let j in spells[saved_data.quick_spellcasting[i][0]]) {
-            let opt = new Option(spells[saved_data.quick_spellcasting[i][0]][j].split('  ')[0]);
-            opt.name = spells[saved_data.quick_spellcasting[i][0]][j];
-            quick_spellcasting.rows[Number(i)+1].cells[1].children[0].add(opt);
+        assign(
+            quick_spellcasting_table.rows[i+1].cells[0].children[0],
+            spell.level + ' 环'
+        );
+
+        // 提供可选择的法术
+        const select = document.createElement('select');
+        select.className = 'select';
+        quick_spellcasting_table.rows[i+1].cells[1].appendChild(select);
+        for (let spell_name of spells[spell.level]) {
+            let option = new Option(spell_name.split('  ')[0]);
+            option.name = spell_name;
+            quick_spellcasting_table.rows[i+1].cells[1].children[0].add(option);
         }
-        assign(quick_spellcasting.rows[Number(i)+1].cells[1].children[0], (
-            saved_data.quick_spellcasting[i][1].split('  ')[0]
-        ));
+        assign(
+            quick_spellcasting_table.rows[i+1].cells[1].children[0],
+            spell.name.split('  ')[0]
+        );
         
-        const dinp = document.createElement('input');
-        dinp.className = 'input';
-        assign(dinp, saved_data.quick_spellcasting[i][2])
-        if (saved_data.quick_spellcasting[i][1] != '')
-            quick_spellcasting.rows[Number(i)+1].cells[2].appendChild(dinp);
+        const input = document.createElement('input');
+        input.className = 'input';
+        quick_spellcasting_table.rows[i+1].cells[2].appendChild(input);
+        assign(input, spell.damage)
         
-        let abs_ref = {
-            '野蛮人': ['体质', 'constitution'],
-            '吟游诗人': ['魅力', 'charisma'],
-            '牧师': ['感知', 'wisdom'],
-            '德鲁伊': ['感知', 'wisdom'],
-            '战士': ['智力', 'intelligence'],
-            '武僧': ['感知', 'wisdom'],
-            '圣武士': ['魅力', 'charisma'],
-            '游侠': ['感知', 'wisdom'],
-            '游荡者': ['智力', 'intelligence'],
-            '术士': ['魅力', 'charisma'],
-            '契术师': ['魅力', 'charisma'],
-            '法师': ['智力', 'intelligence']
+        let ability_ref = {
+            '野蛮人': 'constitution',
+            '吟游诗人': 'charisma',
+            '牧师': 'wisdom',
+            '德鲁伊': 'wisdom',
+            '战士': 'intelligence',
+            '武僧': 'wisdom',
+            '圣武士': 'charisma',
+            '游侠': 'wisdom',
+            '游荡者': 'intelligence',
+            '术士': 'charisma',
+            '契术师': 'charisma',
+            '法师': 'intelligence'
         };
-        const adice = document.createElement('button');
-        adice.className = 'btn dice';
-        assign(adice, '1d20+' + (
-            parseInt(Number(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
-            + Number(computed_data.proficiency_bonus)
+        const attack_dice = document.createElement('button');
+        attack_dice.className = 'btn dice';
+        quick_spellcasting_table.rows[i+1].cells[3].appendChild(attack_dice);
+        const ability_modifier = (
+            parseInt(
+                Number(
+                    computed_data[ability_ref[saved_data.metadata['class']]]
+                ) / 2
+            ) - 5
+        );
+        assign(attack_dice, '1d20+' + (
+            ability_modifier + Number(computed_data.proficiency_bonus)
         ));
-        if (saved_data.quick_spellcasting[i][1] != '')
-            quick_spellcasting.rows[Number(i)+1].cells[3].appendChild(adice);
 
-        const ddice = document.createElement('button');
-        ddice.className = 'btn dice';
-        assign(ddice, (
-            saved_data.quick_spellcasting[i][2] == '' ?
-            '0' :
-            saved_data.quick_spellcasting[i][2]
-        ));
-        if (saved_data.quick_spellcasting[i][1] != '')
-            quick_spellcasting.rows[Number(i)+1].cells[4].appendChild(ddice);
-
+        const damage_dice = document.createElement('button');
+        damage_dice.className = 'btn dice';
+        quick_spellcasting_table.rows[i+1].cells[4].appendChild(damage_dice);
+        assign(damage_dice, spell.damage);
     }
 
-    quick_spellcasting.querySelectorAll('.dice').forEach(dice => {
+    quick_spellcasting_table.querySelectorAll('.dice').forEach(dice => {
         dice.addEventListener('click', (event) => {
-            let label = (
-                dice.parentElement.parentElement.children[1].children[0].selectedOptions[0].value
-                + ['', '', '', '命中', '伤害'][dice.parentElement.cellIndex]
+            const label = (
+                dice.closest('tr').cells[1].children[0].selectedOptions[0].value
+                + ['命中', '伤害'][dice.closest('td').cellIndex-3]
             );
             show_dice(label, roll_dice(dice.innerText, (event.ctrlKey?2:1)));
         });
     });
 
-    quick_spellcasting.querySelectorAll('select').forEach(select => {
+    quick_spellcasting_table.querySelectorAll('select').forEach(select => {
         select.addEventListener('change', () => {
-            switch (select.parentElement.cellIndex) {
+            const index = select.parentElement.parentElement.rowIndex;
+            switch (select.closest('td').cellIndex) {
                 case 0:
-                    if (select.selectedOptions[0].innerText == '') {
-                        saved_data.quick_spellcasting[
-                            select.parentElement.parentElement.rowIndex-1
-                        ] = ['', '', ''];
+                    if (select.selectedOptions[0].innerText === '') {
+                        saved_data.quick_spellcasting.splice(index-1, 1);
                     } else {
-                        saved_data.quick_spellcasting[
-                            select.parentElement.parentElement.rowIndex-1
-                        ][0] = select.selectedOptions[0].innerText.split(' ')[0];
-                        saved_data.quick_spellcasting[
-                            select.parentElement.parentElement.rowIndex-1
-                        ][1] = spells[select.selectedOptions[0].innerText.split(' ')[0]][0];
-                        saved_data.quick_spellcasting[
-                            select.parentElement.parentElement.rowIndex-1
-                        ][2] = '';
+                        for (let spell_name of saved_data.spells) {
+                            let spell = saved_spells.find(ele => ele.name === spell_name);
+                            spells[spell.level].push(spell_name);
+                        }
+
+                        const level = select.selectedOptions[0].innerText.split(' ')[0];
+                        const name = saved_data.spells.find(spell_name => (
+                            saved_spells.find(ele => ele.name === spell_name).level
+                            === level
+                        ));
+                        saved_data.quick_spellcasting[index-1] = {
+                            'level': level,
+                            'name': name,
+                            'damage': ''
+                        };
                     }
                     break;
                 case 1:
-                    saved_data.quick_spellcasting[
-                        select.parentElement.parentElement.rowIndex-1
-                    ][1] = select.selectedOptions[0].name;
-                    saved_data.quick_spellcasting[
-                        select.parentElement.parentElement.rowIndex-1
-                    ][2] = '';
+                    saved_data.quick_spellcasting[index-1].name = (
+                        select.selectedOptions[0].name
+                    );
+                    saved_data.quick_spellcasting[index-1].damage = '';
                     break;
             }
             
             load_profile();
 
+            // 重构：使用可复用的更新函数
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -1296,14 +1300,14 @@ function load_quick_spellcasting() {
         });
     });
 
-    quick_spellcasting.querySelectorAll('input').forEach(input => {
+    quick_spellcasting_table.querySelectorAll('input').forEach(input => {
         input.addEventListener('change', () => {
-            saved_data.quick_spellcasting[
-                input.parentElement.parentElement.rowIndex-1
-            ][2] = input.value;
+            const index = input.closest('tr').rowIndex;
+            saved_data.quick_spellcasting[index-1].damage = input.value;
 
             load_profile();
 
+            // 重构：使用可复用的更新函数
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -1373,7 +1377,7 @@ function assign(id, value) {
             }
             if (!isFound) {
                 console.log('Select Error: ', element.options[0])
-                alert('未知选项 in ' + element.id + ': ' + value + '!');
+                alert('assign(): 未知选项 in ' + element.id + ': ' + value + '!');
             }
             break;
         default: element.innerHTML = value;
@@ -1384,6 +1388,7 @@ function assign(id, value) {
  * 投骰
  */
 function roll_dice(dice_value, num=1) {
+    if (dice_value === '') return [];
     let dice_parseer = ['', '', ''];
     let dice_result = 0;
     let dice_info = '';
@@ -1414,7 +1419,7 @@ function roll_dice(dice_value, num=1) {
                 '-' + dice_value.split('d')[1].split('-')[1]
             ];
         } else {
-            alert('这骰的是啥? [' + dice_value + ']');
+            alert('这骰的是啥? 【' + dice_value + '】');
         }
     
         let N = Number(dice_parseer[0]);
