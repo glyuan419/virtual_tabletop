@@ -1,1 +1,276 @@
-{"metadata":{"character_name":"达尔文","class":"法师","subclass":"预言学派","level":"5","experience_points":"6500"},"characteristics":{"race":"人类","sex":"男性","age":"24 岁","height":"186 厘米","weight":"88 公斤","hair":"褐色","skin":"茶色","eyes":"蓝色","appearance":"看起来很普通。"},"background":{"background":"烛堡学者","alignment":"绝对中立","faith":"塞伦涅","personakity_1":"我作出自己的判断前，总会乐意倾听争论双方的论点。","personakity_2":"我会用一些让人觉得非常博学的长词。","ideal":"知识是通往力量和自我发展的必经之路。(中立)","bind":"我致力于维护一座图书馆。","flaw":"揭示一项远古奥秘值得以一整个文明作代价。","backstory":"来自烛堡的学者。"},"combat_stats":{"initiative_bonus":"0","armor_class_bonus":"0","hit_point":["32","32","0"],"hit_dice":"5","special_value":["奥术回想","3","3"],"inspiration":"","conditions":"","immunizations":"","vulnerabilities":"","resistances":""},"abilities":{"strength":"10","dexterity":"16","constitution":"14","intelligence":"18","wisdom":"14","charisma":"10"},"skills":{"athletics":["X","0"],"acrobatics":["X","0"],"sleight_of_hand":["X","0"],"stealth":["X","0"],"investigation":["O","0"],"arcana":["O","0"],"history":["O","0"],"nature":["X","0"],"religion":["X","0"],"perception":["O","0"],"insight":["X","0"],"animal_handling":["X","0"],"medicine":["X","0"],"survival":["X","0"],"persuasion":["X","0"],"deception":["X","0"],"intimidation":["X","0"],"performance":["X","0"]},"gear":["","","","","","","","","",""],"armor":["无甲","",""],"currency":["10","0","0"],"backpack":[{"name":"盾牌  Shield","label":"盾牌","weight":"6","amount":"2"},{"name":"匕首  Dagger","label":"匕首","weight":"1","amount":"1"},{"name":"长弓  Longbow","label":"长弓","weight":"2","amount":"1"},{"name":"长剑  Longsword","label":"守誓者","weight":"3","amount":"1"},{"name":"法杖  Staff","label":"法杖","weight":"4","amount":"1"}],"storage":[{"name":"生皮甲  Hide Armor","label":"生皮甲","weight":"12","amount":"1"},{"name":"护胸甲  Breastplate","label":"护胸甲","weight":"20","amount":"1"},{"name":"半身板甲  Half Plate Armor","label":"半身板甲","weight":"40","amount":"2"},{"name":"镶钉皮甲  Studded Leather Armor","label":"镶钉皮甲","weight":"13","amount":"1"},{"name":"条板甲  Splint Armor","label":"条板甲","weight":"60","amount":"1"},{"name":"全身板甲  Plate Armor","label":"全身板甲","weight":"65","amount":"2"}],"spells":["法师护甲  Mage Armor","法师之手  Mage Hand","人类定身术  Hold Person","火焰箭  Fire Bolt","魔法飞弹  Magic Missile","灼热射线  Scorching Ray","火球术  Fireball","电爪  Shocking Grasp"],"spell_slots":["4","3","2","0","0","0","0","0","0"],"weapons":[{"label":"法杖","hand":"右手","ability":"力量"},{"label":"匕首","hand":"左手","ability":"力量"}],"quick_spellcasting":[{"level":"0","name":"火焰箭  Fire Bolt","damage":"1d10"},{"level":"1","name":"魔法飞弹  Magic Missile","damage":"1d4+1"},{"level":"3","name":"火球术  Fireball","damage":"8d6"}]}
+{
+    "metadata": {
+        "character_name": "达尔文",
+        "class": "法师",
+        "subclass": "预言学派",
+        "level": "5",
+        "experience_points": "6500"
+    },
+    "characteristics": {
+        "race": "人类",
+        "sex": "男性",
+        "age": "24 岁",
+        "height": "186 厘米",
+        "weight": "88 公斤",
+        "hair": "褐色",
+        "skin": "茶色",
+        "eyes": "蓝色",
+        "appearance": "看起来很普通。",
+        "race_in_profile": "人类1"
+    },
+    "background": {
+        "background": "烛堡学者",
+        "alignment": "绝对中立",
+        "faith": "塞伦涅",
+        "personakity_1": "我作出自己的判断前，总会乐意倾听争论双方的论点。",
+        "personakity_2": "我会用一些让人觉得非常博学的长词。",
+        "ideal": "知识是通往力量和自我发展的必经之路。(中立)",
+        "bind": "我致力于维护一座图书馆。",
+        "flaw": "揭示一项远古奥秘值得以一整个文明作代价。",
+        "backstory": "来自烛堡的学者。"
+    },
+    "combat_stats": {
+        "initiative_bonus": "0",
+        "armor_class_bonus": "0",
+        "hit_point": [
+            "32",
+            "32",
+            "0"
+        ],
+        "hit_dice": "5",
+        "special_value": [
+            "奥术回想",
+            "3",
+            "3"
+        ],
+        "inspiration": "",
+        "conditions": "",
+        "immunizations": "",
+        "vulnerabilities": "",
+        "resistances": ""
+    },
+    "abilities": {
+        "strength": "10",
+        "dexterity": "16",
+        "constitution": "14",
+        "intelligence": "18",
+        "wisdom": "14",
+        "charisma": "10"
+    },
+    "skills": {
+        "athletics": [
+            "X",
+            "0"
+        ],
+        "acrobatics": [
+            "X",
+            "0"
+        ],
+        "sleight_of_hand": [
+            "X",
+            "0"
+        ],
+        "stealth": [
+            "X",
+            "0"
+        ],
+        "investigation": [
+            "O",
+            "0"
+        ],
+        "arcana": [
+            "O",
+            "0"
+        ],
+        "history": [
+            "O",
+            "0"
+        ],
+        "nature": [
+            "X",
+            "0"
+        ],
+        "religion": [
+            "X",
+            "0"
+        ],
+        "perception": [
+            "O",
+            "0"
+        ],
+        "insight": [
+            "X",
+            "0"
+        ],
+        "animal_handling": [
+            "X",
+            "0"
+        ],
+        "medicine": [
+            "X",
+            "0"
+        ],
+        "survival": [
+            "X",
+            "0"
+        ],
+        "persuasion": [
+            "X",
+            "0"
+        ],
+        "deception": [
+            "X",
+            "0"
+        ],
+        "intimidation": [
+            "X",
+            "0"
+        ],
+        "performance": [
+            "X",
+            "0"
+        ]
+    },
+    "backpack": [
+        {
+            "name": "盾牌  Shield",
+            "label": "盾牌",
+            "weight": "6",
+            "amount": "2"
+        },
+        {
+            "name": "匕首  Dagger",
+            "label": "匕首",
+            "weight": "1",
+            "amount": "1"
+        },
+        {
+            "name": "长弓  Longbow",
+            "label": "长弓",
+            "weight": "2",
+            "amount": "1"
+        },
+        {
+            "name": "长剑  Longsword",
+            "label": "守誓者",
+            "weight": "3",
+            "amount": "1"
+        },
+        {
+            "name": "法杖  Staff",
+            "label": "法杖",
+            "weight": "4",
+            "amount": "1"
+        }
+    ],
+    "storage": [
+        {
+            "name": "生皮甲  Hide Armor",
+            "label": "生皮甲",
+            "weight": "12",
+            "amount": "1"
+        },
+        {
+            "name": "护胸甲  Breastplate",
+            "label": "护胸甲",
+            "weight": "20",
+            "amount": "1"
+        },
+        {
+            "name": "半身板甲  Half Plate Armor",
+            "label": "半身板甲",
+            "weight": "40",
+            "amount": "2"
+        },
+        {
+            "name": "镶钉皮甲  Studded Leather Armor",
+            "label": "镶钉皮甲",
+            "weight": "13",
+            "amount": "1"
+        },
+        {
+            "name": "条板甲  Splint Armor",
+            "label": "条板甲",
+            "weight": "60",
+            "amount": "1"
+        },
+        {
+            "name": "全身板甲  Plate Armor",
+            "label": "全身板甲",
+            "weight": "65",
+            "amount": "2"
+        }
+    ],
+    "currency": [
+        "10",
+        "0",
+        "0"
+    ],
+    "spells": [
+        "法师护甲  Mage Armor",
+        "法师之手  Mage Hand",
+        "人类定身术  Hold Person",
+        "火焰箭  Fire Bolt",
+        "魔法飞弹  Magic Missile",
+        "灼热射线  Scorching Ray",
+        "火球术  Fireball",
+        "电爪  Shocking Grasp"
+    ],
+    "spell_slots": [
+        "4",
+        "3",
+        "2",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+    ],
+    "gear": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    "armor": [
+        "无甲",
+        "",
+        ""
+    ],
+    "weapons": [
+        {
+            "label": "法杖",
+            "hand": "右手",
+            "ability": "力量"
+        },
+        {
+            "label": "匕首",
+            "hand": "左手",
+            "ability": "力量"
+        }
+    ],
+    "quick_spellcasting": [
+        {
+            "level": "0",
+            "name": "火焰箭  Fire Bolt",
+            "damage": "1d10"
+        },
+        {
+            "level": "1",
+            "name": "魔法飞弹  Magic Missile",
+            "damage": "1d4+1"
+        },
+        {
+            "level": "3",
+            "name": "火球术  Fireball",
+            "damage": "8d6"
+        }
+    ]
+}

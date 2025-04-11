@@ -13,20 +13,37 @@ function load_character_selector(data) {
             label = '正在创建';
         }
 
-        const option = new Option(label, data[i][0]);
-        character_selector.add(option);
+        character_selector.add(new Option(label, data[i][0]));
 
-        if (data[i][0] == pc_id) {
+        if (data[i][0] === pc_id) {
             character_selector.selectedIndex = i;
             document.title = label;
         }
     }
 
     character_selector.addEventListener('change', () => {
-        window.location.href = (
-            [window.location.origin, character_selector.selectedOptions[0].value, 'profile'].join('/')
-        );
+        window.location.href = [
+            window.location.origin,
+            character_selector.selectedOptions[0].value,
+            'profile'
+        ].join('/');
     });
+}
+
+/**
+ * 加值页面信息
+ */
+function load_page_info() {
+    query('character_selector').selectedOptions[0].innerText = (
+        saved_data.characteristics.race
+        + saved_data.metadata.class + ': '
+        + saved_data.metadata.character_name
+    );
+    document.title = (
+        saved_data.characteristics.race
+        + saved_data.metadata.class + ': '
+        + saved_data.metadata.character_name
+    );
 }
 
 /**
@@ -639,7 +656,7 @@ function load_summery() {
         '契术师': ['至高妖精', '邪魔', '旧日支配者', '天界', '咒剑', '不朽者', '深海意志', '巨灵', '死灵'],
         '法师': ['防护学派', '咒法学派', '预言学派', '惑控学派', '塑能学派', '幻术学派', '死灵学派', '变化学派', '剑咏', '时间魔法', '重力魔法', '战争魔法', '书士']
     }
-    query('subclass').add(new Option(''));
+    query('subclass').innerHTML = '<option></option>';
     for (let i in subclass_ref[saved_data.metadata.class]) {
         query('subclass').add(new Option(subclass_ref[saved_data.metadata.class][i]));
     }

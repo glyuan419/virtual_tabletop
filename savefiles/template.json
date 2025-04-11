@@ -1,10 +1,4 @@
 {
-    "main": {
-        "character_name": "",
-        "race": "",
-        "class": ""
-    },
-
     "metadata": {
         "character_name": "",
         "class": "",
@@ -85,6 +79,7 @@
     "spells": [],
     "spell_slots": ["0", "0", "0", "0", "0", "0", "0", "0", "0"],
     "gear": ["", "", "", "", "", "", "", "", "", ""],
+    "armor": ["无甲", "", ""],
     "weapons": [],
     "quick_spellcasting": []
 }

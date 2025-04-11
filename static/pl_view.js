@@ -193,6 +193,126 @@ function bind_events_in_profile() {
                 break;
         }
     });
+
+    // 更新 Input 的修改
+    query('profile_panel').querySelectorAll('input').forEach(ele => {
+        ele.addEventListener('change', () => {
+            if (['character_name', 'level', 'experience_points'].includes(ele.id)) {
+                // 角色名、等级、经验值
+                saved_data.metadata[ele.id] = ele.value;
+                load_page_info();
+            } else if (['race_in_profile', 'sex_in_profile'].includes(ele.id)) {
+                // 种族、性别
+                saved_data.characteristics[ele.id.split('_')[0]] = ele.value;
+            } else if (['background_in_profile', 'alignment_in_profile'].includes(ele.id)) {
+                // 背景、阵营
+                saved_data.background[ele.id.split('_')[0]] = ele.value;
+            } else if (ele.closest('tr').id === 'initiative') {
+                // 先攻
+                saved_data.combat_stats['initiative_bonus'] = ele.value;
+            } else if (ele.closest('tr').id === 'armor_class') {
+                // 护甲等级
+                saved_data.combat_stats['armor_class_bonus'] = ele.value;
+            } else if (ele.closest('tr').id === 'hit_point') {
+                // 生命值
+                const index = ele.closest('td').cellIndex - 1;
+                saved_data.combat_stats['hit_point'][index] = ele.value;
+            } else if (ele.closest('tr').id === 'hit_dice') {
+                // 生命骰数量
+                saved_data.combat_stats['hit_dice'] = ele.value;
+            } else if (ele.closest('tr').id === 'special_value') {
+                // 特殊能力
+                const index = ele.parentElement.cellIndex;
+                saved_data.combat_stats['special_value'][index] = ele.value;
+            } else if (ele.closest('tr').id === 'temporary_hit_point') {
+                // 临时生命值
+                saved_data.combat_stats['hit_point'][2] = ele.value;
+            } else if (ele.closest('tr').id === 'inspiration') {
+                // 激励
+                saved_data.combat_stats['inspiration'] = ele.value;
+            } else if (ele.closest('table').id === 'skills') {
+                // 技能栏
+                const skill = [
+                    'athletics',
+                    'acrobatics', 'sleight_of_hand', 'stealth',
+                    'investigation', 'arcana', 'history', 'nature', 'religion',
+                    'perception', 'insight', 'animal_handling', 'medicine', 'survival',
+                    'persuasion', 'deception', 'intimidation', 'performance'
+                ][ele.closest('tr').rowIndex - 1];
+                saved_data.skills[skill][1] = ele.value;
+            } else if (ele.closest('table').id === 'abilities') {
+                // 属性栏
+                const ability = [
+                    'strength', 'dexterity', 'constitution',
+                    'intelligence', 'wisdom', 'charisma'
+                ][ele.closest('tr').rowIndex - 1];
+                saved_data.abilities[ability] = ele.value;
+            } else if (ele.closest('table').id === 'conditions') {
+                // 状态栏
+                const condition_ref = {
+                    '状态': 'conditions', '免疫': 'immunizations',
+                    '易伤': 'vulnerabilities', '抗性': 'resistances'
+                };
+                const label = condition_ref[
+                    ele.parentElement.previousElementSibling.innerText
+                ];
+                saved_data.combat_stats[label] = ele.value;
+            } else if (ele.closest('table').id === 'coins_in_profile') {
+                // 货币栏
+                const index = ele.closest('tr').rowIndex;
+                saved_data.currency[index] = ele.value;
+            } else if (ele.closest('table').id === 'gear_table') {
+                // 装备栏
+                const gear_ref = [[0, 1], [3, 2], [4, 5], [7, 6], [8, 9]];
+                const r = ele.closest('tr').rowIndex - 1;
+                const c = parseInt(ele.closest('td').cellIndex / 2);
+                saved_data.gear[gear_ref[r][c]] = ele.value;
+            }
+        
+            load_profile();
+    
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
+
+    // 更新 Select 的修改
+    query('profile_panel').querySelectorAll('select').forEach(ele => {
+        ele.addEventListener('change', () => {
+            if (ele.id == 'class') {
+                // 职业选择器
+                saved_data.metadata.class = ele.selectedOptions[0].innerText;
+                saved_data.metadata.subclass = '';
+                load_page_info();
+            } else if (ele.id == 'subclass') {
+                // 子职业选择器
+                saved_data.metadata.subclass = ele.selectedOptions[0].innerText;
+            } else if (ele.closest('table').id == 'skills') {
+                // 技能熟练选择器
+                const skill = [
+                    'athletics',
+                    'acrobatics', 'sleight_of_hand', 'stealth',
+                    'investigation', 'arcana', 'history', 'nature', 'religion',
+                    'perception', 'insight', 'animal_handling', 'medicine', 'survival',
+                    'persuasion', 'deception', 'intimidation', 'performance'
+                ][ele.closest('tr').rowIndex - 1];
+                saved_data.skills[skill][0] = ele.selectedOptions[0].innerText;
+            }
+        
+            load_profile();
+    
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err)); 
+        });
+    });
 }
 
 /**
@@ -223,8 +343,8 @@ function bind_events_in_inventory() {
                     else if (y1 < y2) flag = -1;
                     else if (y1 > y2) flag = 1;
                 } else {
-                    y1 = saved_items.find(element => element.name == x1.name);
-                    y2 = saved_items.find(element => element.name == x2.name);
+                    y1 = saved_items.find(ele => ele.name == x1.name);
+                    y2 = saved_items.find(ele => ele.name == x2.name);
                     y1 = isNaN(parseFloat(y1[heading])) ? y1[heading] : parseFloat(y1[heading]);
                     y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
                     
@@ -269,6 +389,23 @@ function bind_events_in_inventory() {
             body: JSON.stringify(saved_data)
         }).catch(err => alert('Fetch 错误: ' + err));
     });
+
+        // 更新货币栏的修改
+        query('inventory_panel').querySelectorAll('input').forEach(ele => {
+            ele.addEventListener('change', () => {
+                const index = ele.closest('tr').rowIndex;
+                saved_data.currency[index] = ele.value;
+            
+                load_profile();
+        
+                // 重构：使用可复用的更新函数
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch 错误: ' + err)); 
+            });
+        });
 }
 
 /**
@@ -287,8 +424,8 @@ function bind_events_in_spellcasting() {
         if (heading === undefined) return;
         saved_data.spells.sort((x1, x2) => {
             let flag = 0;
-            let y1 = saved_spells.find(element => element.name == x1);
-            let y2 = saved_spells.find(element => element.name == x2);
+            let y1 = saved_spells.find(ele => ele.name == x1);
+            let y2 = saved_spells.find(ele => ele.name == x2);
 
             y1 = isNaN(parseFloat(y1[heading])) ? y1[heading] : parseFloat(y1[heading]);
             y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
@@ -390,124 +527,3 @@ function bind_events_in_spells() {
         load_spells();
     });
 }
-
-
-/**
- * Input, Select 内容改变后保存并上传
- */
-document.querySelectorAll('input, select').forEach(element => {
-    if (element.id == 'character_selector') return;
-    if (element.id == 'roll_input') return;
-    element.addEventListener('change', () => {
-        let character_selector = document.getElementById('character_selector');
-        if (element.tagName == 'SELECT') {
-            if (element.id == 'class') {
-                // 职业选择器
-                saved_data.metadata.class = element.selectedOptions[0].innerText;
-                character_selector.selectedOptions[0].innerText = (
-                    saved_data.characteristics.race
-                    + saved_data.metadata.class + ': '
-                    + saved_data.metadata.character_name
-                );
-                document.title = (
-                    saved_data.characteristics.race
-                    + saved_data.metadata.class + ': '
-                    + saved_data.metadata.character_name
-                );
-            } else if (element.id == 'subclass') {
-                // 子职业选择器
-                saved_data.metadata.subclass = element.selectedOptions[0].innerText;
-            } else if (element.parentElement.parentElement.parentElement.parentElement.id == 'skills') {
-                // 技能熟练选择器
-                const skill_ref = ['', 
-                    'athletics',
-                    'acrobatics', 'sleight_of_hand', 'stealth',
-                    'investigation', 'arcana', 'history', 'nature', 'religion',
-                    'perception', 'insight', 'animal_handling', 'medicine', 'survival',
-                    'persuasion', 'deception', 'intimidation', 'performance'
-                ];
-                const skill = skill_ref[element.parentElement.parentElement.rowIndex];
-                saved_data.skills[skill][0] = element.selectedOptions[0].innerText;
-            }
-        } else if (element.tagName == 'INPUT') {
-            if (['character_name', 'level', 'experience_points'].includes(element.id)) {
-                // 主要信息栏
-                saved_data.metadata[element.id] = element.value;
-                character_selector.selectedOptions[0].innerText = (
-                    saved_data.metadata.race
-                    + saved_data.metadata.class + ': '
-                    + saved_data.metadata.character_name
-                );
-                document.title = (
-                    saved_data.characteristics.race
-                    + saved_data.metadata.class + ': '
-                    + saved_data.metadata.character_name
-                );
-            } else if (['race', 'sex'].includes(element.id)) {
-                saved_data.characteristics[element.id] = element.value;
-            } else if (['background', 'alignment'].includes(element.id)) {
-                saved_data.background[element.id] = element.value;
-            } else if (element.parentElement.parentElement.id != '') {
-                // 摘要栏
-                switch (element.parentElement.parentElement.id) {
-                    case 'initiative': saved_data.combat_stats['initiative_bonus'] = element.value; break;
-                    case 'armor_class': saved_data.combat_stats['armor_class_bonus'] = element.value; break;
-                    case 'hit_point': saved_data.combat_stats['hit_point'][element.parentElement.cellIndex-1] = element.value; break;
-                    case 'hit_dice': saved_data.combat_stats['hit_dice'] = element.value; break;
-                    case 'special_value': saved_data.combat_stats['special_value'][element.parentElement.cellIndex] = element.value; break;
-                    case 'temporary_hit_point': saved_data.combat_stats['hit_point'][2] = element.value; break;
-                    case 'inspiration': saved_data.combat_stats['inspiration'] = element.value; break;
-                }
-            } else if (element.parentElement.parentElement.parentElement.parentElement.id != '') {
-                // 属性栏、技能栏、状态栏、货币栏、装备栏
-                switch (element.parentElement.parentElement.parentElement.parentElement.id) {
-                    case 'skills':
-                        const skill_ref = ['', 
-                            'athletics',
-                            'acrobatics', 'sleight_of_hand', 'stealth',
-                            'investigation', 'arcana', 'history', 'nature', 'religion',
-                            'perception', 'insight', 'animal_handling', 'medicine', 'survival',
-                            'persuasion', 'deception', 'intimidation', 'performance'
-                        ];
-                        const skill = skill_ref[element.parentElement.parentElement.rowIndex];
-                        saved_data.skills[skill][1] = element.value;
-                        break;
-                    case 'abilities':
-                        let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-                        let ability = abs_ref[element.parentElement.parentElement.rowIndex];
-                        saved_data.abilities[ability] = element.value;
-                        break;
-                    case 'conditions':
-                        let cons_ref = {'状态': 'conditions', '免疫': 'immunizations', '易伤': 'vulnerabilities', '抗性': 'resistances'};
-                        let label = cons_ref[element.parentElement.previousElementSibling.innerText];
-                        saved_data.combat_stats[label] = element.value;
-                        break;
-                    case 'coins_in_profile':
-                        const index_1 = element.parentElement.parentElement.rowIndex;
-                        saved_data.currency[index_1] = element.value;
-                        load_currency();
-                        break;
-                    case 'coins_in_inventory':
-                        const index_2 = element.parentElement.parentElement.rowIndex;
-                        saved_data.currency[index_2] = element.value;
-                        load_currency();
-                        break;
-                    case 'gear_table':
-                        const gear_ref = [[0, 1], [3, 2], [4, 5], [7, 6], [8, 9]];
-                        const r = element.closest('tr').rowIndex - 1;
-                        const c = parseInt(element.closest('td').cellIndex / 2);
-                        saved_data.gear[gear_ref[r][c]] = element.value;
-                        break;
-                }
-            }
-        }
-    
-        load_profile();
-
-        fetch(window.location.origin+'/api/update/'+pc_id, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(saved_data)
-        }).catch(err => alert('Fetch 错误: ' + err)); 
-    });
-});
