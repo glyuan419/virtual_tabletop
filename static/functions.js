@@ -175,7 +175,7 @@ function load_inventory() {
             assign(label, '<input value="' + this_item.label + '"/>');
             assign(row.insertCell(), item.type.join('、'));
             assign(row.insertCell(), item.properties.join('、'));
-            assign(row.insertCell(), item.value !== '' ? item.value + ' 金币' : '-');
+            assign(row.insertCell(), item.value !== '0' ? item.value + ' 金币' : '-');
             const weight = row.insertCell();
             assign(weight, '<input value="' + this_item.weight + '"/>');
             const amount = row.insertCell();
@@ -291,7 +291,6 @@ function load_inventory() {
             for (let x of Object.keys(input_ref)) {
                 input_ref[x].addEventListener('change', () => {
                     this_item[x] = input_ref[x].children[0].value;
-                    console.log(x)
                     // 重构：使用右键菜单
                     if (
                         x === 'amount' && (
@@ -440,78 +439,96 @@ function load_spells() {
  * 加载施法界面
  */
 function load_spellcasting() {
-    while (spellcasting_table.rows.length > 1) {
-        spellcasting_table.deleteRow(1);
-    }
+    // 法术位追踪器
+    load_spell_slots();
+
+    const table = query('spellcasting_table');
+
+    // 清空列表
+    while (table.rows.length > 1) table.deleteRow(1);
 
     for (let i in saved_data.spells) {
-        let spell = saved_spells.find(element => element.name == saved_data.spells[i]);
-
+        let spell = saved_spells.find(ele => ele.name == saved_data.spells[i]);
+        
         const row = spellcasting_table.insertRow();
         row.classList.add('table-item');
-        row.insertCell().innerText = spell.name.split('  ')[0];
-        row.insertCell().innerText = spell.level + ' 环';
-        row.insertCell().innerText = spell.school;
-        row.insertCell().innerText = spell.time.join(' ');
-        row.insertCell().innerText = spell.range.join(' ');
-        row.insertCell().innerText = spell.source;
+        
+        assign(row.insertCell(), spell.name.split('  ')[0]);
+        assign(row.insertCell(), spell.level + ' 环');
+        assign(row.insertCell(), spell.school);
+        assign(row.insertCell(), spell.time.join(' '));
+        assign(row.insertCell(), spell.range.join(' '));
+        assign(row.insertCell(), spell.source);
 
         row.addEventListener('click', (event) => {
-            let table = row.closest('table');
-            if (table.selectedIndex != undefined) 
-                table.rows[table.selectedIndex].classList.remove('selected');
-            table.selectedIndex = row.rowIndex;
+            // 标记选中的条目
+            table.querySelectorAll('.selected').forEach(ele => ele.classList.remove('selected'));
             row.classList.add('selected');
 
-            spellcasting_spell_board.children[0].innerHTML = spell.name;
-            spellcasting_spell_board.children[1].innerHTML = spell.level + '环 ';
-            spellcasting_spell_board.children[1].innerHTML += spell.school + '<br/>';
-            spellcasting_spell_board.children[1].innerHTML += (
-                '<span class="board-item">施法时间: </span>' + spell.time.join(' ') + '<br>'
-            );
-            spellcasting_spell_board.children[1].innerHTML += (
-                '<span class="board-item">射程: </span>' + spell.range.join(' ') + '<br>'
-            );
-            spellcasting_spell_board.children[1].innerHTML += (
-                '<span class="board-item">构材: </span>' + spell.components.join('、') + '<br>'
-            );
-            spellcasting_spell_board.children[1].innerHTML += (
-                '<span class="board-item">持续时间: </span>' + spell.duration.join(' ') + '<br>'
-            );
-            spellcasting_spell_board.children[2].innerHTML = '';
-            for (let j=0; j<spell.entries.length; j++) {
-                spellcasting_spell_board.children[2].innerHTML += '<p>' + spell.entries[j] + '</p>';
-            }
-            for (let j=0; j<spell.higher_level.length; j++) {
-                spellcasting_spell_board.children[2].innerHTML += (
-                    '<p><span class="board-item">升环施法效应. </span>'
-                    + spell.higher_level[j]
-                    + '</p>'
-                );
-            }
-            spellcasting_spell_board.children[2].innerHTML += (
-                '<p><span class="board-item">职业: </span>'
-                + spell.classes.join('、') + '</p>'
-            );
-            let subclass_list = [];
-            for (let j of Object.keys(spell.subclasses)) {
-                let subclass = saved_spells[i].subclasses[j];
-                for (let k in subclass) {
-                    subclass_list.push(subclass[k] + ' ' + j);
-                }
-            }
-            spellcasting_spell_board.children[2].innerHTML += (
-                subclass_list.length > 0 ?
-                '<p><span class="board-item">子职业: </span>' + subclass_list.join('、') + '</p>' :
-                ''
-            );
+            // 在右栏显示详情
+            const board = query('spellcasting_board');
+            assign(board.children[0], spell.name);
 
+            let abstract = "";
+            abstract += spell.level + '环 ' + spell.school;
+            abstract += (
+                '<br/><span class="board-item">施法时间: </span>'
+                + spell.time.join(' ')
+            );
+            abstract += (
+                '<br/><span class="board-item">射程: </span>'
+                + spell.range.join(' ')
+            );
+            abstract += (
+                '<br/><span class="board-item">构材: </span>'
+                + spell.components.join('、')
+            );
+            abstract += (
+                '<br/><span class="board-item">持续时间: </span>'
+                + spell.duration.join(' ')
+            );
+            assign(board.children[1], abstract);
+
+            let details = '';
+            for (let j=0; j<spell.entries.length; j++) details += (
+                '<p>' + saved_spells[i].entries[j] + '</p>'
+            );
+            for (let j=0; j<spell.length; j++) details += (
+                '<p>'
+                + '<span class="board-item">升环施法效应. </span>'
+                + spell.higher_level[j]
+                + '</p>'
+            );
+            details += (
+                '<p>'
+                + '<span class="board-item">职业: </span>'
+                + spell.classes.join('、')
+                + '</p>'
+            );
+            const subclass_list = [];
+            for (let x of Object.keys(spell.subclasses)) {
+                let subclass = spell.subclasses[x];
+                for (let y of subclass) subclass_list.push(y + ' ' + x);
+            }
+            if (subclass_list.length > 0) details += (
+                '<p>'
+                + '<span class="board-item">子职业: </span>'
+                + subclass_list.join('、')
+                + '</p>'
+            );
+            assign(board.children[2], details);
+            
+            // Ctrl + 左键: 遗忘该法术
+            // 重构：使用右键菜单
             if (event.ctrlKey) {
                 saved_data.spells.splice(i, 1);
+
                 load_spellcasting();
                 load_profile();
+
                 show_toast('已遗忘法术【' + spell.name.split('  ')[0] + '】', 3000);
 
+                // 重构：使用可复用的更新函数
                 fetch(window.location.origin+'/api/update/'+pc_id, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -521,6 +538,52 @@ function load_spellcasting() {
         });
     }
 }
+
+/**
+ * 加载施法界面中的法术位追踪器
+ */
+function load_spell_slots() {
+    const spell_slots_ref = {
+        '0':  ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '1':  ['2', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '2':  ['3', '0', '0', '0', '0', '0', '0', '0', '0'],
+        '3':  ['4', '2', '0', '0', '0', '0', '0', '0', '0'],
+        '4':  ['4', '3', '0', '0', '0', '0', '0', '0', '0'],
+        '5':  ['4', '3', '2', '0', '0', '0', '0', '0', '0'],
+        '6':  ['4', '3', '3', '0', '0', '0', '0', '0', '0'],
+        '7':  ['4', '3', '3', '1', '0', '0', '0', '0', '0'],
+        '8':  ['4', '3', '3', '2', '0', '0', '0', '0', '0'],
+        '9':  ['4', '3', '3', '3', '1', '0', '0', '0', '0'],
+        '10': ['4', '3', '3', '3', '2', '0', '0', '0', '0'],
+        '11': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
+        '12': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
+        '13': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
+        '14': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
+        '15': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
+        '16': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
+        '17': ['4', '3', '3', '3', '2', '1', '1', '1', '1'],
+        '18': ['4', '3', '3', '3', '3', '1', '1', '1', '1'],
+        '19': ['4', '3', '3', '3', '3', '2', '1', '1', '1'],
+        '20': ['4', '3', '3', '3', '3', '2', '2', '1', '1']
+    }
+    // 计算施法等级（施法职业、半施法职业、可施法子职业）
+    let level = 0;
+    if (['吟游诗人', '牧师', '德鲁伊', '术士', '法师'].includes(saved_data.metadata.class)) {
+        level = saved_data.metadata.level;
+    } else if (['圣武士', '游侠'].includes(saved_data.metadata.class)) {
+        level = parseInt(Number(saved_data.metadata.level)/2 + 0.9);
+        if (saved_data.metadata.level == '1') level = 0;
+    } else if (['诡术师'].includes(saved_data.metadata.subclass)) {
+        level = parseInt(Number((saved_data.metadata.level)+1)/3) + 1;
+        if (saved_data.metadata.level == '1') level = 0;
+    }
+    for (let i=0; i<9; i++) {
+        let label = saved_data.spell_slots[i] + ' / ' + spell_slots_ref[level][i];
+        assign(query('spell_slot').rows[1].cells[i+1].children[0], label);
+    }
+}
+
+
 
 /**
  * 加载角色面板
@@ -543,8 +606,8 @@ function load_profile() {
     
         load_weapons();
         load_quick_spellcasting();
-    
-        // 顺便加载施法界面的施法信息
+
+        // 加值施法界面中的施法信息
         load_spellcasting_info();
     } else {
         load_summery();
@@ -713,8 +776,11 @@ function load_gear() {
  * 载入属性
  */
 function load_abilities() {
-    let abs_ref = ['', 'strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'];
-    let prof_ref = {
+    let ability_ref = [
+        'strength', 'dexterity', 'constitution',
+        'intelligence', 'wisdom', 'charisma'
+    ];
+    let proficiencies_ref = {
         '野蛮人': ['strength', 'constitution'],
         '吟游诗人': ['dexterity', 'charisma'],
         '牧师': ['wisdom', 'charisma'],
@@ -728,14 +794,16 @@ function load_abilities() {
         '契术师': ['wisdom', 'charisma'],
         '法师': ['intelligence', 'wisdom']
     }
-    let rows = abilities.tBodies[0].children;
+    const rows = query('abilities').rows;
     for (i=1; i<rows.length; i++) {
-        let value = sum(computed_data[abs_ref[i]]);
-        let proficiency = prof_ref[saved_data.metadata.class].includes(abs_ref[i]);
+        const value = Number(computed_data[ability_ref[i-1]]);
+        const proficiency = (
+            proficiencies_ref[saved_data.metadata.class].includes(ability_ref[i-1])
+        );
 
-        assign(rows[i].children[0], proficiency?'O':'X') // 熟练
+        assign(rows[i].children[0], proficiency ? 'O' : 'X') // 熟练
         assign(rows[i].children[2].children[0], value); // 属性值
-        assign(rows[i].children[3].children[0], parseInt(value/2)-5); // 调整值
+        assign(rows[i].children[3].children[0], parseInt(value/2) - 5); // 调整值
         assign(rows[i].children[4].children[0],
             parseInt(value/2)-5 + (proficiency?computed_data.proficiency_bonus:0)
         ); // 豁免
@@ -765,7 +833,7 @@ function load_skills() {
         assign(rows[i].children[0].children[0], saved_data.skills[skill_ref[i]][0]) // 熟练
         assign(rows[i].children[2].children[0], saved_data.skills[skill_ref[i]][1]); // 修正
         assign(rows[i].children[3].children[0],
-            parseInt(sum(computed_data[ability_ref[i]])/2)-5
+            parseInt(Number(computed_data[ability_ref[i]])/2)-5
             + Number(saved_data.skills[skill_ref[i]][1])
             + parseInt(
                 ({'X': 0, 'O': 1, 'D': 2, 'H': 0.5})[saved_data.skills[skill_ref[i]][0]]
@@ -818,33 +886,33 @@ function load_combat_stats() {
 
     assign(initiative.children[1].children[0], saved_data.combat_stats['initiative_bonus']);
     assign(initiative.children[2].children[0],
-        parseInt(sum(computed_data['dexterity'])/2)-5 + Number(saved_data.combat_stats['initiative_bonus'])
+        parseInt(Number(computed_data['dexterity'])/2)-5 + Number(saved_data.combat_stats['initiative_bonus'])
     ); // 先攻
 
     let tmp_armor_class = 0;
     if (saved_data.armor[0] == '无甲') {
         if (saved_data.armor[1] == '')
-            tmp_armor_class += (10 + parseInt(sum(computed_data['dexterity'])/2)-5);
+            tmp_armor_class += (10 + parseInt(Number(computed_data['dexterity'])/2)-5);
         if (saved_data.armor[1] == '法师护甲')
-            tmp_armor_class += (13 + parseInt(sum(computed_data['dexterity'])/2)-5);
+            tmp_armor_class += (13 + parseInt(Number(computed_data['dexterity'])/2)-5);
         if (saved_data.armor[1] == '野蛮人无甲防御')
             tmp_armor_class += (
-                10 + parseInt(sum(computed_data['dexterity'])/2)-5
-                + parseInt(sum(computed_data['constitution'])/2)-5
+                10 + parseInt(Number(computed_data['dexterity'])/2)-5
+                + parseInt(Number(computed_data['constitution'])/2)-5
             );
         if (saved_data.armor[1] == '武僧无甲防御')
             tmp_armor_class += (
-                10 + parseInt(sum(computed_data['dexterity'])/2)-5
-                + parseInt(sum(computed_data['wisdom'])/2)-5
+                10 + parseInt(Number(computed_data['dexterity'])/2)-5
+                + parseInt(Number(computed_data['wisdom'])/2)-5
             );
     } else {
         let item = saved_data.backpack.find(ele => ele.label == saved_data.armor[1]);
         tmp_armor_class += Number(armor_ref[item.name.split('  ')[0]][0]);
         tmp_armor_class += (
             armor_ref[item.name.split('  ')[0]][1] == '' ?
-            parseInt(sum(computed_data['dexterity'])/2)-5 :
+            parseInt(Number(computed_data['dexterity'])/2)-5 :
             Math.min(
-                parseInt(sum(computed_data['dexterity'])/2)-5,
+                parseInt(Number(computed_data['dexterity'])/2)-5,
                 Number(armor_ref[item.name.split('  ')[0]][1])
             )
         );
@@ -1000,7 +1068,7 @@ function load_weapons() {
         adice.className = 'btn dice';
         const abs_ref = {'力量': 'strength', '敏捷': 'dexterity'};
         assign(adice, '1d20+' + (
-            parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
+            parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
             + computed_data.proficiency_bonus
         ));
         weapons_table.rows[Number(i)+1].cells[4].appendChild(adice);
@@ -1013,9 +1081,9 @@ function load_weapons() {
                 item.dmg[2] :
                 item.dmg[1]
             ) + (
-                parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 < 0 ?
-                parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 :
-                '+' + (parseInt(sum(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5)
+                parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 < 0 ?
+                parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 :
+                '+' + (parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5)
             )
         ));
         weapons_table.rows[Number(i)+1].cells[5].appendChild(hdice);
@@ -1148,7 +1216,7 @@ function load_quick_spellcasting() {
         const adice = document.createElement('button');
         adice.className = 'btn dice';
         assign(adice, '1d20+' + (
-            parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
+            parseInt(Number(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
             + Number(computed_data.proficiency_bonus)
         ));
         if (saved_data.quick_spellcasting[i][1] != '')
@@ -1239,42 +1307,7 @@ function load_quick_spellcasting() {
  * 加载施法界面中的施法信息
  */
 function load_spellcasting_info() {
-    let sls_ref = {
-        '0':  ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
-        '1':  ['2', '0', '0', '0', '0', '0', '0', '0', '0'],
-        '2':  ['3', '0', '0', '0', '0', '0', '0', '0', '0'],
-        '3':  ['4', '2', '0', '0', '0', '0', '0', '0', '0'],
-        '4':  ['4', '3', '0', '0', '0', '0', '0', '0', '0'],
-        '5':  ['4', '3', '2', '0', '0', '0', '0', '0', '0'],
-        '6':  ['4', '3', '3', '0', '0', '0', '0', '0', '0'],
-        '7':  ['4', '3', '3', '1', '0', '0', '0', '0', '0'],
-        '8':  ['4', '3', '3', '2', '0', '0', '0', '0', '0'],
-        '9':  ['4', '3', '3', '3', '1', '0', '0', '0', '0'],
-        '10': ['4', '3', '3', '3', '2', '0', '0', '0', '0'],
-        '11': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
-        '12': ['4', '3', '3', '3', '2', '1', '0', '0', '0'],
-        '13': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
-        '14': ['4', '3', '3', '3', '2', '1', '1', '0', '0'],
-        '15': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
-        '16': ['4', '3', '3', '3', '2', '1', '1', '1', '0'],
-        '17': ['4', '3', '3', '3', '2', '1', '1', '1', '1'],
-        '18': ['4', '3', '3', '3', '3', '1', '1', '1', '1'],
-        '19': ['4', '3', '3', '3', '3', '2', '1', '1', '1'],
-        '20': ['4', '3', '3', '3', '3', '2', '2', '1', '1']
-    }
-    let level = 0;
-    if (['吟游诗人', '牧师', '德鲁伊', '术士', '法师'].includes(saved_data.metadata.class)) {
-        level = saved_data.metadata.level;
-    } else if (['圣武士', '游侠'].includes(saved_data.metadata.class)) {
-        level = parseInt(Number(saved_data.metadata.level)/2 + 0.9);
-        if (saved_data.metadata.level == '1') level = 0;
-    }
-    for (let i=0; i<9; i++) {
-        let label = saved_data.spell_slots[i] + ' / ' + sls_ref[level][i];
-        assign(spell_slot.rows[1].cells[i+1].children[0], label);
-    }
-
-    let abs_ref = {
+    const ability_ref = {
         '野蛮人': ['体质', 'constitution'],
         '吟游诗人': ['魅力', 'charisma'],
         '牧师': ['感知', 'wisdom'],
@@ -1289,17 +1322,24 @@ function load_spellcasting_info() {
         '法师': ['智力', 'intelligence']
     };
 
-    assign(spellcasting_ability_in_spellcasting.children[1], (
-        abs_ref[saved_data.metadata['class']][0]
-    )); // 施法关键属性
-    assign(difficulty_class_in_spellcasting.children[1], (
-        8 + parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
-        + Number(computed_data.proficiency_bonus)
-    )); // 法术豁免难度等级
-    assign(attack_bonus_in_spellcasting.children[1].children[0], (
-        parseInt(sum(computed_data[abs_ref[saved_data.metadata['class']][1]])/2)-5
-        + Number(computed_data.proficiency_bonus)
-    )); // 法术命中加值
+    assign(
+        query('spellcasting_ability').children[1],
+        ability_ref[saved_data.metadata.class][0]
+    ); // 施法关键属性
+    assign(
+        query('difficulty_class').children[1],
+        (
+            parseInt(Number(computed_data[ability_ref[saved_data.metadata.class][1]])/2)
+            + Number(computed_data.proficiency_bonus) - 5 + 8
+        )
+    ); // 法术豁免难度等级
+    assign(
+        query('attack_bonus').children[1].children[0],
+        (
+            parseInt(Number(computed_data[ability_ref[saved_data.metadata.class][1]])/2)
+            + Number(computed_data.proficiency_bonus) - 5
+        )
+    ); // 法术命中加值
 }
 
 /**
@@ -1328,21 +1368,6 @@ function assign(id, value) {
             break;
         default: element.innerHTML = value;
     }
-}
-
-/**
- * 给数值列表求和
- * 
- * sum([[d1,s1], [d2,s3]]) == d1+d2
- */
-function sum(list) {
-    let res = 0;
-    if (!isNaN(Number(list))) return Number(list);
-
-    for (let i in list) {
-        res += Number(list[i][0]);
-    }
-    return res;
 }
 
 /**

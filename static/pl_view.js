@@ -31,9 +31,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     bind_nav();
     bind_long_rest_button();
 
-    bind_things_in_profile();
-    bind_things_in_items();
-    bind_things_in_spells();
+    bind_events_in_profile();
+    bind_events_in_inventory();
+    bind_events_in_spellcasting();
+    bind_events_in_items();
+    bind_events_in_spells();
 
     bind_dice_box();
 });
@@ -105,7 +107,7 @@ function bind_long_rest_button() {
             
         }
 
-        load_spellcasting_info();
+        load_spell_slots();
 
         // 重构：使用可复用的更新函数
         fetch(window.location.origin+'/api/update/'+pc_id, {
@@ -157,7 +159,7 @@ function bind_dice_box() {
 /**
  * 绑定角色面板界面的事件
  */
-function bind_things_in_profile() {
+function bind_events_in_profile() {
     // 绑定激励按钮 + 死亡豁免按钮
     query('profile_panel').querySelectorAll('.silent-dice').forEach(dice => {
         switch (dice.innerText) {
@@ -205,54 +207,146 @@ function bind_things_in_profile() {
 }
 
 /**
- * 绑定背包栏、仓库栏的排序按钮
+ * 绑定背包界面的事件
  */
-['backpack', 'storage'].forEach(name => {
-    query(name + '_table').rows[0].addEventListener('click', (event) => {
-        let hding_ref = {
-            '类型': 'type',
-            '特性': 'properties',
-            '价值': 'value',
-            '重量': 'weight',
-            '名称': 'label',
-            '数量': 'amount',
-        }
-        saved_data[name].sort((x1, x2) => {
-            let ret = 0;
-            let hding = hding_ref[event.target.innerText];
-            if (['label', 'amount'].includes(hding)) {
-                if (x1[hding_ref[event.target.innerText]] == x2[hding_ref[event.target.innerText]])
-                    ret = 0;
-                if (x1[hding_ref[event.target.innerText]] < x2[hding_ref[event.target.innerText]])
-                    ret = -1;
-                else ret = 1;
-            } else {
-                let y1 = saved_items.find(element => element.name == x1.name);
-                let y2 = saved_items.find(element => element.name == x2.name);
-                
-                if (y1[hding_ref[event.target.innerText]] == y2[hding_ref[event.target.innerText]])
-                    ret = 0;
-                if (y1[hding_ref[event.target.innerText]] < y2[hding_ref[event.target.innerText]])
-                    ret = -1;
-                else ret = 1;
+function bind_events_in_inventory() {
+    // 绑定背包栏、仓库栏的排序按钮
+    ['backpack', 'storage'].forEach(table_name => {
+        query(table_name + '_table').rows[0].addEventListener('click', (event) => {
+            let heading_ref = {
+                '类型': 'type',
+                '特性': 'properties',
+                '价值': 'value',
+                '重量/磅': 'weight',
+                '名称': 'label',
+                '数量': 'amount',
             }
             
-            return event.ctrlKey ? -1*ret : ret;
-        });
-        query('load_' + name + '()');
+            const heading = heading_ref[event.target.innerText];
+            saved_data[table_name].sort((x1, x2) => {
+                let flag = 0;
+                let y1, y2;
+                if (['label', 'weight', 'amount'].includes(heading)) {
+                    y1 = isNaN(parseFloat(x1[heading])) ? x1[heading] : parseFloat(x1[heading]);
+                    y2 = isNaN(parseFloat(x2[heading])) ? x2[heading] : parseFloat(x2[heading]);
 
+                    if (y1 === y2) flag = 0;
+                    else if (y1 < y2) flag = -1;
+                    else if (y1 > y2) flag = 1;
+                } else {
+                    y1 = saved_items.find(element => element.name == x1.name);
+                    y2 = saved_items.find(element => element.name == x2.name);
+                    y1 = isNaN(parseFloat(y1[heading])) ? y1[heading] : parseFloat(y1[heading]);
+                    y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
+                    
+                    if (y1 === y2) flag = 0;
+                    else if (y1 < y2) flag = -1;
+                    else if (y1 > y2) flag = 1;
+                }
+                
+                return event.ctrlKey ? -1*flag : flag;
+            });
+
+            load_inventory();
+
+            // 重构：使用可复用的更新函数
+            fetch(window.location.origin+'/api/update/'+pc_id, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(saved_data)
+            }).catch(err => alert('Fetch 错误: ' + err));
+        });
+    });
+
+    // 绑定添加按钮
+    const button = query('backpack_table').previousElementSibling.querySelector('.btn-add');
+    button.addEventListener('click', () => {
+        saved_data.backpack.push({
+            name: '自定义  Custom Thing',
+            label: '自定义',
+            weight: '0',
+            amount: '1'
+        });
+
+        load_inventory();
+        load_profile();
+
+        show_toast('已添加【自定义】至背包', 3000);
+
+        // 重构：使用可复用的更新函数
         fetch(window.location.origin+'/api/update/'+pc_id, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(saved_data)
         }).catch(err => alert('Fetch 错误: ' + err));
     });
-});
+}
+
+/**
+ * 绑定施法界面的事件
+ */
+function bind_events_in_spellcasting() {
+    // 绑定施法表格的排序按钮
+    query('spellcasting_table').rows[0].addEventListener('click', (event) => {
+        const heading_ref = {
+            '名称': 'name',
+            '环阶': 'level',
+            '学派': 'school',
+            '来源': 'source'
+        }
+        const heading = heading_ref[event.target.innerText];
+        if (heading === undefined) return;
+        saved_data.spells.sort((x1, x2) => {
+            let flag = 0;
+            let y1 = saved_spells.find(element => element.name == x1);
+            let y2 = saved_spells.find(element => element.name == x2);
+
+            y1 = isNaN(parseFloat(y1[heading])) ? y1[heading] : parseFloat(y1[heading]);
+            y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
+
+            if (y1 === y2) flag = 0;
+            else if (y1 < y2) flag = -1;
+            else if (y1 > y2) flag = 1;
+            
+            return event.ctrlKey ? -1*flag : flag;
+        });
+
+        load_spellcasting();
+
+        // 重构：使用可复用的更新函数
+        fetch(window.location.origin+'/api/update/'+pc_id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(saved_data)
+        }).catch(err => alert('Fetch 错误: ' + err));
+    });
+
+    // 绑定法术位追踪器按钮
+    document.querySelectorAll('.slot').forEach(slot => {
+        slot.addEventListener('click', () => {
+            let n = Number(slot.innerText.split(' ')[0]);
+            if (n > 0) {
+                saved_data.spell_slots[slot.parentElement.cellIndex-1] -= 1;
+                load_spell_slots();
+                show_toast('施放 ' + slot.parentElement.cellIndex + ' 环法术', 1000);
+            
+                // 重构：使用可复用的更新函数
+                fetch(window.location.origin+'/api/update/'+pc_id, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saved_data)
+                }).catch(err => alert('Fetch 错误: ' + err));
+            } else {
+                show_toast('无可用法术位', 1000);
+            }
+        });
+    });
+}
 
 /**
  * 绑定物品参照界面的事件
  */
-function bind_things_in_items() {
+function bind_events_in_items() {
     // 列表排序
     const heading_ref = {
         '名称': 'name',
@@ -281,7 +375,7 @@ function bind_things_in_items() {
 /**
  * 绑定法术参照界面的事件
  */
-function bind_things_in_spells() {
+function bind_events_in_spells() {
     // 列表排序
     const heading_ref = {
         '名称': 'name',
@@ -308,60 +402,7 @@ function bind_things_in_spells() {
     });
 }
 
-/**
- * 绑定施法表格的排序按钮
- */
-spellcasting_table.rows[0].addEventListener('click', (event) => {
-    let hding_ref = {
-        '名称': 'name',
-        '环阶': 'level',
-        '学派': 'school',
-        '射程': 'range',
-        '来源': 'source'
-    }
-    saved_data.spells.sort((x1, x2) => {
-        let ret = 0;
-        let y1 = saved_spells.find(element => element.name == x1);
-        let y2 = saved_spells.find(element => element.name == x2);
-        if (y1[hding_ref[event.target.innerText]] == y2[hding_ref[event.target.innerText]])
-            ret = 0;
-        if (y1[hding_ref[event.target.innerText]] < y2[hding_ref[event.target.innerText]])
-            ret = -1;
-        else ret = 1;
-        
-        return event.ctrlKey ? -1*ret : ret;
-    });
 
-    load_spellcasting();
-
-    fetch(window.location.origin+'/api/update/'+pc_id, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(saved_data)
-    }).catch(err => alert('Fetch 错误: ' + err));
-});
-
-/**
- * 绑定法术位追踪器按钮
- */
-document.querySelectorAll('.slot').forEach(slot => {
-    slot.addEventListener('click', () => {
-        let n = Number(slot.innerText.split(' ')[0]);
-        if (n > 0) {
-            saved_data.spell_slots[slot.parentElement.cellIndex-1] -= 1;
-            load_spellcasting_info();
-            show_toast('施放 ' + slot.parentElement.cellIndex + ' 环法术', 1000);
-        
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err));
-        } else {
-            show_toast('无可用法术位', 1000);
-        }
-    });
-});
 
 /**
  * Input, Select 内容改变后保存并上传
