@@ -1004,6 +1004,9 @@ function load_combat_stats() {
  * 载入武器
  */
 function load_weapons() {
+    const weapons_table = query('weapons_table');
+
+    // 清空武器栏显示
     for (let i=1; i<4; i++) {
         weapons_table.rows[i].innerHTML = [
             '<td><select></select></td>',
@@ -1015,86 +1018,95 @@ function load_weapons() {
         ].join('');
     }
 
-    for (let i in saved_data.backpack) {
-        let item = saved_items.find(element => element.name == saved_data.backpack[i].name);
-        if (item.type.includes('武器')) {
-            weapons_table.rows[1].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
-            weapons_table.rows[2].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
-            weapons_table.rows[3].cells[1].children[0].add(new Option(saved_data.backpack[i].label));
+    // 收集背包中的武器信息
+    for (let item of saved_data.backpack) {
+        let item_of_items = saved_items.find(ele => ele.name === item.name);
+        if (item_of_items.type.includes('武器')) {
+            weapons_table.rows[1].cells[1].children[0].add(new Option(item.label));
+            weapons_table.rows[2].cells[1].children[0].add(new Option(item.label));
+            weapons_table.rows[3].cells[1].children[0].add(new Option(item.label));
         }
     }
 
-    for (let i in saved_data.weapons) {
-        let item = saved_data.backpack.find(element => element.label == saved_data.weapons[i].label);
-        if (item == undefined) {
+    // 将已装备的武器填入武器栏
+    for (let i=0; i<saved_data.weapons.length; i++) {
+        let item = saved_data.backpack.find(
+            ele => ele.label === saved_data.weapons[i].label
+        );
+        if (item === undefined) {
             saved_data.weapons.splice(i, 1);
             continue;
         }
-        item = saved_items.find(element => element.name == item.name);
+        item = saved_items.find(ele => ele.name == item.name);
 
+        // 提供可装备的手
         if (item.properties.includes('双手')) {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('双手'));
         } else if (item.properties.includes('可双手')) {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('双手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('右手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('左手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('双手'));
         } else {
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('右手'));
-            weapons_table.rows[Number(i)+1].cells[0]. children[0].add(new Option('左手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('右手'));
+            weapons_table.rows[i+1].cells[0].children[0].add(new Option('左手'));
         }
 
+        // 提供攻击可使用的属性
         if (item.properties.includes('灵巧')) {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+            weapons_table.rows[i+1].cells[3].children[0].add(new Option('力量'));
+            weapons_table.rows[i+1].cells[3].children[0].add(new Option('敏捷'));
         } else if (item.type.includes('远程')) {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('敏捷'));
+            weapons_table.rows[i+1].cells[3].children[0].add(new Option('敏捷'));
         } else {
-            weapons_table.rows[Number(i)+1].cells[3]. children[0].add(new Option('力量'));
+            weapons_table.rows[i+1].cells[3].children[0].add(new Option('力量'));
         }
 
-        assign(weapons_table.rows[Number(i)+1].cells[0].children[0], saved_data.weapons[i].hand);
-        assign(weapons_table.rows[Number(i)+1].cells[1].children[0], saved_data.weapons[i].label);
-        let tmp_properties = [...item.properties];
-        for (let j in tmp_properties) {
-            if (tmp_properties[j] == '可双手')
-                tmp_properties[j] = '可双手 (<span class="dice">' + item.dmg[2] + '</span>)';
-            if (tmp_properties[j] == '弹药') tmp_properties[j] = '弹药 (' + item.range + ' ft.)';
-            if (tmp_properties[j] == '投掷') tmp_properties[j] = '投掷 (' + item.range + ' ft.)';
-        }
-        assign(weapons_table.rows[Number(i)+1].cells[2], tmp_properties.join('、'));
-        assign(weapons_table.rows[Number(i)+1].cells[3]. children[0], saved_data.weapons[i].ability);
+        assign(weapons_table.rows[i+1].cells[0].children[0], saved_data.weapons[i].hand);
+        assign(weapons_table.rows[i+1].cells[1].children[0], saved_data.weapons[i].label);
 
-        const adice = document.createElement('button');
-        adice.className = 'btn dice';
-        const abs_ref = {'力量': 'strength', '敏捷': 'dexterity'};
-        assign(adice, '1d20+' + (
-            parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5
-            + computed_data.proficiency_bonus
+        let properties = [...item.properties];
+        for (let j in properties) {
+            if (properties[j] === '可双手')
+                properties[j] = '可双手 (<span class="dice">' + item.dmg[2] + '</span>)';
+            if (properties[j] === '弹药') properties[j] = '弹药 (' + item.range + ' 尺)';
+            if (properties[j] === '投掷') properties[j] = '投掷 (' + item.range + ' 尺)';
+        }
+        assign(weapons_table.rows[i+1].cells[2], properties.join('、'));
+        assign(weapons_table.rows[i+1].cells[3].children[0], saved_data.weapons[i].ability);
+
+        const attack_dice = document.createElement('button');
+        attack_dice.className = 'btn dice';
+        const ability_ref = {'力量': 'strength', '敏捷': 'dexterity'};
+        const ability_modifier = (
+            parseInt(Number(computed_data[ability_ref[saved_data.weapons[i].ability]])/2) - 5
+        );
+        assign(attack_dice, '1d20+' + (
+            ability_modifier + computed_data.proficiency_bonus
         ));
-        weapons_table.rows[Number(i)+1].cells[4].appendChild(adice);
+        weapons_table.rows[i+1].cells[4].appendChild(attack_dice);
 
-        const hdice = document.createElement('button');
-        hdice.className = 'btn dice';
-        assign(hdice, (
+        const damage_dice = document.createElement('button');
+        damage_dice.className = 'btn dice';
+        assign(damage_dice, (
             (
-                item.properties.includes('可双手') && saved_data.weapons[i].hand=='双手' ?
-                item.dmg[2] :
-                item.dmg[1]
+                item.properties.includes('可双手') && saved_data.weapons[i].hand === '双手'
+                ? item.dmg[2] : item.dmg[1]
             ) + (
-                parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 < 0 ?
-                parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5 :
-                '+' + (parseInt(Number(computed_data[abs_ref[saved_data.weapons[i].ability]])/2)-5)
+                ability_modifier < 0 ?
+                ability_modifier :
+                '+' + ability_modifier
             )
         ));
-        weapons_table.rows[Number(i)+1].cells[5].appendChild(hdice);
+        weapons_table.rows[i+1].cells[5].appendChild(damage_dice);
     }
 
     weapons_table.querySelectorAll('.dice').forEach(dice => {
         dice.addEventListener('click', (event) => {
-            let label = dice.parentElement.parentElement
-                .children[1].children[0].selectedOptions[0].value;
-            if (dice.tagName == 'BUTTON') {
-                label += weapons_table.rows[0].cells[dice.parentElement.cellIndex].innerText.slice(2,4);
+            const row_index = dice.closest('tr').rowIndex;
+            const cell_index = dice.closest('td').cellIndex;
+            let label = saved_data.weapons[row_index-1].label;
+            if (dice.tagName === 'BUTTON') {
+                label += weapons_table.rows[0].cells[cell_index].innerText.slice(2,4);
             }
             show_dice(label, roll_dice(dice.innerText, (event.ctrlKey?2:1)));
         });
@@ -1102,34 +1114,36 @@ function load_weapons() {
 
     weapons_table.querySelectorAll('select').forEach(select => {
         select.addEventListener('change', () => {
-            switch (select.parentElement.cellIndex) {
+            switch (select.closest('td').cellIndex) {
                 case 0:
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['hand'] = (
+                    saved_data.weapons[select.closest('tr').rowIndex-1]['hand'] = (
                         select.selectedOptions[0].innerText
                     );
                     break;
                 case 1:
-                    let label = select.selectedOptions[0].innerText;
-                    if (label == '') {
-                        saved_data.weapons.splice(select.parentElement.parentElement.rowIndex-1, 1);
+                    const label = select.selectedOptions[0].innerText;
+                    if (label === '') {
+                        saved_data.weapons.splice(select.closest('tr').rowIndex-1, 1);
                         break;
                     }
-                    let item = saved_data.backpack.find(element => element.label == label);
+                    let item = saved_data.backpack.find(ele => ele.label == label);
                     item = saved_items.find(element => element.name == item.name);
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1] = {
+                    saved_data.weapons[select.closest('tr').rowIndex-1] = {
                         "label": label,
                         "hand": item.properties.includes('双手')?'双手':'右手',
                         "ability": item.type.includes('远程')?"敏捷":'力量',
                     };
                     break;
                 case 3:
-                    saved_data.weapons[select.parentElement.parentElement.rowIndex-1]['ability'] = (
+                    saved_data.weapons[select.closest('tr').rowIndex-1]['ability'] = (
                         select.selectedOptions[0].innerText
                     );
                     break;
             }
+
             load_profile();
 
+            // 重构：使用可复用的更新函数
             fetch(window.location.origin+'/api/update/'+pc_id, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
