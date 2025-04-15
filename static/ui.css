@@ -312,6 +312,31 @@
     display: none;
 }
 
+#context_menu {
+    position: absolute;
+    display: none;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+#context_menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#context_menu li {
+    padding: 8px 15px;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover{
+        background: #f0f0f0;
+    }
+}
+
 #long_rest_button {
     border: 1px solid #e4e8ef;
 }

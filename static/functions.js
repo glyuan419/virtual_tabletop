@@ -125,12 +125,7 @@ function load_features() {
                     board.querySelector('.edit-board').addEventListener('change', () => {
                         saved_data[table_name][i][2] = board.children[2].children[0].value;
 
-                        // 重构：使用可复用的更新函数
-                        fetch(window.location.origin+'/api/update/'+pc_id, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(saved_data)
-                        }).catch(err => alert('Fetch 错误: ' + err));
+                        update(saved_data);
                     });
                 }
 
@@ -147,12 +142,7 @@ function load_features() {
                     
                     load_features();
 
-                    // 重构：使用可复用的更新函数
-                    fetch(window.location.origin+'/api/update/'+pc_id, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(saved_data)
-                    }).catch(err => alert('Fetch 错误: ' + err));
+                    update(saved_data);
                 }
             });
             
@@ -164,12 +154,7 @@ function load_features() {
                     term[i] = input_ref[i].children[0].value;
                     // load_features();
                     
-                    // 重构：使用可复用的更新函数
-                    fetch(window.location.origin+'/api/update/'+pc_id, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(saved_data)
-                    }).catch(err => alert('Fetch 错误: ' + err));
+                    update(saved_data);
                 })
             }
         }
@@ -245,8 +230,6 @@ function load_items() {
                 });
             });
 
-            // Ctrl + 左键: 将该物品添加到背包中
-            // 重构：使用右键菜单
             if (event.ctrlKey) {
                 saved_data.backpack.push({
                     name: saved_items[i].name,
@@ -260,17 +243,43 @@ function load_items() {
 
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
 
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err));
+                update(saved_data);
             }
 
-            // Shift + 左键: 将该物品添加到仓库中
-            // 重构：使用右键菜单
-            if (event.shiftKey) {
+        });
+
+        row.addEventListener('contextmenu', e => {
+            e.preventDefault();
+
+            const menu = query('context_menu');
+            menu.style.display = 'block';
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+
+            menu.children[0].innerHTML = '';
+            let li = null;
+            li = document.createElement('li');
+            li.innerHTML = '添加至背包';
+            li.addEventListener('click', () => {
+                saved_data.backpack.push({
+                    name: saved_items[i].name,
+                    label: saved_items[i].name.split('  ')[0],
+                    weight: saved_items[i].weight,
+                    amount: '1'
+                });
+
+                load_inventory();
+                load_profile();
+
+                show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至背包', 3000);
+
+                update(saved_data);
+            });
+            menu.children[0].appendChild(li);
+
+            li = document.createElement('li');
+            li.innerHTML = '添加至仓库';
+            li.addEventListener('click', () => {
                 saved_data.storage.push({
                     name: saved_items[i].name,
                     label: saved_items[i].name.split('  ')[0],
@@ -282,13 +291,14 @@ function load_items() {
 
                 show_toast('已添加【' + saved_items[i].name.split('  ')[0] + '】至仓库', 3000);
 
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err));
-            }
+                update(saved_data);
+            });
+            menu.children[0].appendChild(li);
+
+            document.addEventListener('click', function close_handler() {
+                menu.style.display = 'none';
+                document.removeEventListener('click', close_handler);
+            });
         });
     }
 }
@@ -355,12 +365,7 @@ function load_inventory() {
                     board.querySelector('.edit-board').addEventListener('change', () => {
                         this_item.description = board.children[2].children[0].value;
 
-                        // 重构：使用可复用的更新函数
-                        fetch(window.location.origin+'/api/update/'+pc_id, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify(saved_data)
-                        }).catch(err => alert('Fetch 错误: ' + err));
+                        update(saved_data);
                     });
                 } else {
                     assign(board.children[0], this_item.name);
@@ -408,26 +413,71 @@ function load_inventory() {
                 }
 
                 if (event.ctrlKey) {
-                    if (table_name == 'backpack') {
+                    if (table_name === 'backpack') {
                         saved_data.storage.push(this_item);
                         saved_data[table_name].splice(i, 1);
                         show_toast('已存放【' + label.children[0].value + '】至仓库', 3000);
-                    } else if (table_name == 'storage') {
+                    } else if (table_name === 'storage') {
                         saved_data.backpack.push(this_item);
                         saved_data.storage.splice(i, 1);
                         show_toast('已拿取【' + label.children[0].value + '】至背包', 3000);
                     }
-                    
+
                     load_inventory();
                     load_profile();
 
-                    // 重构：使用可复用的更新函数
-                    fetch(window.location.origin+'/api/update/'+pc_id, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(saved_data)
-                    }).catch(err => alert('Fetch 错误: ' + err));
+                    update(saved_data);
                 }
+            });
+
+            row.addEventListener('contextmenu', e => {
+                e.preventDefault();
+
+                const menu = query('context_menu');
+                menu.style.display = 'block';
+                menu.style.left = e.clientX + 'px';
+                menu.style.top = e.clientY + 'px';
+
+                menu.children[0].innerHTML = '';
+                let li = null;
+                li = document.createElement('li');
+                li.innerHTML = {'backpack': '存放至仓库', 'storage': '拿取至背包'}[table_name];
+                li.addEventListener('click', () => {
+                    if (table_name === 'backpack') {
+                        saved_data.storage.push(this_item);
+                        saved_data[table_name].splice(i, 1);
+                        show_toast('已存放【' + label.children[0].value + '】至仓库', 3000);
+                    } else if (table_name === 'storage') {
+                        saved_data.backpack.push(this_item);
+                        saved_data.storage.splice(i, 1);
+                        show_toast('已拿取【' + label.children[0].value + '】至背包', 3000);
+                    }
+
+                    load_inventory();
+                    load_profile();
+
+                    update(saved_data);
+                });
+                menu.children[0].appendChild(li);
+
+                li = document.createElement('li');
+                li.innerHTML = '丢弃';
+                li.addEventListener('click', () => {
+                    saved_data[table_name].splice(i, 1);
+                    log(i, saved_data[table_name][i])
+                    show_toast('已丢弃【' + this_item.label + '】', 3000);
+
+                    load_inventory();
+                    load_profile();
+
+                    update(saved_data);
+                });
+                menu.children[0].appendChild(li);
+
+                document.addEventListener('click', function close_handler() {
+                    menu.style.display = 'none';
+                    document.removeEventListener('click', close_handler);
+                });
             });
 
             const input_ref = {
@@ -438,26 +488,11 @@ function load_inventory() {
             for (let x of Object.keys(input_ref)) {
                 input_ref[x].addEventListener('change', () => {
                     this_item[x] = input_ref[x].children[0].value;
-                    // 重构：使用右键菜单
-                    if (
-                        x === 'amount' && (
-                            input_ref[x].children[0].value === '0'
-                            || input_ref[x].children[0].value === ''
-                        )
-                    ) {
-                        saved_data[table_name].splice(i, 1);
-                        show_toast('已丢弃【' + this_item.label + '】', 3000);
-                    }
 
                     load_inventory();
                     load_profile();
 
-                    // 重构：使用可复用的更新函数
-                    fetch(window.location.origin+'/api/update/'+pc_id, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(saved_data)
-                    }).catch(err => alert('Fetch 错误: ' + err));
+                    update(saved_data);
                 });
             }
         }
@@ -560,8 +595,6 @@ function load_spells() {
             );
             assign(board.children[2], details);
 
-            // Ctrl + 左键: 学习该法术
-            // 重构：使用右键菜单
             if (event.ctrlKey) {
                 saved_data.spells.push(saved_spells[i].name);
 
@@ -570,13 +603,38 @@ function load_spells() {
 
                 show_toast('已记忆法术【' + saved_spells[i].name.split('  ')[0] + '】', 3000);
 
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err));
+                update(saved_data);
             }
+        });
+
+        row.addEventListener('contextmenu', e => {
+            e.preventDefault();
+
+            const menu = query('context_menu');
+            menu.style.display = 'block';
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+
+            menu.children[0].innerHTML = '';
+            let li = null;
+            li = document.createElement('li');
+            li.innerHTML = '记忆该法术';
+            li.addEventListener('click', () => {
+                saved_data.spells.push(saved_spells[i].name);
+
+                load_spellcasting();
+                load_profile();
+
+                show_toast('已记忆法术【' + saved_spells[i].name.split('  ')[0] + '】', 3000);
+
+                update(saved_data);
+            });
+            menu.children[0].appendChild(li);
+
+            document.addEventListener('click', function close_handler() {
+                menu.style.display = 'none';
+                document.removeEventListener('click', close_handler);
+            });
         });
     }
 }
@@ -663,9 +721,7 @@ function load_spellcasting() {
                 + '</p>'
             );
             assign(board.children[2], details);
-            
-            // Ctrl + 左键: 遗忘该法术
-            // 重构：使用右键菜单
+
             if (event.ctrlKey) {
                 saved_data.spells.splice(i, 1);
 
@@ -674,13 +730,38 @@ function load_spellcasting() {
 
                 show_toast('已遗忘法术【' + spell.name.split('  ')[0] + '】', 3000);
 
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err));
+                update(saved_data);
             }
+        });
+
+        row.addEventListener('contextmenu', e => {
+            e.preventDefault();
+
+            const menu = query('context_menu');
+            menu.style.display = 'block';
+            menu.style.left = e.clientX + 'px';
+            menu.style.top = e.clientY + 'px';
+
+            menu.children[0].innerHTML = '';
+            let li = null;
+            li = document.createElement('li');
+            li.innerHTML = '遗忘该法术';
+            li.addEventListener('click', () => {
+                saved_data.spells.splice(i, 1);
+
+                load_spellcasting();
+                load_profile();
+
+                show_toast('已遗忘法术【' + spell.name.split('  ')[0] + '】', 3000);
+
+                update(saved_data);
+            });
+            menu.children[0].appendChild(li);
+
+            document.addEventListener('click', function close_handler() {
+                menu.style.display = 'none';
+                document.removeEventListener('click', close_handler);
+            });
         });
     }
 }
@@ -764,11 +845,11 @@ function load_profile() {
  * 加载概要栏
  */
 function load_summery() {
-    assign('character_name', saved_data.metadata.character_name);
-    assign('sex_in_profile', saved_data.characteristics.sex);
-    assign('race_in_profile', saved_data.characteristics.race);
+    assign(query('character_name'), saved_data.metadata.character_name);
+    assign(query('sex_in_profile'), saved_data.characteristics.sex);
+    assign(query('race_in_profile'), saved_data.characteristics.race);
 
-    assign('class', saved_data.metadata.class);
+    assign(query('class'), saved_data.metadata.class);
     // 加载子职业选择器
     const subclass_ref = {
         '奇械师': ['炼金师', '装甲师', '魔炮师', '战铸师'],
@@ -789,15 +870,15 @@ function load_summery() {
     for (let i in subclass_ref[saved_data.metadata.class]) {
         query('subclass').add(new Option(subclass_ref[saved_data.metadata.class][i]));
     }
-    assign('subclass', saved_data.metadata.subclass);
+    assign(query('subclass'), saved_data.metadata.subclass);
 
-    assign('level', saved_data.metadata.level);
-    assign('alignment_in_profile', saved_data.background.alignment);
-    assign('background_in_profile', saved_data.background.background);
-    assign('experience_points', saved_data.metadata.experience_points);
+    assign(query('level'), saved_data.metadata.level);
+    assign(query('alignment_in_profile'), saved_data.background.alignment);
+    assign(query('background_in_profile'), saved_data.background.background);
+    assign(query('experience_points'), saved_data.metadata.experience_points);
 
     computed_data.proficiency_bonus = parseInt((saved_data.metadata.level-1)/4)+2;
-    assign('proficiency_bonus', '+' + computed_data.proficiency_bonus);
+    assign(query('proficiency_bonus'), '+' + computed_data.proficiency_bonus);
 }
 
 /**
@@ -924,12 +1005,7 @@ function load_equipment() {
 
             load_profile();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -1368,12 +1444,7 @@ function load_weapons() {
 
             load_profile();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -1516,12 +1587,7 @@ function load_quick_spellcasting() {
             
             load_profile();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 
@@ -1532,12 +1598,7 @@ function load_quick_spellcasting() {
 
             load_profile();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -1584,10 +1645,7 @@ function load_spellcasting_info() {
 /**
  * 为元素 element 设置值 value
  */
-function assign(id, value) {
-    // 重构：不直接传入元素
-    let element = id;
-    if (typeof id === 'string') element = query(id);
+function assign(element, value) {
     switch (element.tagName) {
         case 'INPUT': element.value = value; break;
         case 'BUTTON': element.innerText = value; break;
@@ -1733,4 +1791,15 @@ function download(data, filename = 'data.json') {
     
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+/**
+ * 上传数据更新
+ */
+function update(data) {
+    fetch(window.location.origin+'/api/update/'+pc_id, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    }).catch(err => alert('Fetch 错误: ' + err));
 }
