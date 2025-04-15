@@ -114,12 +114,7 @@ function bind_long_rest_button() {
         }
         load_spell_slots();
 
-        // 重构：使用可复用的更新函数
-        fetch(window.location.origin+'/api/update/'+pc_id, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(saved_data)
-        }).catch(err => alert('Fetch 错误: ' + err));
+        update(saved_data);
     });
 }
 
@@ -189,12 +184,7 @@ function bind_events_in_background() {
                 saved_data.background[ele.id] = ele.value;
             }
     
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -218,12 +208,7 @@ function bind_events_in_features() {
     
             load_features();
     
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err));
+            update(saved_data);
         });
 
         query(table_name + '_table').rows[0].addEventListener('click', (event) => {
@@ -245,12 +230,7 @@ function bind_events_in_features() {
 
             load_features();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err));
+            update(saved_data);
         });
     });
 }
@@ -286,12 +266,7 @@ function bind_events_in_profile() {
                     
                     load_combat_stats();
 
-                    // 重构：使用可复用的更新函数
-                    fetch(window.location.origin+'/api/update/'+pc_id, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(saved_data)
-                    }).catch(err => alert('Fetch 错误: ' + err));
+                    update(saved_data);
     
                 });
                 break;
@@ -378,12 +353,7 @@ function bind_events_in_profile() {
         
             load_profile();
     
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data);
         });
     });
 
@@ -412,12 +382,7 @@ function bind_events_in_profile() {
         
             load_profile();
     
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -465,12 +430,7 @@ function bind_events_in_inventory() {
 
             load_inventory();
 
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err));
+            update(saved_data);
         });
     });
 
@@ -489,12 +449,7 @@ function bind_events_in_inventory() {
 
         show_toast('已添加【自定义】至背包', 3000);
 
-        // 重构：使用可复用的更新函数
-        fetch(window.location.origin+'/api/update/'+pc_id, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(saved_data)
-        }).catch(err => alert('Fetch 错误: ' + err));
+        update(saved_data);
     });
 
     // 更新货币栏的修改
@@ -505,12 +460,7 @@ function bind_events_in_inventory() {
         
             load_profile();
     
-            // 重构：使用可复用的更新函数
-            fetch(window.location.origin+'/api/update/'+pc_id, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(saved_data)
-            }).catch(err => alert('Fetch 错误: ' + err)); 
+            update(saved_data); 
         });
     });
 }
@@ -546,12 +496,7 @@ function bind_events_in_spellcasting() {
 
         load_spellcasting();
 
-        // 重构：使用可复用的更新函数
-        fetch(window.location.origin+'/api/update/'+pc_id, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(saved_data)
-        }).catch(err => alert('Fetch 错误: ' + err));
+        update(saved_data);
     });
 
     // 绑定法术位追踪器按钮
@@ -563,12 +508,7 @@ function bind_events_in_spellcasting() {
                 load_spell_slots();
                 show_toast('施放 ' + slot.parentElement.cellIndex + ' 环法术', 1000);
             
-                // 重构：使用可复用的更新函数
-                fetch(window.location.origin+'/api/update/'+pc_id, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(saved_data)
-                }).catch(err => alert('Fetch 错误: ' + err));
+                update(saved_data);
             } else {
                 show_toast('无可用法术位', 1000);
             }
