@@ -84,6 +84,7 @@ function bind_nav() {
 
     document.addEventListener('keydown', (event) => {
         if (['INPUT', 'TEXTAREA', 'DIV'].includes(document.activeElement.tagName)) return;
+        if (event.ctrlKey) return;
 
         Object.keys(nav_shortcut_key).forEach(nav_name => {
             if (nav_shortcut_key[nav_name] === event.key.toLowerCase()) {

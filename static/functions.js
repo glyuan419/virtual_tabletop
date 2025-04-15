@@ -219,7 +219,7 @@ function load_items() {
                 + property_ref[saved_items[i].properties[j]].entries.join('<br/><br/>')
                 + '</p>'
             );
-            assign(board.children[2], details);            
+            assign(board.children[2], details);
 
             board.children[1].querySelectorAll('.dice').forEach(dice => {
                 dice.addEventListener('click', (event) => {
@@ -566,7 +566,7 @@ function load_spells() {
 
             let details = '';
             for (let j=0; j<saved_spells[i].entries.length; j++) details += (
-                '<p>' + saved_spells[i].entries[j] + '</p>'
+                '<p>' + parse_description(saved_spells[i].entries[j]) + '</p>'
             );
             for (let j=0; j<saved_spells[i].length; j++) details += (
                 '<p>'
@@ -574,8 +574,9 @@ function load_spells() {
                 + saved_spells[i].higher_level[j]
                 + '</p>'
             );
+            
             details += (
-                '<p>'
+                '<hr/><p>'
                 + '<span class="board-item">职业: </span>'
                 + saved_spells[i].classes.join('、')
                 + '</p>'
@@ -594,6 +595,15 @@ function load_spells() {
                 + '</p>'
             );
             assign(board.children[2], details);
+            
+            board.children[2].querySelectorAll('.dice').forEach(dice => {
+                dice.addEventListener('click', (event) => {
+                    show_dice(
+                        saved_spells[i].name.split('  ')[0],
+                        roll_dice(dice.innerText, (event.ctrlKey?2:1))
+                    );
+                });
+            });
 
             if (event.ctrlKey) {
                 saved_data.spells.push(saved_spells[i].name);
@@ -695,7 +705,7 @@ function load_spellcasting() {
 
             let details = '';
             for (let j=0; j<spell.entries.length; j++) details += (
-                '<p>' + spell.entries[j] + '</p>'
+                '<p>' + parse_description(spell.entries[j]) + '</p>'
             );
             for (let j=0; j<spell.higher_level.length; j++) details += (
                 '<p>'
@@ -704,7 +714,7 @@ function load_spellcasting() {
                 + '</p>'
             );
             details += (
-                '<p>'
+                '<hr/><p>'
                 + '<span class="board-item">职业: </span>'
                 + spell.classes.join('、')
                 + '</p>'
@@ -721,6 +731,15 @@ function load_spellcasting() {
                 + '</p>'
             );
             assign(board.children[2], details);
+            
+            board.children[2].querySelectorAll('.dice').forEach(dice => {
+                dice.addEventListener('click', (event) => {
+                    show_dice(
+                        saved_spells[i].name.split('  ')[0],
+                        roll_dice(dice.innerText, (event.ctrlKey?2:1))
+                    );
+                });
+            });
 
             if (event.ctrlKey) {
                 saved_data.spells.splice(i, 1);
@@ -1683,24 +1702,26 @@ function roll_dice(dice_value, num=1) {
         dice_info = '';
         if ((new RegExp(/^[0-9]+$/)).test(dice_value)) { // 1
             dice_parseer = ['1', '20', '+' + dice_value];
+        } else if ((new RegExp(/^\+[0-9]+$/)).test(dice_value)) { // +1
+            dice_parseer = ['1', '20', dice_value];
+        } else if ((new RegExp(/^-[0-9]+$/)).test(dice_value)) { // -1
+            dice_parseer = ['1', '20', dice_value];
+        } else if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(dice_value)) { // 1d20
+            dice_parseer = [dice_value.split('d')[0], dice_value.split('d')[1], ''];
         } else if ((new RegExp(/^[0-9]+d[0-9]+\+[0-9]+$/)).test(dice_value)) { // 1d20+1
             dice_parseer = [
                 dice_value.split('d')[0],
                 dice_value.split('d')[1].split('+')[0],
                 '+' + dice_value.split('d')[1].split('+')[1]
             ];
-        } else if ((new RegExp(/^[0-9]+d[0-9]+$/)).test(dice_value)) { // 1d20
-            dice_parseer = [dice_value.split('d')[0], dice_value.split('d')[1].split('+')[0], ''];
-        } else if ((new RegExp(/^\+[0-9]+$/)).test(dice_value)) { // +1
-            dice_parseer = ['1', '20', dice_value];
-        } else if ((new RegExp(/^-[0-9]+$/)).test(dice_value)) { // -1
-            dice_parseer = ['1', '20', dice_value];
         } else if ((new RegExp(/^[0-9]+d[0-9]+-[0-9]+$/)).test(dice_value)) { // 1d20-1
             dice_parseer = [
                 dice_value.split('d')[0],
                 dice_value.split('d')[1].split('-')[0],
                 '-' + dice_value.split('d')[1].split('-')[1]
             ];
+        } else if ((new RegExp(/^d[0-9]+$/)).test(dice_value)) { // d20
+            dice_parseer = ['1', dice_value.split('d')[1], ''];
         } else {
             alert('这骰的是啥? 【' + dice_value + '】');
         }
@@ -1803,3 +1824,49 @@ function update(data) {
         body: JSON.stringify(data)
     }).catch(err => alert('Fetch 错误: ' + err));
 }
+
+/**
+ * 解析法术描述
+ */
+function parse_description(entry) {
+    if (typeof entry === 'string') {
+        let text = entry;
+
+        // 规则1: {@dice XdY} -> <span class="dice">XdY</span>（自动移除内部空格）
+        text = text.replace(/\{@dice ([^}]+)\}/g, (_, dice) => (
+            ' <span class="dice">' + dice.replace(/\s+/g, '') + '</span> '
+        ));
+
+        // 规则2: {@condition NAME} -> <strong>NAME</strong>（前后加空格）
+        text = text.replace(/\{@condition ([^}]+)\}/g, ' <strong>$1</strong> ');
+
+        return text;
+    } else if (entry.type === 'list') {
+        let text = '';
+        for (let i in entry.items) {
+            text += '<strong>·</strong> ';
+            text += parse_description(entry.items[i]) + '<br/>';
+        }
+        return text;
+    } else if (entry.type === 'entries') {
+        let text = '';
+        text += '<strong>' + entry.name + ':</strong> ';
+        for (let i in entry.entries) {
+            text += parse_description(entry.entries[i]) + '<br/>';
+        }
+        return text;
+    } else if (entry.type === 'table') {
+        let text = '';
+        text += '<strong>' + entry.caption + '</strong><br/>';
+        for (let i in entry.rows) {
+            text += parse_description(entry.rows[i]) + '<br/>';
+        }
+        return text;
+    } else {
+        let text = ''
+        for (let x of entry) {
+            text += x + '';
+        }
+        return text;
+    }
+  }

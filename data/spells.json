@@ -3,13 +3,13 @@
         "name": "交友术  Friends",
         "source": "PHB",
         "level": "0",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -42,13 +42,13 @@
         "name": "传讯术  Message",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -83,13 +83,13 @@
         "name": "修复术  Mending",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -122,13 +122,13 @@
         "name": "光亮术  Light",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -167,13 +167,13 @@
         "name": "克敌机先  True Strike",
         "source": "PHB",
         "level": "0",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -201,13 +201,13 @@
         "name": "冷冻射线  Ray of Frost",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -240,13 +240,13 @@
         "name": "剑刃防护  Blade Ward",
         "source": "PHB",
         "level": "0",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -275,13 +275,13 @@
         "name": "圣焰  Sacred Flame",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -313,13 +313,13 @@
         "name": "奇术  Thaumaturgy",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -356,13 +356,13 @@
         "name": "寒颤之触  Chill Touch",
         "source": "PHB",
         "level": "0",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -392,13 +392,13 @@
         "name": "德鲁伊伎俩  Druidcraft",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -437,13 +437,13 @@
         "name": "恶毒嘲笑  Vicious Mockery",
         "source": "PHB",
         "level": "0",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -469,13 +469,13 @@
         "name": "拯救濒死  Spare the Dying",
         "source": "PHB",
         "level": "0",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -509,13 +509,13 @@
         "name": "提升抗力  Resistance",
         "source": "PHB",
         "level": "0",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -548,13 +548,13 @@
         "name": "橡棍术  Shillelagh",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -585,13 +585,13 @@
         "name": "次级幻象  Minor Illusion",
         "source": "PHB",
         "level": "0",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -633,13 +633,13 @@
         "name": "毒气喷洒  Poison Spray",
         "source": "PHB",
         "level": "0",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -670,13 +670,13 @@
         "name": "法师之手  Mage Hand",
         "source": "PHB",
         "level": "0",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -721,13 +721,13 @@
         "name": "火焰箭  Fire Bolt",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -760,13 +760,13 @@
         "name": "燃火术  Produce Flame",
         "source": "PHB",
         "level": "0",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -794,13 +794,13 @@
         "name": "电爪  Shocking Grasp",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -833,13 +833,13 @@
         "name": "神导术  Guidance",
         "source": "PHB",
         "level": "0",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -867,13 +867,13 @@
         "name": "舞光术  Dancing Lights",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -904,13 +904,13 @@
         "name": "荆棘之鞭  Thorn Whip",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -939,13 +939,13 @@
         "name": "酸液溅爆  Acid Splash",
         "source": "PHB",
         "level": "0",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -975,13 +975,13 @@
         "name": "魔法技俩  Prestidigitation",
         "source": "PHB",
         "level": "0",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -1027,13 +1027,13 @@
         "name": "魔能爆  Eldritch Blast",
         "source": "PHB",
         "level": "0",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -1060,13 +1060,13 @@
         "name": "七彩喷射  Color Spray",
         "source": "PHB",
         "level": "1",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "15",
             "尺"
         ],
@@ -1098,13 +1098,13 @@
         "name": "云雾术  Fog Cloud",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -1147,13 +1147,13 @@
         "name": "侦测善恶  Detect Evil and Good",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -1185,13 +1185,13 @@
         "name": "侦测毒素或疾病  Detect Poison and Disease",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -1222,13 +1222,13 @@
         "name": "侦测魔法  Detect Magic",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -1269,13 +1269,13 @@
         "name": "光导箭  Guiding Bolt",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -1314,13 +1314,13 @@
         "name": "净化饮食  Purify Food and Drink",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -1353,13 +1353,13 @@
         "name": "动物交谈术  Speak with Animals",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -1397,13 +1397,13 @@
         "name": "化兽为友  Animal Friendship",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -1438,13 +1438,13 @@
         "name": "命令术  Command",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -1524,13 +1524,13 @@
         "name": "哈达之臂  Arms of Hadar",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "10",
             "尺"
         ],
@@ -1562,13 +1562,13 @@
         "name": "噪音暗语  Dissonant Whispers",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -1605,13 +1605,13 @@
         "name": "圣域术  Sanctuary",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -1656,13 +1656,13 @@
         "name": "塔莎狂笑术  Tasha's Hideous Laughter",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -1695,13 +1695,13 @@
         "name": "大步奔行  Longstrider",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -1734,13 +1734,13 @@
         "name": "妖火术  Faerie Fire",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -1779,13 +1779,13 @@
         "name": "寻获魔宠  Find Familiar",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -1818,13 +1818,13 @@
         "name": "巫术箭  Witch Bolt",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -1855,13 +1855,13 @@
         "name": "幻色法球  Chromatic Orb",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -1895,13 +1895,13 @@
         "name": "强迫决斗  Compelled Duel",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -1937,13 +1937,13 @@
         "name": "护盾术  Shield",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "反应"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -1985,13 +1985,13 @@
         "name": "摹造生命  False Life",
         "source": "PHB",
         "level": "1",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2032,13 +2032,13 @@
         "name": "无声幻影  Silent Image",
         "source": "PHB",
         "level": "1",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2069,13 +2069,13 @@
         "name": "易容术  Disguise Self",
         "source": "PHB",
         "level": "1",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2116,13 +2116,13 @@
         "name": "棘刺雹  Hail of Thorns",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2149,13 +2149,13 @@
         "name": "油腻术  Grease",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2185,13 +2185,13 @@
         "name": "治愈真言  Healing Word",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2224,13 +2224,13 @@
         "name": "治疗伤势  Cure Wounds",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -2276,13 +2276,13 @@
         "name": "法师护甲  Mage Armor",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -2310,13 +2310,13 @@
         "name": "激愤斩  Wrathful Smite",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2349,13 +2349,13 @@
         "name": "灾祸术  Bane",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -2402,13 +2402,13 @@
         "name": "炼狱叱喝  Hellish Rebuke",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "反应"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2440,13 +2440,13 @@
         "name": "炽炎斩  Searing Smite",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2485,13 +2485,13 @@
         "name": "燃烧之手  Burning Hands",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "15",
             "尺"
         ],
@@ -2541,13 +2541,13 @@
         "name": "猎人印记  Hunter's Mark",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -2578,13 +2578,13 @@
         "name": "睡眠术  Sleep",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -2628,13 +2628,13 @@
         "name": "祝福术  Bless",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -2675,13 +2675,13 @@
         "name": "神恩术  Divine Favor",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2712,13 +2712,13 @@
         "name": "神莓术  Goodberry",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -2747,13 +2747,13 @@
         "name": "纠缠术  Entangle",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -2789,13 +2789,13 @@
         "name": "羽落术  Feather Fall",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "反应"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2828,13 +2828,13 @@
         "name": "脆弱诅咒  Hex",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -2865,13 +2865,13 @@
         "name": "脚底抹油  Expeditious Retreat",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2905,13 +2905,13 @@
         "name": "致病射线  Ray of Sickness",
         "source": "PHB",
         "level": "1",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -2951,13 +2951,13 @@
         "name": "艾嘉西斯之铠  Armor of Agathys",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -2993,13 +2993,13 @@
         "name": "英雄气概  Heroism",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3044,13 +3044,13 @@
         "name": "虔诚护盾  Shield of Faith",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -3085,13 +3085,13 @@
         "name": "警报术  Alarm",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -3129,13 +3129,13 @@
         "name": "诱捕打击  Ensnaring Strike",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -3167,13 +3167,13 @@
         "name": "谭森浮碟术  Tenser's Floating Disk",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -3202,13 +3202,13 @@
         "name": "跳跃术  Jump",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3243,13 +3243,13 @@
         "name": "迷幻手稿  Illusory Script",
         "source": "PHB",
         "level": "1",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3280,13 +3280,13 @@
         "name": "通晓语言  Comprehend Languages",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -3324,13 +3324,13 @@
         "name": "造成伤势  Inflict Wounds",
         "source": "PHB",
         "level": "1",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3365,13 +3365,13 @@
         "name": "造水/枯水术  Create or Destroy Water",
         "source": "PHB",
         "level": "1",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -3420,13 +3420,13 @@
         "name": "鉴定术  Identify",
         "source": "PHB",
         "level": "1",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3461,13 +3461,13 @@
         "name": "防护善恶  Protection from Evil and Good",
         "source": "PHB",
         "level": "1",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3515,13 +3515,13 @@
         "name": "隐形仆役  Unseen Servant",
         "source": "PHB",
         "level": "1",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -3552,13 +3552,13 @@
         "name": "雷霆斩  Thunderous Smite",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -3590,13 +3590,13 @@
         "name": "雷鸣波  Thunderwave",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cube",
+            "立方",
             "15",
             "尺"
         ],
@@ -3649,13 +3649,13 @@
         "name": "魅惑人类  Charm Person",
         "source": "PHB",
         "level": "1",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -3698,13 +3698,13 @@
         "name": "魔法飞弹  Magic Missile",
         "source": "PHB",
         "level": "1",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -3740,13 +3740,13 @@
         "name": "不灭明焰  Continual Flame",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -3778,13 +3778,13 @@
         "name": "人类定身术  Hold Person",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -3836,13 +3836,13 @@
         "name": "侦测思想  Detect Thoughts",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -3885,13 +3885,13 @@
         "name": "动植物定位术  Locate Animals or Plants",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -3924,13 +3924,13 @@
         "name": "动物信使  Animal Messenger",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -3962,13 +3962,13 @@
         "name": "匕首之云  Cloud of Daggers",
         "source": "PHB",
         "level": "2",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -4000,13 +4000,13 @@
         "name": "卜筮  Augury",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -4056,13 +4056,13 @@
         "name": "变巨/缩小术  Enlarge/Reduce",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -4115,13 +4115,13 @@
         "name": "变造自身  Alter Self",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -4180,13 +4180,13 @@
         "name": "守护联结  Warding Bond",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -4229,13 +4229,13 @@
         "name": "安定心神  Calm Emotions",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -4274,13 +4274,13 @@
         "name": "寻找陷阱  Find Traps",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -4313,13 +4313,13 @@
         "name": "寻获坐骑  Find Steed",
         "source": "PHB",
         "level": "2",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -4349,13 +4349,13 @@
         "name": "强化属性  Enhance Ability",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -4444,13 +4444,13 @@
         "name": "援助术  Aid",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -4493,13 +4493,13 @@
         "name": "敲击术  Knock",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -4530,13 +4530,13 @@
         "name": "暗示术  Suggestion",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -4572,13 +4572,13 @@
         "name": "月华之光  Moonbeam",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -4618,13 +4618,13 @@
         "name": "朦胧术  Blur",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -4659,13 +4659,13 @@
         "name": "树肤术  Barkskin",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -4700,13 +4700,13 @@
         "name": "次级复原术  Lesser Restoration",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -4750,13 +4750,13 @@
         "name": "沉默术  Silence",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -4798,13 +4798,13 @@
         "name": "治愈祈祷  Prayer of Healing",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -4832,13 +4832,13 @@
         "name": "注目术  Enthrall",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -4872,13 +4872,13 @@
         "name": "浮空术  Levitate",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -4916,13 +4916,13 @@
         "name": "涅斯图魔法灵光  Nystul's Magic Aura",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -4968,13 +4968,13 @@
         "name": "火焰刀  Flame Blade",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5006,13 +5006,13 @@
         "name": "灵体武器  Spiritual Weapon",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5053,13 +5053,13 @@
         "name": "灼热射线  Scorching Ray",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -5103,13 +5103,13 @@
         "name": "灼热金属  Heat Metal",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5149,13 +5149,13 @@
         "name": "炽焰法球  Flaming Sphere",
         "source": "PHB",
         "level": "2",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5205,13 +5205,13 @@
         "name": "烙印斩  Branding Smite",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5249,13 +5249,13 @@
         "name": "物品定位术  Locate Object",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5296,13 +5296,13 @@
         "name": "疯狂冠冕  Crown of Madness",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -5337,13 +5337,13 @@
         "name": "目盲/耳聋术  Blindness/Deafness",
         "source": "PHB",
         "level": "2",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -5385,13 +5385,13 @@
         "name": "秘法锁  Arcane Lock",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -5422,13 +5422,13 @@
         "name": "粉碎音波  Shatter",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5476,13 +5476,13 @@
         "name": "荆棘丛生  Spike Growth",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -5524,13 +5524,13 @@
         "name": "蛛网术  Web",
         "source": "PHB",
         "level": "2",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5573,13 +5573,13 @@
         "name": "蛛行术  Spider Climb",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -5613,13 +5613,13 @@
         "name": "行踪无迹  Pass without Trace",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5657,13 +5657,13 @@
         "name": "衰弱射线  Ray of Enfeeblement",
         "source": "PHB",
         "level": "2",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5703,13 +5703,13 @@
         "name": "警戒箭阵  Cordon of Arrows",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "5",
             "尺"
         ],
@@ -5739,13 +5739,13 @@
         "name": "识破隐形  See Invisibility",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5782,13 +5782,13 @@
         "name": "诚实之域  Zone of Truth",
         "source": "PHB",
         "level": "2",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -5828,13 +5828,13 @@
         "name": "迷踪步  Misty Step",
         "source": "PHB",
         "level": "2",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -5873,13 +5873,13 @@
         "name": "通天绳  Rope Trick",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -5916,13 +5916,13 @@
         "name": "造风术  Gust of Wind",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "line",
+            "直线",
             "60",
             "尺"
         ],
@@ -5971,13 +5971,13 @@
         "name": "遗体防腐  Gentle Repose",
         "source": "PHB",
         "level": "2",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6014,13 +6014,13 @@
         "name": "野兽知觉  Beast Sense",
         "source": "PHB",
         "level": "2",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6050,13 +6050,13 @@
         "name": "镜影术  Mirror Image",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -6103,13 +6103,13 @@
         "name": "防护毒素  Protection from Poison",
         "source": "PHB",
         "level": "2",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6145,13 +6145,13 @@
         "name": "隐形术  Invisibility",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6197,13 +6197,13 @@
         "name": "马友夫强酸箭  Melf's Acid Arrow",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -6239,13 +6239,13 @@
         "name": "魅影之力  Phantasmal Force",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -6286,13 +6286,13 @@
         "name": "魔化武器  Magic Weapon",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6340,13 +6340,13 @@
         "name": "魔嘴术  Magic Mouth",
         "source": "PHB",
         "level": "2",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -6379,13 +6379,13 @@
         "name": "黑暗术  Darkness",
         "source": "PHB",
         "level": "2",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -6431,13 +6431,13 @@
         "name": "黑暗视觉  Darkvision",
         "source": "PHB",
         "level": "2",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6472,13 +6472,13 @@
         "name": "假死术  Feign Death",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6515,13 +6515,13 @@
         "name": "催眠图纹  Hypnotic Pattern",
         "source": "PHB",
         "level": "3",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -6562,13 +6562,13 @@
         "name": "元素武器  Elemental Weapon",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -6609,13 +6609,13 @@
         "name": "创造饮食  Create Food and Water",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -6654,13 +6654,13 @@
         "name": "加速术  Haste",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -6707,13 +6707,13 @@
         "name": "十字军斗篷  Crusader's Mantle",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -6743,13 +6743,13 @@
         "name": "反制法术  Counterspell",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "反应"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -6786,13 +6786,13 @@
         "name": "召唤动物  Conjure Animals",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -6837,13 +6837,13 @@
         "name": "召唤箭幕  Conjure Barrage",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "60",
             "尺"
         ],
@@ -6874,13 +6874,13 @@
         "name": "召雷术  Call Lightning",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -6920,13 +6920,13 @@
         "name": "吸血鬼之触  Vampiric Touch",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -6962,13 +6962,13 @@
         "name": "哈达之欲  Hunger of Hadar",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -7000,13 +7000,13 @@
         "name": "回生术  Revivify",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7048,13 +7048,13 @@
         "name": "回避侦测  Nondetection",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7090,13 +7090,13 @@
         "name": "守卫铭文  Glyph of Warding",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7157,13 +7157,13 @@
         "name": "巧舌术  Tongues",
         "source": "PHB",
         "level": "3",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7198,13 +7198,13 @@
         "name": "希望信标  Beacon of Hope",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -7241,13 +7241,13 @@
         "name": "强效幻影  Major Image",
         "source": "PHB",
         "level": "3",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -7281,13 +7281,13 @@
         "name": "恐惧术  Fear",
         "source": "PHB",
         "level": "3",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "30",
             "尺"
         ],
@@ -7325,13 +7325,13 @@
         "name": "昼明术  Daylight",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -7374,13 +7374,13 @@
         "name": "李欧蒙小屋  Leomund's Tiny Hut",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "hemisphere",
+            "半球",
             "10",
             "尺"
         ],
@@ -7414,13 +7414,13 @@
         "name": "植物交谈术  Speak with Plants",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -7452,13 +7452,13 @@
         "name": "植物滋长  Plant Growth",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -7503,13 +7503,13 @@
         "name": "死者交谈术  Speak with Dead",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -7548,13 +7548,13 @@
         "name": "气化形体  Gaseous Form",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7603,13 +7603,13 @@
         "name": "水下呼吸  Water Breathing",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -7644,13 +7644,13 @@
         "name": "水面行走  Water Walk",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -7686,13 +7686,13 @@
         "name": "活力灵光  Aura of Vitality",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -7729,13 +7729,13 @@
         "name": "活化死尸  Animate Dead",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -7778,13 +7778,13 @@
         "name": "火球术  Fireball",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -7833,13 +7833,13 @@
         "name": "灵体守卫  Spirit Guardians",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "15",
             "尺"
         ],
@@ -7877,13 +7877,13 @@
         "name": "短讯术  Sending",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "无限",
             ""
         ],
@@ -7925,13 +7925,13 @@
         "name": "移除诅咒  Remove Curse",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -7960,13 +7960,13 @@
         "name": "缓速术  Slow",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -8006,13 +8006,13 @@
         "name": "群体治愈真言  Mass Healing Word",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -8047,13 +8047,13 @@
         "name": "臭云术  Stinking Cloud",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -8094,13 +8094,13 @@
         "name": "致盲斩  Blinding Smite",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -8134,13 +8134,13 @@
         "name": "融身入石  Meld into Stone",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -8177,13 +8177,13 @@
         "name": "解除魔法  Dispel Magic",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -8232,13 +8232,13 @@
         "name": "锐眼术  Clairvoyance",
         "source": "PHB",
         "level": "3",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "1",
             "里"
         ],
@@ -8278,13 +8278,13 @@
         "name": "闪现术  Blink",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -8321,13 +8321,13 @@
         "name": "闪电束  Lightning Bolt",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "line",
+            "直线",
             "100",
             "尺"
         ],
@@ -8372,13 +8372,13 @@
         "name": "闪电箭矢  Lightning Arrow",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -8408,13 +8408,13 @@
         "name": "防护法阵  Magic Circle",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -8463,13 +8463,13 @@
         "name": "防护能量  Protection from Energy",
         "source": "PHB",
         "level": "3",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -8524,13 +8524,13 @@
         "name": "降咒  Bestow Curse",
         "source": "PHB",
         "level": "3",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -8578,13 +8578,13 @@
         "name": "雪雨暴  Sleet Storm",
         "source": "PHB",
         "level": "3",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -8630,13 +8630,13 @@
         "name": "风墙术  Wind Wall",
         "source": "PHB",
         "level": "3",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -8676,13 +8676,13 @@
         "name": "飞行术  Fly",
         "source": "PHB",
         "level": "3",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -8718,13 +8718,13 @@
         "name": "魅影驹  Phantom Steed",
         "source": "PHB",
         "level": "3",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -8755,13 +8755,13 @@
         "name": "冰风暴  Ice Storm",
         "source": "PHB",
         "level": "4",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -8812,13 +8812,13 @@
         "name": "净化灵光  Aura of Purity",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -8856,13 +8856,13 @@
         "name": "变形术  Polymorph",
         "source": "PHB",
         "level": "4",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -8903,13 +8903,13 @@
         "name": "召唤林地之精  Conjure Woodland Beings",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -8951,13 +8951,13 @@
         "name": "召唤次级元素生物  Conjure Minor Elementals",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -9002,13 +9002,13 @@
         "name": "困惑术  Confusion",
         "source": "PHB",
         "level": "4",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -9107,13 +9107,13 @@
         "name": "塑石术  Stone Shape",
         "source": "PHB",
         "level": "4",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -9150,13 +9150,13 @@
         "name": "巨虫术  Giant Insect",
         "source": "PHB",
         "level": "4",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -9190,13 +9190,13 @@
         "name": "幻景  Hallucinatory Terrain",
         "source": "PHB",
         "level": "4",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -9231,13 +9231,13 @@
         "name": "强迫术  Compulsion",
         "source": "PHB",
         "level": "4",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -9275,13 +9275,13 @@
         "name": "惊震斩  Staggering Smite",
         "source": "PHB",
         "level": "4",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -9316,13 +9316,13 @@
         "name": "抓攫藤蔓  Grasping Vine",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -9354,13 +9354,13 @@
         "name": "操控水体  Control Water",
         "source": "PHB",
         "level": "4",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -9433,13 +9433,13 @@
         "name": "支配野兽  Dominate Beast",
         "source": "PHB",
         "level": "4",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -9484,13 +9484,13 @@
         "name": "放逐术  Banishment",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -9536,13 +9536,13 @@
         "name": "李欧蒙秘藏箱  Leomund's Secret Chest",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -9576,13 +9576,13 @@
         "name": "枯萎术  Blight",
         "source": "PHB",
         "level": "4",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -9631,13 +9631,13 @@
         "name": "次元门  Dimension Door",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "500",
             "尺"
         ],
@@ -9678,13 +9678,13 @@
         "name": "欧提路克魔封法球  Otiluke's Resilient Sphere",
         "source": "PHB",
         "level": "4",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -9726,13 +9726,13 @@
         "name": "火墙术  Wall of Fire",
         "source": "PHB",
         "level": "4",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -9780,13 +9780,13 @@
         "name": "火焰护盾  Fire Shield",
         "source": "PHB",
         "level": "4",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -9833,13 +9833,13 @@
         "name": "生命灵光  Aura of Life",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -9877,13 +9877,13 @@
         "name": "生物定位术  Locate Creature",
         "source": "PHB",
         "level": "4",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -9932,13 +9932,13 @@
         "name": "石肤术  Stoneskin",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -9985,13 +9985,13 @@
         "name": "秘法眼  Arcane Eye",
         "source": "PHB",
         "level": "4",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -10035,13 +10035,13 @@
         "name": "艾伐黑触手  Evard's Black Tentacles",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -10079,13 +10079,13 @@
         "name": "虔诚守卫  Guardian of Faith",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -10126,13 +10126,13 @@
         "name": "行动自如术  Freedom of Movement",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -10180,13 +10180,13 @@
         "name": "防死护咒  Death Ward",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -10231,13 +10231,13 @@
         "name": "预言术  Divination",
         "source": "PHB",
         "level": "4",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -10272,13 +10272,13 @@
         "name": "高等隐形术  Greater Invisibility",
         "source": "PHB",
         "level": "4",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -10329,13 +10329,13 @@
         "name": "鬼斧神工  Fabricate",
         "source": "PHB",
         "level": "4",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -10368,13 +10368,13 @@
         "name": "魅影杀手  Phantasmal Killer",
         "source": "PHB",
         "level": "4",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -10412,13 +10412,13 @@
         "name": "魔邓肯忠犬  Mordenkainen's Faithful Hound",
         "source": "PHB",
         "level": "4",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -10448,13 +10448,13 @@
         "name": "魔邓肯私人密室  Mordenkainen's Private Sanctum",
         "source": "PHB",
         "level": "4",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -10497,13 +10497,13 @@
         "name": "传送法阵  Teleportation Circle",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -10541,13 +10541,13 @@
         "name": "伪装术  Seeming",
         "source": "PHB",
         "level": "5",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -10588,13 +10588,13 @@
         "name": "修改记忆  Modify Memory",
         "source": "PHB",
         "level": "5",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -10639,13 +10639,13 @@
         "name": "假象术  Mislead",
         "source": "PHB",
         "level": "5",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -10681,13 +10681,13 @@
         "name": "力墙术  Wall of Force",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -10729,13 +10729,13 @@
         "name": "反制善恶  Dispel Evil and Good",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -10778,13 +10778,13 @@
         "name": "反活物护罩  Antilife Shell",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "10",
             "尺"
         ],
@@ -10821,13 +10821,13 @@
         "name": "召唤元素生物  Conjure Elemental",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -10867,13 +10867,13 @@
         "name": "召唤箭雨  Conjure Volley",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -10904,13 +10904,13 @@
         "name": "启蒙术  Awaken",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "8",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -10940,13 +10940,13 @@
         "name": "唤醒死者  Raise Dead",
         "source": "PHB",
         "level": "5",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -10989,13 +10989,13 @@
         "name": "圣居  Hallow",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "24",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -11103,13 +11103,13 @@
         "name": "威能法环  Circle of Power",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -11142,13 +11142,13 @@
         "name": "寒冰锥  Cone of Cold",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "60",
             "尺"
         ],
@@ -11197,13 +11197,13 @@
         "name": "异界探知  Contact Other Plane",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -11231,13 +11231,13 @@
         "name": "异界誓缚  Planar Binding",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -11278,13 +11278,13 @@
         "name": "心灵遥控  Telekinesis",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -11338,13 +11338,13 @@
         "name": "怪物定身术  Hold Monster",
         "source": "PHB",
         "level": "5",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -11389,7 +11389,7 @@
         "name": "托梦术  Dream",
         "source": "PHB",
         "level": "5",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "分钟"
@@ -11434,13 +11434,13 @@
         "name": "拉瑞心灵联结  Rary's Telepathic Bond",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -11477,13 +11477,13 @@
         "name": "指使术  Geas",
         "source": "PHB",
         "level": "5",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -11520,13 +11520,13 @@
         "name": "探知  Scrying",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -11627,13 +11627,13 @@
         "name": "支配人类  Dominate Person",
         "source": "PHB",
         "level": "5",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -11684,13 +11684,13 @@
         "name": "放逐斩  Banishing Smite",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -11722,13 +11722,13 @@
         "name": "树跃术  Tree Stride",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -11766,13 +11766,13 @@
         "name": "死云术  Cloudkill",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -11820,13 +11820,13 @@
         "name": "毕格比之掌  Bigby's Hand",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -11892,13 +11892,13 @@
         "name": "活化物体  Animate Objects",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -12001,13 +12001,13 @@
         "name": "湮灭波  Destructive Wave",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "30",
             "尺"
         ],
@@ -12041,13 +12041,13 @@
         "name": "焰击术  Flame Strike",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -12096,13 +12096,13 @@
         "name": "疫病术  Contagion",
         "source": "PHB",
         "level": "5",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -12184,13 +12184,13 @@
         "name": "疫病虫群  Insect Plague",
         "source": "PHB",
         "level": "5",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -12238,13 +12238,13 @@
         "name": "石墙术  Wall of Stone",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -12289,13 +12289,13 @@
         "name": "穿墙术  Passwall",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -12336,13 +12336,13 @@
         "name": "群体治疗伤势  Mass Cure Wounds",
         "source": "PHB",
         "level": "5",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -12383,13 +12383,13 @@
         "name": "转生术  Reincarnate",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -12575,13 +12575,13 @@
         "name": "迅捷箭袋  Swift Quiver",
         "source": "PHB",
         "level": "5",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -12609,13 +12609,13 @@
         "name": "通晓传奇  Legend Lore",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -12657,13 +12657,13 @@
         "name": "通神术  Commune",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -12704,13 +12704,13 @@
         "name": "造物术  Creation",
         "source": "PHB",
         "level": "5",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -12785,13 +12785,13 @@
         "name": "问道自然  Commune with Nature",
         "source": "PHB",
         "level": "5",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -12843,13 +12843,13 @@
         "name": "高等复原术  Greater Restoration",
         "source": "PHB",
         "level": "5",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -12901,13 +12901,13 @@
         "name": "伤害术  Harm",
         "source": "PHB",
         "level": "6",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -12933,13 +12933,13 @@
         "name": "冰墙术  Wall of Ice",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -12970,13 +12970,13 @@
         "name": "创造不死生物  Create Undead",
         "source": "PHB",
         "level": "6",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -13009,13 +13009,13 @@
         "name": "剑刃障壁  Blade Barrier",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -13042,13 +13042,13 @@
         "name": "卓姆吉瞬间召唤  Drawmij's Instant Summons",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -13080,13 +13080,13 @@
         "name": "召唤精类生物  Conjure Fey",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -13118,13 +13118,13 @@
         "name": "回返真言  Word of Recall",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "5",
             "尺"
         ],
@@ -13150,13 +13150,13 @@
         "name": "地动术  Move Earth",
         "source": "PHB",
         "level": "6",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -13189,13 +13189,13 @@
         "name": "奥图狂舞术  Otto's Irresistible Dance",
         "source": "PHB",
         "level": "6",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -13222,13 +13222,13 @@
         "name": "寻找捷径  Find the Path",
         "source": "PHB",
         "level": "6",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -13258,13 +13258,13 @@
         "name": "异界盟友  Planar Ally",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -13295,13 +13295,13 @@
         "name": "御风而行  Wind Walk",
         "source": "PHB",
         "level": "6",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -13329,13 +13329,13 @@
         "name": "摄心目光  Eyebite",
         "source": "PHB",
         "level": "6",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -13385,13 +13385,13 @@
         "name": "棘墙术  Wall of Thorns",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -13422,13 +13422,13 @@
         "name": "植物遁走术  Transport via Plants",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -13454,13 +13454,13 @@
         "name": "欧提路克冰冻法球  Otiluke's Freezing Sphere",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -13492,13 +13492,13 @@
         "name": "死亡之环  Circle of Death",
         "source": "PHB",
         "level": "6",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -13529,13 +13529,13 @@
         "name": "治愈术  Heal",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -13564,13 +13564,13 @@
         "name": "法术无效结界  Globe of Invulnerability",
         "source": "PHB",
         "level": "6",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "radius",
+            "半径",
             "10",
             "尺"
         ],
@@ -13601,13 +13601,13 @@
         "name": "烈日光束  Sunbeam",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "line",
+            "直线",
             "60",
             "尺"
         ],
@@ -13639,13 +13639,13 @@
         "name": "真知术  True Seeing",
         "source": "PHB",
         "level": "6",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -13676,13 +13676,13 @@
         "name": "石化术  Flesh to Stone",
         "source": "PHB",
         "level": "6",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -13715,13 +13715,13 @@
         "name": "禁制术  Forbiddance",
         "source": "PHB",
         "level": "6",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -13751,13 +13751,13 @@
         "name": "秘法之门  Arcane Gate",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "500",
             "尺"
         ],
@@ -13787,13 +13787,13 @@
         "name": "群体暗示术  Mass Suggestion",
         "source": "PHB",
         "level": "6",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -13827,13 +13827,13 @@
         "name": "英雄宴  Heroes' Feast",
         "source": "PHB",
         "level": "6",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -13863,13 +13863,13 @@
         "name": "解离术  Disintegrate",
         "source": "PHB",
         "level": "6",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -13902,13 +13902,13 @@
         "name": "触发术  Contingency",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -13937,13 +13937,13 @@
         "name": "连环闪电  Chain Lightning",
         "source": "PHB",
         "level": "6",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -13974,13 +13974,13 @@
         "name": "铜墙铁壁  Guards and Wards",
         "source": "PHB",
         "level": "6",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14050,13 +14050,13 @@
         "name": "预置幻象  Programmed Illusion",
         "source": "PHB",
         "level": "6",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -14089,13 +14089,13 @@
         "name": "魔魂壶  Magic Jar",
         "source": "PHB",
         "level": "6",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -14131,13 +14131,13 @@
         "name": "传送术  Teleport",
         "source": "PHB",
         "level": "7",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -14271,13 +14271,13 @@
         "name": "再生术  Regenerate",
         "source": "PHB",
         "level": "7",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14307,13 +14307,13 @@
         "name": "力场监牢  Forcecage",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "100",
             "尺"
         ],
@@ -14347,13 +14347,13 @@
         "name": "召唤天界生物  Conjure Celestial",
         "source": "PHB",
         "level": "7",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "90",
             "尺"
         ],
@@ -14383,13 +14383,13 @@
         "name": "圣言术  Divine Word",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "附赠动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -14424,13 +14424,13 @@
         "name": "复活术  Resurrection",
         "source": "PHB",
         "level": "7",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14462,13 +14462,13 @@
         "name": "延迟爆裂火球  Delayed Blast Fireball",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -14501,13 +14501,13 @@
         "name": "异界传送  Plane Shift",
         "source": "PHB",
         "level": "7",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14540,13 +14540,13 @@
         "name": "徽记术  Symbol",
         "source": "PHB",
         "level": "7",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14639,13 +14639,13 @@
         "name": "投射幻影  Project Image",
         "source": "PHB",
         "level": "7",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "500",
             "里"
         ],
@@ -14677,13 +14677,13 @@
         "name": "拟像术  Simulacrum",
         "source": "PHB",
         "level": "7",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "12",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -14715,13 +14715,13 @@
         "name": "死亡一指  Finger of Death",
         "source": "PHB",
         "level": "7",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -14750,13 +14750,13 @@
         "name": "海市蜃楼  Mirage Arcane",
         "source": "PHB",
         "level": "7",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "视线",
             ""
         ],
@@ -14787,13 +14787,13 @@
         "name": "火焰风暴  Fire Storm",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -14822,13 +14822,13 @@
         "name": "虹光喷射  Prismatic Spray",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "cone",
+            "锥形",
             "60",
             "尺"
         ],
@@ -14912,13 +14912,13 @@
         "name": "跨入乙太界  Etherealness",
         "source": "PHB",
         "level": "7",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -14958,13 +14958,13 @@
         "name": "重力反转  Reverse Gravity",
         "source": "PHB",
         "level": "7",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "100",
             "尺"
         ],
@@ -14995,13 +14995,13 @@
         "name": "隔离术  Sequester",
         "source": "PHB",
         "level": "7",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -15032,13 +15032,13 @@
         "name": "魔邓肯之剑  Mordenkainen's Sword",
         "source": "PHB",
         "level": "7",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15067,13 +15067,13 @@
         "name": "魔邓肯豪宅术  Mordenkainen's Magnificent Mansion",
         "source": "PHB",
         "level": "7",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "300",
             "尺"
         ],
@@ -15103,13 +15103,13 @@
         "name": "克隆术  Clone",
         "source": "PHB",
         "level": "8",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -15137,13 +15137,13 @@
         "name": "创造半位面  Demiplane",
         "source": "PHB",
         "level": "8",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15171,13 +15171,13 @@
         "name": "动物化形  Animal Shapes",
         "source": "PHB",
         "level": "8",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -15205,13 +15205,13 @@
         "name": "反魔法结界  Antimagic Field",
         "source": "PHB",
         "level": "8",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "sphere",
+            "球形",
             "10",
             "尺"
         ],
@@ -15290,13 +15290,13 @@
         "name": "地震术  Earthquake",
         "source": "PHB",
         "level": "8",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "500",
             "尺"
         ],
@@ -15343,13 +15343,13 @@
         "name": "嫌恶/共感术  Antipathy/Sympathy",
         "source": "PHB",
         "level": "8",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15401,13 +15401,13 @@
         "name": "弱智术  Feeblemind",
         "source": "PHB",
         "level": "8",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -15440,13 +15440,13 @@
         "name": "律令震慑  Power Word Stun",
         "source": "PHB",
         "level": "8",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15475,13 +15475,13 @@
         "name": "心灵屏障  Mind Blank",
         "source": "PHB",
         "level": "8",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -15508,13 +15508,13 @@
         "name": "心灵感应  Telepathy",
         "source": "PHB",
         "level": "8",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "无限",
             ""
         ],
@@ -15542,13 +15542,13 @@
         "name": "操控天气  Control Weather",
         "source": "PHB",
         "level": "8",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "10",
             "分钟"
         ],
         "range": [
-            "radius",
+            "半径",
             "5",
             "里"
         ],
@@ -15685,13 +15685,13 @@
         "name": "支配怪物  Dominate Monster",
         "source": "PHB",
         "level": "8",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15725,13 +15725,13 @@
         "name": "海啸术  Tsunami",
         "source": "PHB",
         "level": "8",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "视线",
             ""
         ],
@@ -15760,13 +15760,13 @@
         "name": "焚云术  Incendiary Cloud",
         "source": "PHB",
         "level": "8",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -15796,13 +15796,13 @@
         "name": "神圣灵光  Holy Aura",
         "source": "PHB",
         "level": "8",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -15829,13 +15829,13 @@
         "name": "花言巧语  Glibness",
         "source": "PHB",
         "level": "8",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -15861,13 +15861,13 @@
         "name": "迷宫术  Maze",
         "source": "PHB",
         "level": "8",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -15896,13 +15896,13 @@
         "name": "阳炎爆  Sunburst",
         "source": "PHB",
         "level": "8",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "150",
             "尺"
         ],
@@ -15934,13 +15934,13 @@
         "name": "复仇风暴  Storm of Vengeance",
         "source": "PHB",
         "level": "9",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "视线",
             ""
         ],
@@ -15995,13 +15995,13 @@
         "name": "完全变形术  True Polymorph",
         "source": "PHB",
         "level": "9",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -16056,13 +16056,13 @@
         "name": "完全复活术  True Resurrection",
         "source": "PHB",
         "level": "9",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -16092,13 +16092,13 @@
         "name": "异界之门  Gate",
         "source": "PHB",
         "level": "9",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -16131,13 +16131,13 @@
         "name": "形体变化  Shapechange",
         "source": "PHB",
         "level": "9",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -16171,13 +16171,13 @@
         "name": "律令死亡  Power Word Kill",
         "source": "PHB",
         "level": "9",
-        "school": "E",
+        "school": "惑控系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -16205,13 +16205,13 @@
         "name": "律令治愈  Power Word Heal",
         "source": "PHB",
         "level": "9",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
@@ -16239,13 +16239,13 @@
         "name": "怪影杀手  Weird",
         "source": "PHB",
         "level": "9",
-        "school": "I",
+        "school": "幻术系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "120",
             "尺"
         ],
@@ -16272,13 +16272,13 @@
         "name": "时间停止  Time Stop",
         "source": "PHB",
         "level": "9",
-        "school": "T",
+        "school": "变化系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -16305,13 +16305,13 @@
         "name": "星界投影  Astral Projection",
         "source": "PHB",
         "level": "9",
-        "school": "N",
+        "school": "死灵系",
         "time": [
             "1",
             "小时"
         ],
         "range": [
-            "point",
+            "",
             "10",
             "尺"
         ],
@@ -16346,13 +16346,13 @@
         "name": "流星爆  Meteor Swarm",
         "source": "PHB",
         "level": "9",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "1",
             "里"
         ],
@@ -16380,13 +16380,13 @@
         "name": "祈愿术  Wish",
         "source": "PHB",
         "level": "9",
-        "school": "C",
+        "school": "咒法系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "自身",
             ""
         ],
@@ -16429,13 +16429,13 @@
         "name": "禁锢术  Imprisonment",
         "source": "PHB",
         "level": "9",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "30",
             "尺"
         ],
@@ -16515,13 +16515,13 @@
         "name": "群体治愈术  Mass Heal",
         "source": "PHB",
         "level": "9",
-        "school": "V",
+        "school": "塑能系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -16547,13 +16547,13 @@
         "name": "虹光法墙  Prismatic Wall",
         "source": "PHB",
         "level": "9",
-        "school": "A",
+        "school": "防护系",
         "time": [
             "1",
             "动作"
         ],
         "range": [
-            "point",
+            "",
             "60",
             "尺"
         ],
@@ -16633,13 +16633,13 @@
         "name": "预视术  Foresight",
         "source": "PHB",
         "level": "9",
-        "school": "D",
+        "school": "预言系",
         "time": [
             "1",
             "分钟"
         ],
         "range": [
-            "point",
+            "",
             "触碰",
             ""
         ],
