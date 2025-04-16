@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     bind_nav();
     bind_long_rest_button();
 
-    bind_events_in_background();
-    bind_events_in_features();
-    bind_events_in_profile();
-    bind_events_in_inventory();
-    bind_events_in_spellcasting();
-    bind_events_in_items();
-    bind_events_in_spells();
+    bind_background();
+    bind_features();
+    bind_profile();
+    bind_inventory();
+    bind_spellcasting();
+    bind_items();
+    bind_spells();
 
     bind_dice_box();
 });
@@ -155,7 +155,7 @@ function bind_dice_box() {
 /**
  * 绑定背景界面的事件
  */
-function bind_events_in_background() {
+function bind_background() {
     query('background_panel').querySelectorAll('input, textarea').forEach(ele => {
         ele.addEventListener('change', () => {
             if (['race_in_background', 'sex_in_background'].includes(ele.id)) {
@@ -193,7 +193,7 @@ function bind_events_in_background() {
 /**
  * 绑定特性界面的事件
  */
-function bind_events_in_features() {
+function bind_features() {
     // 绑定添加按钮
     ['proficiencies', 'language', 'features'].forEach(table_name => {
         const button = query(table_name + '_table')
@@ -239,7 +239,7 @@ function bind_events_in_features() {
 /**
  * 绑定角色面板界面的事件
  */
-function bind_events_in_profile() {
+function bind_profile() {
     // 绑定激励按钮 + 死亡豁免按钮
     query('profile_panel').querySelectorAll('.silent-dice').forEach(dice => {
         switch (dice.innerText) {
@@ -391,7 +391,7 @@ function bind_events_in_profile() {
 /**
  * 绑定背包界面的事件
  */
-function bind_events_in_inventory() {
+function bind_inventory() {
     // 绑定背包栏、仓库栏的排序按钮
     ['backpack', 'storage'].forEach(table_name => {
         query(table_name + '_table').rows[0].addEventListener('click', (event) => {
@@ -408,23 +408,22 @@ function bind_events_in_inventory() {
             saved_data[table_name].sort((x1, x2) => {
                 let flag = 0;
                 let y1, y2;
-                if (['label', 'weight', 'amount'].includes(heading)) {
+                if (heading in x1) {
                     y1 = isNaN(parseFloat(x1[heading])) ? x1[heading] : parseFloat(x1[heading]);
-                    y2 = isNaN(parseFloat(x2[heading])) ? x2[heading] : parseFloat(x2[heading]);
-
-                    if (y1 === y2) flag = 0;
-                    else if (y1 < y2) flag = -1;
-                    else if (y1 > y2) flag = 1;
                 } else {
                     y1 = saved_items.find(ele => ele.name == x1.name);
-                    y2 = saved_items.find(ele => ele.name == x2.name);
                     y1 = isNaN(parseFloat(y1[heading])) ? y1[heading] : parseFloat(y1[heading]);
-                    y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
-                    
-                    if (y1 === y2) flag = 0;
-                    else if (y1 < y2) flag = -1;
-                    else if (y1 > y2) flag = 1;
                 }
+                if (heading in x2) {
+                    y2 = isNaN(parseFloat(x2[heading])) ? x2[heading] : parseFloat(x2[heading]);
+                } else {
+                    y2 = saved_items.find(ele => ele.name == x2.name);
+                    y2 = isNaN(parseFloat(y2[heading])) ? y2[heading] : parseFloat(y2[heading]);
+                }
+                
+                if (y1 === y2) flag = 0;
+                else if (y1 < y2) flag = -1;
+                else if (y1 > y2) flag = 1;
                 
                 return event.ctrlKey ? -1*flag : flag;
             });
@@ -469,7 +468,7 @@ function bind_events_in_inventory() {
 /**
  * 绑定施法界面的事件
  */
-function bind_events_in_spellcasting() {
+function bind_spellcasting() {
     // 绑定施法表格的排序按钮
     query('spellcasting_table').rows[0].addEventListener('click', (event) => {
         const heading_ref = {
@@ -520,7 +519,7 @@ function bind_events_in_spellcasting() {
 /**
  * 绑定物品参照界面的事件
  */
-function bind_events_in_items() {
+function bind_items() {
     // 列表排序
     const heading_ref = {
         '名称': 'name',
@@ -549,7 +548,7 @@ function bind_events_in_items() {
 /**
  * 绑定法术参照界面的事件
  */
-function bind_events_in_spells() {
+function bind_spells() {
     // 列表排序
     const heading_ref = {
         '名称': 'name',

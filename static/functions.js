@@ -321,7 +321,7 @@ function load_inventory() {
 
             // 背包内的物品计入负重
             if (table_name === 'backpack') computed_data.current_weight += (
-                    Number(this_item.weight) * Number(this_item.amount)
+                Number(this_item.weight) * Number(this_item.amount)
             );
 
             const row = table.insertRow();
@@ -330,7 +330,16 @@ function load_inventory() {
 
             const label = row.insertCell();
             assign(label, '<input value="' + this_item.label + '"/>');
-            assign(row.insertCell(), item.type.join('、'));
+            const type = row.insertCell();
+            if (item.properties.includes('自定义')) {
+                assign(type, (
+                    'type' in this_item
+                    ? '<input value="' + this_item.type.join('、') + '"/>'
+                    : '<input value="' + item.type.join('、') + '"/>'
+                ));
+            } else {
+                assign(type, item.type.join('、'));
+            }
             assign(row.insertCell(), item.properties.join('、'));
             assign(row.insertCell(), item.value !== '0' ? item.value + ' 金币' : '-');
             const weight = row.insertCell();
@@ -480,14 +489,20 @@ function load_inventory() {
                 });
             });
 
+            // 绑定标签、类型、重量、熟练的修改
             const input_ref = {
                 'label': label,
+                'type': type,
                 'weight': weight,
                 'amount': amount,
             };
             for (let x of Object.keys(input_ref)) {
                 input_ref[x].addEventListener('change', () => {
-                    this_item[x] = input_ref[x].children[0].value;
+                    if (x === 'type') {
+                        this_item[x] = input_ref[x].children[0].value.split('、');
+                    } else {
+                        this_item[x] = input_ref[x].children[0].value;
+                    }
 
                     load_inventory();
                     load_profile();
