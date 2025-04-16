@@ -93,36 +93,31 @@ def preview_changelog(version, commits, first_release=False):
     print("\n📝 即将写入 CHANGELOG 的内容如下：\n")
     print(f"## {version} - {today}\n")
 
+    changelog_preview = []
+
     for ctype, (emoji, title) in COMMIT_TYPES.items():
-        print(f"### {emoji} {title}")
         lines = [parse_commit(msg, first_release=first_release)[1] for msg in commits
                  if parse_commit(msg, first_release=first_release)[0] == ctype]
         if lines:
-            for line in lines:
-                print(f"- {line}")
-        print()
+            section = f"### {emoji} {title}\n"
+            section += "\n".join(f"- {line}" for line in lines)
+            changelog_preview.append(section)
+
+    if changelog_preview:
+        print("\n\n".join(changelog_preview))
+    else:
+        print("(本次没有可记录的变更项)\n")
 
 def update_changelog(version, commits, first_release=False):
     today = datetime.now().strftime("%Y-%m-%d")
-    new_entry = [f"## {version} - {today}\n"]
-    grouped = {k: [] for k in COMMIT_TYPES}
-
-    for msg in commits:
-        ctype, message = parse_commit(msg, first_release=first_release)
-        if ctype in grouped:
-            grouped[ctype].append(message)
-        elif ctype:  # 类型未知，仍添加
-            grouped.setdefault(ctype, []).append(message)
-
+    new_entry = f"## {version} - {today}\n\n"
     for ctype, (emoji, title) in COMMIT_TYPES.items():
-        new_entry.append(f"### {emoji} {title}")
-        lines = grouped.get(ctype, [])
+        lines = [parse_commit(msg, first_release=first_release)[1] for msg in commits
+                 if parse_commit(msg, first_release=first_release)[0] == ctype]
         if lines:
-            for line in lines:
-                new_entry.append(f"- {line}")
-        new_entry.append("")  # 空行
-
-    new_entry.append("---\n")
+            new_entry += f"### {emoji} {title}\n"
+            new_entry += "\n".join(f"- {line}" for line in lines)
+            new_entry += "\n\n"
 
     if not os.path.exists(CHANGELOG_FILE):
         with open(CHANGELOG_FILE, "w", encoding="utf-8") as f:
