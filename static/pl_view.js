@@ -1,4 +1,3 @@
-var log = console.log; // asinose
 document.addEventListener('DOMContentLoaded', async () => {
     Promise.all([
         fetch(window.location.origin+'/api/query/pc_list')
@@ -1743,7 +1742,7 @@ function load_combat_stats() {
     }
     query('current_weight_in_profile').style.color = weight_color;
     query('current_weight_in_inventory').style.color = weight_color;
-    
+
     // 负重
     assign(
         query('current_weight_in_profile'),
@@ -1823,7 +1822,7 @@ function load_combat_stats() {
         '侏儒': 25
     };
     for (let k in speed_ref) {
-        if (saved_data.characteristics.race.slice(0, k.length) === k) {
+        if (saved_data.characteristics.race.slice(-k.length) === k) {
             computed_speed += speed_ref[k];
             break;
         }
