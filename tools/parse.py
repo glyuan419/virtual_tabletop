@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from json import loads, dumps
 
-def parser_type():
+def parse_type():
     with open('raw_items-base.json', 'r') as f:
         raw = loads(f.read())['itemType']
     res = {}
@@ -16,7 +16,7 @@ def parser_type():
     # for x in res: print(x)
     return res
 
-def parser_property():
+def parse_property():
     with open('raw_items-base.json', 'r') as f:
         raw = loads(f.read())['itemProperty']
     res = {}
@@ -32,9 +32,9 @@ def parser_property():
     # for x in res: print(x)
     return res
 
-def parser_items():
-    types = parser_type()
-    props = parser_property()
+def parse_items():
+    types = parse_type()
+    props = parse_property()
     with open('raw_items-base.json', 'r') as f:
         raw = loads(f.read())['baseitem']
     res = []
@@ -166,6 +166,6 @@ def paser_spells():
     print(dumps(res))
 
 
-# parser_property()
-# parser_items()
+# parse_property()
+# parse_items()
 paser_spells()
