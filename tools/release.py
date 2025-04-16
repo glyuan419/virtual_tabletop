@@ -110,14 +110,14 @@ def preview_changelog(version, commits, first_release=False):
 
 def update_changelog(version, commits, first_release=False):
     today = datetime.now().strftime("%Y-%m-%d")
-    new_entry = f"## {version} - {today}\n\n"
+    new_entry = [ f"## {version} - {today}\n\n" ]
     for ctype, (emoji, title) in COMMIT_TYPES.items():
         lines = [parse_commit(msg, first_release=first_release)[1] for msg in commits
                  if parse_commit(msg, first_release=first_release)[0] == ctype]
         if lines:
-            new_entry += f"### {emoji} {title}\n"
-            new_entry += "\n".join(f"- {line}" for line in lines)
-            new_entry += "\n\n"
+            section = f"### {emoji} {title}\n"
+            section += "\n".join(f"- {line}" for line in lines)
+            new_entry.append(section)
 
     if not os.path.exists(CHANGELOG_FILE):
         with open(CHANGELOG_FILE, "w", encoding="utf-8") as f:
