@@ -13,7 +13,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent  # 设置项目根目录
 VERSION_FILE = PROJECT_ROOT / "VERSION"
 CHANGELOG_FILE = PROJECT_ROOT / "CHANGELOG.md"
-DEFAULT_BRANCH = "dev"
+DEFAULT_BRANCH = "main"
 COMMIT_TYPES = {
     "feat":     ("✨", "Features"),
     "fix":      ("🐛", "Fixes"),
@@ -176,11 +176,11 @@ def main():
         f.write(version)
 
     # Git 操作
-    run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
-    run_git(["git", "commit", "-m", f"chore(release): {version}"])
-    run_git(["git", "tag", version])
-    run_git(["git", "push"])
-    run_git(["git", "push", "--tags"])
+    # run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
+    # run_git(["git", "commit", "-m", f"chore(release): {version}"])
+    # run_git(["git", "tag", version])
+    # run_git(["git", "push"])
+    # run_git(["git", "push", "--tags"])
 
     print(f"✅ 发布完成：{version}")
 
