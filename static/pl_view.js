@@ -277,8 +277,28 @@ function bind_profile() {
     // 更新 Input 的修改
     query('profile_panel').querySelectorAll('input').forEach(ele => {
         ele.addEventListener('change', () => {
-            if (['character_name', 'level', 'experience_points'].includes(ele.id)) {
-                // 角色名、等级、经验值
+            if (['character_name'].includes(ele.id)) {
+                // 角色名
+                saved_data.metadata[ele.id] = ele.value;
+                load_page_info();
+            } else if (['level'].includes(ele.id)) {
+                // 等级
+                saved_data.metadata[ele.id] = ele.value;
+                for (let x of level_ref) {
+                    if (ele.value === x[0]) {
+                        saved_data.metadata['experience_points'] = x[1];
+                        break;
+                    }
+                }
+                load_page_info();
+            } else if (['experience_points'].includes(ele.id)) {
+                // 经验值
+                for (let x of level_ref) {
+                    if (Number(ele.value) >= Number(x[1])) {
+                        saved_data.metadata['level'] = x[0];
+                        break;
+                    }
+                }
                 saved_data.metadata[ele.id] = ele.value;
                 load_page_info();
             } else if (['race_in_profile', 'sex_in_profile'].includes(ele.id)) {

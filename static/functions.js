@@ -848,9 +848,6 @@ function load_spell_slots() {
 
 /**
  * 加载角色面板
- * 
- * 依次加载概要栏、战斗栏、装备栏、属性栏、快捷施法栏
- * 并计算需要的数值
  */
 function load_profile() {
     if (
@@ -868,7 +865,7 @@ function load_profile() {
         load_weapons();
         load_quick_spellcasting();
 
-        // 加值施法界面中的施法信息
+        // 加载施法界面中的施法信息
         load_spellcasting_info();
     } else {
         load_summery();
