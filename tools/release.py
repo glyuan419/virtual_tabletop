@@ -110,12 +110,12 @@ def preview_changelog(version, commits, first_release=False):
 
 def update_changelog(version, commits, first_release=False):
     today = datetime.now().strftime("%Y-%m-%d")
-    new_entry = [ f"## {version} - {today}\n\n" ]
+    new_entry = [ f"\n## {version} - {today}" ]
     for ctype, (emoji, title) in COMMIT_TYPES.items():
         lines = [parse_commit(msg, first_release=first_release)[1] for msg in commits
                  if parse_commit(msg, first_release=first_release)[0] == ctype]
         if lines:
-            section = f"### {emoji} {title}\n"
+            section = f"\n### {emoji} {title}\n"
             section += "\n".join(f"- {line}" for line in lines)
             new_entry.append(section)
 
@@ -124,8 +124,8 @@ def update_changelog(version, commits, first_release=False):
             f.write(f"{HEADER}\n\n")
 
     with open(CHANGELOG_FILE, "r+", encoding="utf-8") as f:
-        existing = f.read()
-        f.seek(0, 0)
+        existing = f.read()[12:]
+        f.seek(12, 0)
         f.write("\n".join(new_entry) + "\n" + existing)
 
 def main():
@@ -141,9 +141,9 @@ def main():
         sys.exit(1)
 
     # 检查工作区
-    if not is_working_directory_clean():
-        print("工作区非空，请先提交或清理改动。")
-        sys.exit(1)
+    # if not is_working_directory_clean():
+    #     print("工作区非空，请先提交或清理改动。")
+    #     sys.exit(1)
 
     # 检查 tag 是否已存在
     if tag_exists(version):
@@ -176,11 +176,11 @@ def main():
         f.write(version)
 
     # Git 操作
-    # run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
-    # run_git(["git", "commit", "-m", f"chore(release): {version}"])
-    # run_git(["git", "tag", version])
-    # run_git(["git", "push"])
-    # run_git(["git", "push", "--tags"])
+    run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
+    run_git(["git", "commit", "-m", f"chore(release): {version}"])
+    run_git(["git", "tag", version])
+    run_git(["git", "push"])
+    run_git(["git", "push", "--tags"])
 
     print(f"✅ 发布完成：{version}")
 
