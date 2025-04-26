@@ -141,9 +141,9 @@ def main():
         sys.exit(1)
 
     # 检查工作区
-    # if not is_working_directory_clean():
-    #     print("工作区非空，请先提交或清理改动。")
-    #     sys.exit(1)
+    if not is_working_directory_clean():
+        print("工作区非空，请先提交或清理改动。")
+        sys.exit(1)
 
     # 检查 tag 是否已存在
     if tag_exists(version):
@@ -163,7 +163,7 @@ def main():
     preview_changelog(version, commits, first_release=first_release)
     
     # 用户确认
-    confirm = input("是否继续发布？(Y/n): ").strip().lower()
+    confirm = input("\n是否继续发布？(Y/n): ").strip().lower()
     if confirm not in ["", "y", "yes"]:
         print("❌ 已取消发布。")
         sys.exit(0)
@@ -176,11 +176,11 @@ def main():
         f.write(version)
 
     # Git 操作
-    # run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
-    # run_git(["git", "commit", "-m", f"chore(release): {version}"])
-    # run_git(["git", "tag", version])
-    # run_git(["git", "push"])
-    # run_git(["git", "push", "--tags"])
+    run_git(["git", "add", VERSION_FILE, CHANGELOG_FILE])
+    run_git(["git", "commit", "-m", f"chore(release): {version}"])
+    run_git(["git", "tag", version])
+    run_git(["git", "push"])
+    run_git(["git", "push", "--tags"])
 
     print(f"✅ 发布完成：{version}")
 
