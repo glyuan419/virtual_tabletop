@@ -29,6 +29,13 @@ python tools/release.py
 - 根据版本号打 tag
 - 提交 git 并推送到 Github
 
+4. 将 main 分支的变动同步回 dev 分支
+``` bash
+git checkout dev
+git merge main
+git push origin dev
+```
+
 ### 版本号
 
 版本号格式基于 SemVer 标准，

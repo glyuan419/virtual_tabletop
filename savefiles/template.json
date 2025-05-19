@@ -32,7 +32,7 @@
     },
 
     "proficiencies": [],
-    "language": ["语言", "通用语"],
+    "language": [["语言", "通用语"]],
     "features": [],
 
     "combat_stats": {

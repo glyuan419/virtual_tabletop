@@ -735,7 +735,7 @@ function load_features() {
                     if (table_name === 'proficiencies') {
                         show_toast('使用【' + term[1] + '】变得生疏', 3000);
                     } else if (table_name === 'language') {
-                        show_toast('已遗忘【' + term + '】', 3000);
+                        show_toast('已遗忘【' + term[1] + '】', 3000);
                     } else if (table_name === 'features') {
                         show_toast('已失去【' + term[1] + '】' + term[0], 3000);
                     }
@@ -1073,7 +1073,6 @@ function load_inventory() {
                 li.innerHTML = '丢弃';
                 li.addEventListener('click', () => {
                     saved_data[table_name].splice(i, 1);
-                    log(i, saved_data[table_name][i])
                     show_toast('已丢弃【' + this_item.label + '】', 3000);
 
                     load_inventory();
@@ -1967,6 +1966,7 @@ function load_weapons() {
         );
         if (item === undefined) {
             saved_data.weapons.splice(i, 1);
+            update(saved_data); 
             continue;
         }
         item = saved_items.find(ele => ele.name == item.name);
@@ -2085,8 +2085,8 @@ function load_weapons() {
  */
 function load_quick_spellcasting() {
     const quick_spellcasting_table = query('quick_spellcasting_table');
-
-    // 情况快捷施法栏显示
+    
+    // 清空快捷施法栏显示
     for (let i=1; i<4; i++) {
         quick_spellcasting_table.rows[i].innerHTML = [
             '<td><select><option></option></select></td>',
@@ -2097,7 +2097,7 @@ function load_quick_spellcasting() {
         ].join('');
     }
 
-    // 收集已经习得的法术
+    // 全部已经习得的法术
     const spells = {'0': [], '1': [], '2': [], '3': [], '4': [],
         '5': [], '6': [], '7': [], '8': [], '9': []};
     for (let spell_name of saved_data.spells) {
@@ -2105,6 +2105,7 @@ function load_quick_spellcasting() {
         spells[spell.level].push(spell_name);
     }
 
+    // 设置快捷施法栏的环阶选择列表
     for (let x of Object.keys(spells)) {
         if (spells[x].length === 0) continue;
         quick_spellcasting_table.rows[1].cells[0].children[0].add(new Option(x + ' 环'));
@@ -2112,15 +2113,23 @@ function load_quick_spellcasting() {
         quick_spellcasting_table.rows[3].cells[0].children[0].add(new Option(x + ' 环'));
     }
 
+    // 载入快捷施法栏
     for (let i=0; i<saved_data.quick_spellcasting.length; i++) {
         const spell = saved_data.quick_spellcasting[i];
+        
+        if (saved_data.spells.indexOf(spell.name) === -1) {
+            saved_data.quick_spellcasting.splice(i, 1);
+            update(saved_data); 
+            continue
+        }
 
+        // 设置环阶
         assign(
             quick_spellcasting_table.rows[i+1].cells[0].children[0],
             spell.level + ' 环'
         );
 
-        // 提供可选择的法术
+        // 设置本环法术列表，并设置已选的法术
         const select = document.createElement('select');
         select.className = 'select';
         quick_spellcasting_table.rows[i+1].cells[1].appendChild(select);
@@ -2134,11 +2143,13 @@ function load_quick_spellcasting() {
             spell.name.split('  ')[0]
         );
         
+        // 设置法术伤害
         const input = document.createElement('input');
         input.className = 'input';
         quick_spellcasting_table.rows[i+1].cells[2].appendChild(input);
         assign(input, spell.damage)
         
+        // 设置法术命中
         let ability_ref = {
             '野蛮人': 'constitution',
             '吟游诗人': 'charisma',
@@ -2167,6 +2178,7 @@ function load_quick_spellcasting() {
             ability_modifier + Number(computed_data.proficiency_bonus)
         ));
 
+        // 设置伤害投骰
         const damage_dice = document.createElement('button');
         damage_dice.className = 'btn dice';
         quick_spellcasting_table.rows[i+1].cells[4].appendChild(damage_dice);
